@@ -1,12 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRegister } from '../../../hooks/authHooks/useRegister';
+import { useRegister } from '@/hooks/authHooks/useRegister';
 import {
 	type AuthFormProps,
 	type RegisterFormData,
 	type RegisterParams,
 	RegisterSchema,
-} from '../../../types/auth.types';
+} from '@/types/auth.types';
 import { ArrowBigRight } from 'lucide-react';
 
 export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
@@ -35,16 +35,15 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 	};
 
 	const getErrorMessage = () => {
-		if (!registerMutation.error) return null;
-		const errorData = registerMutation.error.response?.data;
-		return errorData?.error || 'Error at Register';
+		const errorData: string = registerMutation.error?.response?.data as string;
+		return errorData || 'Error at Register';
 	};
 
 	return (
 		<div
-			className={`flex flex-col bg-green-50 rounded-xl shadow-xl p-5 items-center justify-center w-[300px] h-[350px]  ${className}`}>
+			className={`flex flex-col rounded-xl shadow-xl p-5 items-center justify-center w-[300px] h-[350px]  ${className}`}>
 			<div className='mb-2'>
-				<h2 className='text-2xl font-bold text-green-950'>Register</h2>
+				<h2 className='text-2xl font-bold text-violet-950'>Register</h2>
 			</div>
 
 			<form
@@ -56,7 +55,7 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					className='flex flex-col text-sm font-medium text-gray-700 mb-2 gap-1 w-[200px]'>
 					Name
 					<input
-						className='bg-green-950 text-green-50 p-1 rounded-md'
+						className='bg-violet-950 text-green-50 p-1 rounded-md'
 						placeholder='John Doe'
 						{...register('name')}
 					/>
@@ -71,7 +70,7 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					className='flex flex-col text-sm font-medium text-gray-700 mb-2 gap-1 w-[200px]'>
 					Email
 					<input
-						className='bg-green-950 text-green-50 p-1 rounded-md'
+						className='bg-violet-950 text-green-50 p-1 rounded-md'
 						placeholder='chef@gourmet.es'
 						{...register('email')}
 					/>
@@ -86,7 +85,7 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					className='flex flex-col text-sm font-medium text-gray-700 mb-2 gap-1 w-[200px]'>
 					Password
 					<input
-						className='bg-green-950 text-green-50 p-1 rounded-md'
+						className='bg-violet-950 text-green-50 p-1 rounded-md'
 						type='password'
 						placeholder='********'
 						{...register('password')}
@@ -101,7 +100,7 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					className='flex flex-col text-sm font-medium text-gray-700 mb-2 gap-1 w-[200px]'>
 					Confirm Password
 					<input
-						className='bg-green-950 text-green-50 p-1 rounded-md'
+						className='bg-violet-950 text-green-50 p-1 rounded-md'
 						type='password'
 						placeholder='********'
 						{...register('confirmPassword')}
@@ -116,12 +115,12 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 				{/* Botón Submit */}
 				<div className='flex items-center justify-center gap-2'>
 					<button
-						className='bg-green-600 w-[80%] text-green-50 px-4 py-1 rounded-md hover:bg-green-700 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed mt-2'
+						className='bg-violet-600 w-[80%] text-green-50 px-4 py-1 rounded-md hover:bg-violet-700 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed mt-2'
 						type='submit'
 						disabled={registerMutation.isPending}>
 						{registerMutation.isPending ? 'Registering...' : 'Register'}
 					</button>
-					<ArrowBigRight className='size-5 animate-ping text-green-600' />
+					<ArrowBigRight className='size-5 animate-ping text-violet-600' />
 				</div>
 
 				{/* Mensajes de estado */}
@@ -130,7 +129,7 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 				)}
 
 				{registerMutation.isSuccess && (
-					<span className='text-green-600 text-sm mt-2'>
+					<span className='text-violet-600 text-sm mt-2'>
 						✅ Register successful!
 					</span>
 				)}

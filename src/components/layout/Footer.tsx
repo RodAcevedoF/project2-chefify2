@@ -1,11 +1,22 @@
+import { Box, Container } from '@mui/material';
+
 export const Footer = () => {
-  return (
-    <footer className="flex w-full border justify-center items-center gap-4 p-2">
-      <div className="text-center mt-8">
-        <p className="text-gray-500 text-sm">
-          © 2025 Chefify. Hecho con ❤️ para cocineros apasionados.
-        </p>
-      </div>
-    </footer>
-  );
+	return (
+		<Container
+			component='footer'
+			maxWidth={false}
+			sx={{
+				display: 'flex',
+				width: '100%',
+				borderTop: 2,
+				borderColor: '#38825260',
+				justifyContent: 'center',
+				alignItems: 'center',
+				paddingY: 4,
+			}}>
+			<Box>
+				<p>© 2025 Chefify. Made with ❤️ for passionate cooks.</p>
+			</Box>
+		</Container>
+	);
 };

@@ -1,10 +1,20 @@
+import { Box, Typography } from '@mui/material';
+
 const EmptyRecipe = () => (
-  <div className='flex flex-col items-center justify-center h-full w-full'>
-    <h2 className='text-2xl font-semibold mb-4'>Selecciona una receta</h2>
-    <p className='text-gray-500'>
-      Elige una receta del listado para ver los detalles aquí.
-    </p>
-  </div>
+	<Box
+		sx={{
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
+			justifyContent: 'center',
+			width: '100%',
+			height: '100%',
+		}}>
+		<Typography variant='h4'>Select a recipe</Typography>
+		<Typography variant='subtitle1'>
+			Choose a recipe from the list to see its details
+		</Typography>
+	</Box>
 );
 
 export default EmptyRecipe;

@@ -1,26 +1,21 @@
-import chefifyAPI from '../lib/api';
-import type { LoginParams, RegisterParams } from '../types/auth.types';
+import chefifyAPI from '@/lib/api';
+import type { QueryParams } from '@/types/common.types';
+import type { IngredientDTO } from '@/types/ingredient.type';
 
 export const IngredientService = {
-  async create({ email, password }: LoginParams) {
-    const res = await chefifyAPI.post('/auth/login', {
-      email,
-      password,
-    });
-    return res;
-  },
+	async create(data: IngredientDTO): Promise<void> {
+		await chefifyAPI.post('/ingredient', {
+			data,
+		});
+	},
 
-  async findByTitle({ name, email, password }: RegisterParams) {
-    const res = await chefifyAPI.post('/auth/register', {
-      name,
-      email,
-      password,
-    });
-    return res;
-  },
+	async get(params: QueryParams) {
+		if (params.id) {
+			const ingredient = await chefifyAPI.get(`/ingredient/${params.id}`);
+			return ingredient.data;
+		}
 
-  async findById() {
-    const res = await chefifyAPI.get('/auth/me');
-    return res;
-  },
+		const recipes = await chefifyAPI.get('/ingredient', { params });
+		return recipes.data;
+	},
 };

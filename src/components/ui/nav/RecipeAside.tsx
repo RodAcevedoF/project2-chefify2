@@ -1,31 +1,37 @@
-import { useEffect, useState } from 'react';
-import type { Recipe } from '../../../types/recipe.types';
+import { memo } from 'react';
+import type { Recipe } from '@/types/recipe.types';
 import { useGetRecipes } from '../../../hooks/recipeHooks/useGetRecipes';
-import { ListItem, Title } from '../cards/ListItem';
+import { Box, ListItemButton, ListItemText } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-const RecipeAside = () => {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const { data, isLoading, error, isError } = useGetRecipes();
+const RecipeAside = memo(() => {
+	const { data, isLoading, error, isError } = useGetRecipes();
+	const navigate = useNavigate();
+	const handleGetDetails = (id: string) => navigate(`/recipes/${id}`);
 
-  useEffect(() => {
-    if (data) setRecipes(data.data);
-  }, [data]);
-  return (
-    <aside className='flex w-1/3 min-h-[60vh] border-2 border-red-500'>
-      <ul>
-        RecipeContainer
-        {isLoading && <p>Loading recipes...</p>}
-        {isError && <p>Error: {error?.message || 'There was an error'}</p>}
-        {recipes.map((recipe) => {
-          return (
-            <ListItem key={recipe._id}>
-              <Title title={recipe.title} />
-            </ListItem>
-          );
-        })}
-      </ul>
-    </aside>
-  );
-};
+	return (
+		<Box
+			component='aside'
+			sx={{
+				display: 'flex',
+				width: 'fit-content',
+				border: 2,
+				padding: 2,
+			}}>
+			<ul>
+				Last recipes:
+				{isLoading && <p>Loading recipes...</p>}
+				{isError && <p>Error: {error?.message || 'There was an error'}</p>}
+				{data?.map((recipe: Recipe) => (
+					<ListItemButton
+						key={recipe._id}
+						onClick={() => handleGetDetails(recipe._id)}>
+						<ListItemText primary={recipe.title} />
+					</ListItemButton>
+				))}
+			</ul>
+		</Box>
+	);
+});
 
 export default RecipeAside;

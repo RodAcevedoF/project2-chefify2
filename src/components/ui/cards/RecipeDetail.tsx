@@ -1,10 +1,26 @@
-const EmptyRecipe = () => (
-  <div className='flex flex-col items-center justify-center h-full w-full'>
-    <h2 className='text-2xl font-semibold mb-4'>Selecciona una receta</h2>
-    <p className='text-gray-500'>
-      Elige una receta del listado para ver los detalles aquí.
-    </p>
-  </div>
-);
+import { Typography, Box } from '@mui/material';
+import { useParams, Navigate } from 'react-router-dom';
+import { useGetRecipeByID } from '@/hooks/recipeHooks/useGetRecipes';
 
-export default EmptyRecipe;
+const RecipeDetail = () => {
+	const { id } = useParams<{ id: string }>();
+	const { data: recipe, isLoading, error } = useGetRecipeByID(id);
+	if (!id) return <Navigate to='/recipes' replace />;
+
+	if (isLoading) return <Typography>Loading recipe details...</Typography>;
+	if (error) return <Typography>Error loading recipe details.</Typography>;
+	if (!recipe) return <Typography>No recipe found.</Typography>;
+
+	return (
+		<Box>
+			<Typography variant='h5'>{recipe.title}</Typography>
+			<Typography variant='body1'>
+				{Array.isArray(recipe.categories)
+					? recipe.categories.join(', ')
+					: recipe.categories}
+			</Typography>
+		</Box>
+	);
+};
+
+export default RecipeDetail;

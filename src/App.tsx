@@ -1,62 +1,65 @@
 import './index.css';
-import { Navbar } from '@/components/layout/Navbar';
+import { Navbar } from '@/features/common/components/layout/Navbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { RecipeLayout } from '@/pages/Recipe';
-import { NotFound } from '@/pages/NotFound';
-import { Home } from '@/pages/Home';
-import { Footer } from '@/components/layout/Footer';
-import ProtectedRoute from '@/components/layout/ProtectedRoute';
-import RecipeDetail from '@/components/ui/cards/RecipeDetail';
-import EmptyRecipe from '@/components/ui/cards/EmptyRecipe';
-import { ProfileLayout } from '@/pages/Profile';
+import { RecipeLayout } from '@/features/recipes/Recipe';
+import { NotFound } from '@/features/notFound/NotFound';
+import { Home } from '@/features/home/Home';
+import { Footer } from '@/features/common/components/layout/Footer';
+import ProtectedRoute from '@/features/common/components/layout/ProtectedRoute';
+import RecipeDetail from '@/features/recipes/components/cards/RecipeDetail';
+import EmptyRecipe from '@/features/recipes/components/cards/EmptyRecipe';
+import { ProfileLayout } from '@/features/profile/Profile';
 import { Box, Container } from '@mui/material';
+import { ModalRoot } from '@/features/common/components/modals/ModalRoot';
 
 function App() {
 	return (
-		<Router>
-			<Box
-				sx={{
-					display: 'flex',
-					flexDirection: 'column',
-					minHeight: '100vh',
-					width: '100%',
-					justifyContent: 'space-between',
-					overflowX: 'hidden',
-				}}>
-				<Box component='header'>
-					<Navbar />
-				</Box>
-
-				{/* Main */}
-				<Container
-					component='main'
-					maxWidth={false}
+		<>
+			<Router>
+				<Box
 					sx={{
 						display: 'flex',
 						flexDirection: 'column',
-						alignItems: 'center',
-						justifyContent: 'center',
-						flexGrow: 1,
+						minHeight: '100vh',
+						width: '100%',
+						justifyContent: 'space-between',
+						overflowX: 'hidden',
+						alignContent: 'center',
 					}}>
-					<Routes>
-						<Route path='/' element={<Home />} />
-						<Route element={<ProtectedRoute />}>
-							<Route path='/recipes' element={<RecipeLayout />}>
-								<Route index element={<EmptyRecipe />} />
-								<Route path=':id' element={<RecipeDetail />} />
-							</Route>
-							<Route path='/profile' element={<ProfileLayout />} />
-						</Route>
-						<Route path='*' element={<NotFound />} />
-					</Routes>
-				</Container>
+					<Box component='header'>
+						<Navbar />
+					</Box>
 
-				{/* Footer */}
-				<Box component='footer'>
-					<Footer />
+					{/* Main */}
+					<Container
+						component='main'
+						maxWidth={false}
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+							justifyContent: 'center',
+							flexGrow: 1,
+						}}>
+						<Routes>
+							<Route path='/' element={<Home />} />
+							<Route element={<ProtectedRoute />}>
+								<Route path='/recipes' element={<RecipeLayout />}>
+									<Route index element={<EmptyRecipe />} />
+									<Route path=':id' element={<RecipeDetail />} />
+								</Route>
+								<Route path='/profile' element={<ProfileLayout />} />
+							</Route>
+							<Route path='*' element={<NotFound />} />
+						</Routes>
+					</Container>
+					<Box component='footer'>
+						<Footer />
+					</Box>
 				</Box>
-			</Box>
-		</Router>
+				<ModalRoot />
+			</Router>
+		</>
 	);
 }
 

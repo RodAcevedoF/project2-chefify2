@@ -1,18 +1,23 @@
 @import 'tailwindcss';
 
+@font-face {
+	font-family: 'Dinot';
+	src: url('/public/fonts/DINOT-Regular.woff2') format('woff2');
+}
+
 body {
-	background: var(--default-bg);
 	padding: 0;
 	margin: 0;
 	width: 100vw;
 	min-height: 100vh;
-	color: whitesmoke;
+	overflow-x: hidden;
 }
 
 a {
 	text-decoration: none;
 }
 
-:root {
-	--default-bg: radial-gradient(circle, #0a0a0a 60%, #111111 100%);
+* {
+	box-sizing: border-box;
+	font-family: 'Dinot', sans-serif;
 }

@@ -8,10 +8,12 @@ interface MainButtonProps {
 	disabled?: boolean;
 	icon?: LucideIcon;
 	type?: 'button' | 'submit' | 'reset';
+	extraSx?: object;
+	iconSx?: object;
 }
 
 export const ButtonUsage = (props: MainButtonProps) => {
-	const { label, parentMethod, disabled, icon: Icon } = props;
+	const { label, parentMethod, disabled, icon: Icon, extraSx, iconSx } = props;
 	return (
 		<Button
 			variant='outlined'
@@ -24,14 +26,19 @@ export const ButtonUsage = (props: MainButtonProps) => {
 				background: '#033018',
 				borderRadius: 5,
 				borderColor: '#ffffeb',
+				display: 'flex',
+				alignItems: 'flex-start',
+				justifyContent: 'space-between',
+				gap: 1,
 				'&:hover': {
 					borderColor: '#0cea74',
 					background: 'inherit',
 					fontWeight: 'bold',
 				},
+				...extraSx,
 			}}>
-			{Icon && <Icon style={{ marginRight: 8 }} />}
 			{label}
+			{Icon && <Icon style={iconSx} />}
 		</Button>
 	);
 };

@@ -6,7 +6,13 @@ import {
 	type RegisterFormData,
 	RegisterSchema,
 } from '@/types/auth.types';
-import { Box, TextField, Typography, CircularProgress } from '@mui/material';
+import {
+	Box,
+	TextField,
+	Typography,
+	CircularProgress,
+	CardMedia,
+} from '@mui/material';
 import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
 
 export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
@@ -41,9 +47,23 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 				bgcolor: 'background.default',
 			}}
 			className={className}>
-			<Typography variant='h5' fontWeight={700} mb={3}>
-				Register
-			</Typography>
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+					mb: 2,
+				}}>
+				<Typography variant='h5' fontWeight={700}>
+					Register
+				</Typography>
+				<CardMedia
+					component={'img'}
+					image='/logo.png'
+					alt='Chef Hat'
+					sx={{ width: 50, filter: 'invert(1)' }}
+				/>
+			</Box>
 			<Box
 				component='form'
 				onSubmit={handleSubmit(onSubmit)}
@@ -111,7 +131,7 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					<ButtonUsage
 						label={
 							registerMutation.isPending ? (
-								<CircularProgress size={20} color='inherit' />
+								<CircularProgress size={20} sx={{ color: 'whitesmoke' }} />
 							) : (
 								'Register'
 							)

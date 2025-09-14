@@ -3,39 +3,24 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RegisterForm } from '@/features/home/components/forms/RegisterForm';
 import { LoginForm } from '@/features/home/components/forms/LoginForm';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Button } from '@mui/material';
+import { useModalContext } from '@/contexts/modalContext/modal.context';
 
 export const AuthModal = () => {
 	const [showRegister, setShowRegister] = useState(false);
+	const { setLogged } = useLoggedContext();
+	const { closeModal } = useModalContext();
+	const nav = useNavigate();
 
 	const handleLoginSuccess = () => {
-		setIsLoading(true);
 		setLogged(true);
+		closeModal();
 		nav('/recipes');
 	};
-
-	const [isLoading, setIsLoading] = useState(false);
-	const { setLogged } = useLoggedContext();
-	const nav = useNavigate();
 
 	const handleRegisterSuccess = () => {
 		setShowRegister(false);
 	};
-
-	if (isLoading) {
-		return (
-			<Box
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-					height: 200,
-				}}>
-				<CircularProgress color='primary' />
-				<Typography sx={{ ml: 2 }}>Signing in</Typography>
-			</Box>
-		);
-	}
 
 	return (
 		<>

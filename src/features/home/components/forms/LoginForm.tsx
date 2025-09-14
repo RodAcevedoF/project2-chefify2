@@ -7,7 +7,13 @@ import {
 	type LoginParams as LoginFormProps,
 } from '@/types/auth.types';
 import { ArrowBigRight } from 'lucide-react';
-import { Box, TextField, Typography, CircularProgress } from '@mui/material';
+import {
+	Box,
+	TextField,
+	Typography,
+	CircularProgress,
+	CardMedia,
+} from '@mui/material';
 import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
 
 export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
@@ -42,9 +48,23 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 				bgcolor: 'background.default',
 			}}
 			className={className}>
-			<Typography variant='h5' fontWeight={700} mb={3}>
-				Login
-			</Typography>
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+					mb: 2,
+				}}>
+				<Typography variant='h5' fontWeight={700}>
+					Login
+				</Typography>
+				<CardMedia
+					component={'img'}
+					image='/logo.png'
+					alt='Chef Hat'
+					sx={{ width: 50, filter: 'invert(1)' }}
+				/>
+			</Box>
 			<Box
 				component='form'
 				onSubmit={handleSubmit(onSubmit)}
@@ -89,7 +109,7 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					<ButtonUsage
 						label={
 							loginMutation.isPending ? (
-								<CircularProgress size={20} color='inherit' />
+								<CircularProgress size={20} sx={{ color: 'whitesmoke' }} />
 							) : (
 								'Login'
 							)

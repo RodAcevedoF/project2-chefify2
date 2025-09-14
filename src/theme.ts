@@ -2,7 +2,6 @@ import { createTheme, type ThemeOptions } from '@mui/material';
 
 const themeOptions: ThemeOptions = {
 	palette: {
-		mode: 'light',
 		primary: {
 			main: '#ffffeb',
 			dark: '#232524',
@@ -61,6 +60,13 @@ const themeOptions: ThemeOptions = {
 					boxShadow: '0 4px 32px rgba(0,0,0,0.12)',
 					backdropFilter: 'blur(12px)',
 					border: '1px solid #ffffeb20',
+				},
+			},
+		},
+		MuiCard: {
+			styleOverrides: {
+				root: {
+					borderRadius: 6,
 				},
 			},
 		},

@@ -36,7 +36,11 @@ export const Navbar = memo(() => {
 		<AppBar position='static' component='nav' sx={{ width: '100%', pr: 4 }}>
 			<Toolbar>
 				<Box sx={{ display: 'flex', alignItems: 'center', p: 0.5 }}>
-					<img src='/logo.png' alt='Chefify Logo' style={{ height: 70 }} />
+					<img
+						src='/logo.png'
+						alt='Chefify Logo'
+						style={{ width: '100px', height: 'auto' }}
+					/>
 				</Box>
 				{isLoading && <CircularProgress color='inherit' />}
 

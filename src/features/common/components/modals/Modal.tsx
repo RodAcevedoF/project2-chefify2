@@ -41,6 +41,7 @@ export const Modal = ({ id, children }: ModalProps) => {
 					minWidth: 360,
 					maxWidth: 400,
 					animation: 'fade-in 0.3s ease-out forwards',
+					border: 1,
 				}}
 				onClick={(e) => e.stopPropagation()}>
 				{children}

@@ -21,26 +21,16 @@ function App() {
 						display: 'flex',
 						flexDirection: 'column',
 						minHeight: '100vh',
-						width: '100%',
 						justifyContent: 'space-between',
-						overflowX: 'hidden',
 						alignContent: 'center',
+						width: '100%',
 					}}>
 					<Box component='header'>
 						<Navbar />
 					</Box>
 
 					{/* Main */}
-					<Container
-						component='main'
-						maxWidth={false}
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'center',
-							justifyContent: 'center',
-							flexGrow: 1,
-						}}>
+					<Container component='main' maxWidth={false}>
 						<Routes>
 							<Route path='/' element={<Home />} />
 							<Route element={<ProtectedRoute />}>

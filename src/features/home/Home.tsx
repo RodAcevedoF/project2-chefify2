@@ -1,34 +1,29 @@
 import LandingCard from '@/features/home/components/cards/LandingCard';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useScrollContext } from '@/contexts/scrollContext/scroll.context';
-import { Box, Typography, Container } from '@mui/material';
+import { Box, Typography, Container, useTheme } from '@mui/material';
+import { homeStyles } from './home-theme';
 
 export const Home = () => {
 	const { scrolled } = useScrollContext();
 	const { openModal } = useModalContext();
+	const theme = useTheme();
+	const hs = homeStyles(theme, scrolled);
+
 	return (
-		<Container
-			maxWidth={false}
-			sx={{
-				marginLeft: 1,
-				paddingTop: 10,
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'flex-end',
-				justifyContent: 'center',
-				gap: 20,
-			}}>
-			<Box sx={{ textAlign: 'center', width: '100%' }}>
-				<Typography
-					variant='h1'
-					fontWeight='bolder'
-					fontSize={280}
-					zIndex={100}
-					mt={10}
-					flex={1}
-					color={scrolled ? 'primary.light' : 'primary.main'}>
-					CHEFIFY
-				</Typography>
+		<Container maxWidth={false}>
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					width: '100%',
+					justifyContent: 'center',
+					alignItems: 'center',
+					mt: 10,
+					mb: 5,
+					minHeight: '60vh',
+				}}>
+				<Typography sx={hs.mainTypo}>CHEFIFY</Typography>
 				<Box
 					sx={{
 						position: 'absolute',
@@ -53,29 +48,44 @@ export const Home = () => {
 				<Typography
 					variant='body1'
 					fontSize={50}
-					mt={10}
-					color={scrolled ? 'primary.light' : 'primary.main'}>
+					fontWeight={'bolder'}
+					color={scrolled ? 'primary.dark' : 'primary.main'}
+					sx={{
+						width: '100%',
+						textAlign: 'center',
+						fontSize: { md: '3rem', xs: '2rem' },
+					}}>
 					Your culinary journey starts here.
 				</Typography>
 
 				<Typography
 					variant='body1'
 					fontSize={30}
-					color={scrolled ? 'primary.light' : 'primary.main'}
+					color={scrolled ? 'primary.dark' : 'primary.main'}
 					onClick={() => openModal('auth')}
-					sx={{ cursor: 'pointer' }}>
+					sx={{
+						cursor: 'pointer',
+						width: '100%',
+						textAlign: 'center',
+						transition: 'transform 0.3s, font-weight 0.3s',
+						'&:hover': { transform: 'scale(1.05)', fontWeight: 'bolder' },
+					}}>
 					Please log in or register to continue.
 				</Typography>
 			</Box>
 			<Box
 				component='section'
 				width='100%'
-				my={4}
 				sx={{
 					display: 'flex',
 					flexDirection: 'column',
-					padding: 10,
-					gap: 10,
+					paddingY: 10,
+					paddingX: { xs: 2, md: 5 },
+					gap: 15,
+					borderRadius: 3,
+					marginY: 10,
+					backgroundColor: theme.palette.secondary.light,
+					visibility: scrolled ? 'visible' : 'hidden',
 				}}>
 				<LandingCard />
 				<LandingCard reverse />

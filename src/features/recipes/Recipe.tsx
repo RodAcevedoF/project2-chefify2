@@ -11,8 +11,6 @@ export const RecipeLayout = () => {
 				alignItems: 'center',
 				justifyContent: 'space-between',
 				width: '100%',
-				height: '100%',
-				minHeight: '80vh',
 				gap: 5,
 			}}>
 			<RecipeAside />

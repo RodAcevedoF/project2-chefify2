@@ -28,7 +28,7 @@ export const Home = () => {
 					sx={{
 						position: 'absolute',
 						left: '50%',
-						top: '50%',
+						top: '57%',
 						transform: 'translate(-50%, -50%)',
 						zIndex: -10,
 						display: 'flex',
@@ -45,33 +45,35 @@ export const Home = () => {
 					/>
 				</Box>
 
-				<Typography
-					variant='body1'
-					fontSize={50}
-					fontWeight={'bolder'}
-					color={scrolled ? 'primary.dark' : 'primary.main'}
-					sx={{
-						width: '100%',
-						textAlign: 'center',
-						fontSize: { md: '3rem', xs: '2rem' },
-					}}>
-					Your culinary journey starts here.
-				</Typography>
+				<Box sx={{ visibility: scrolled ? 'visible' : 'hidden', mt: 40 }}>
+					<Typography
+						variant='body1'
+						fontSize={50}
+						fontWeight={'bolder'}
+						color={scrolled ? 'primary.dark' : 'primary.main'}
+						sx={{
+							width: '100%',
+							textAlign: 'center',
+							fontSize: { md: '3rem', xs: '2rem' },
+						}}>
+						Your culinary journey starts here.
+					</Typography>
 
-				<Typography
-					variant='body1'
-					fontSize={30}
-					color={scrolled ? 'primary.dark' : 'primary.main'}
-					onClick={() => openModal('auth')}
-					sx={{
-						cursor: 'pointer',
-						width: '100%',
-						textAlign: 'center',
-						transition: 'transform 0.3s, font-weight 0.3s',
-						'&:hover': { transform: 'scale(1.05)', fontWeight: 'bolder' },
-					}}>
-					Please log in or register to continue.
-				</Typography>
+					<Typography
+						variant='body1'
+						fontSize={30}
+						color={scrolled ? 'primary.dark' : 'primary.main'}
+						onClick={() => openModal('auth')}
+						sx={{
+							cursor: 'pointer',
+							width: '100%',
+							textAlign: 'center',
+							transition: 'transform 0.3s, font-weight 0.3s',
+							'&:hover': { transform: 'scale(1.05)', fontWeight: 'bolder' },
+						}}>
+						Please log in or register to continue.
+					</Typography>
+				</Box>
 			</Box>
 			<Box
 				component='section'
@@ -83,7 +85,7 @@ export const Home = () => {
 					paddingX: { xs: 2, md: 5 },
 					gap: 15,
 					borderRadius: 3,
-					marginY: 10,
+					marginY: 5,
 					backgroundColor: theme.palette.secondary.light,
 					visibility: scrolled ? 'visible' : 'hidden',
 				}}>

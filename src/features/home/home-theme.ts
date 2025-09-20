@@ -28,13 +28,14 @@ export const homeStyles = (theme: Theme, scrolled: boolean = false) => ({
 	mainTypo: {
 		variant: 'h1',
 		fontWeight: 'bolder',
-		fontSize: '22vw',
+		fontSize: { md: '22vw', xs: '18vw' },
 		zIndex: 100,
 		color: scrolled ? theme.palette.primary.dark : theme.palette.primary.main,
 		borderRadius: 2,
-		width: 'fit-content',
+		width: '100%',
 		textAlign: 'center',
-		paddingX: 1,
+		border: 4,
+		borderColor: theme.palette.primary.light,
 	},
 	landingBtn: {
 		backgroundColor: 'inherit',

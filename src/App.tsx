@@ -9,45 +9,48 @@ import ProtectedRoute from '@/features/common/components/layout/ProtectedRoute';
 import RecipeDetail from '@/features/recipes/components/cards/RecipeDetail';
 import EmptyRecipe from '@/features/recipes/components/cards/EmptyRecipe';
 import { ProfileLayout } from '@/features/profile/Profile';
-import { Box, Container } from '@mui/material';
+import { Box } from '@mui/material';
 import { ModalRoot } from '@/features/common/components/modals/ModalRoot';
+import { ScrollProvider } from './contexts/scrollContext/scroll.provider';
 
 function App() {
 	return (
 		<>
 			<Router>
-				<Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						minHeight: '100vh',
-						justifyContent: 'space-between',
-						alignContent: 'center',
-						width: '100%',
-					}}>
-					<Box component='header'>
-						<Navbar />
-					</Box>
+				<ScrollProvider>
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							minHeight: '100vh',
+							justifyContent: 'space-between',
+							alignContent: 'center',
+							width: '100%',
+						}}>
+						<Box component='header'>
+							<Navbar />
+						</Box>
 
-					{/* Main */}
-					<Container component='main' maxWidth={false}>
-						<Routes>
-							<Route path='/' element={<Home />} />
-							<Route element={<ProtectedRoute />}>
-								<Route path='/recipes' element={<RecipeLayout />}>
-									<Route index element={<EmptyRecipe />} />
-									<Route path=':id' element={<RecipeDetail />} />
+						{/* Main */}
+						<Box component='main'>
+							<Routes>
+								<Route path='/' element={<Home />} />
+								<Route element={<ProtectedRoute />}>
+									<Route path='/recipes' element={<RecipeLayout />}>
+										<Route index element={<EmptyRecipe />} />
+										<Route path=':id' element={<RecipeDetail />} />
+									</Route>
+									<Route path='/profile' element={<ProfileLayout />} />
 								</Route>
-								<Route path='/profile' element={<ProfileLayout />} />
-							</Route>
-							<Route path='*' element={<NotFound />} />
-						</Routes>
-					</Container>
-					<Box component='footer'>
-						<Footer />
+								<Route path='*' element={<NotFound />} />
+							</Routes>
+						</Box>
+						<Box component='footer'>
+							<Footer />
+						</Box>
 					</Box>
-				</Box>
-				<ModalRoot />
+					<ModalRoot />
+				</ScrollProvider>
 			</Router>
 		</>
 	);

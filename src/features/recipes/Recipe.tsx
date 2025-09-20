@@ -9,12 +9,11 @@ export const RecipeLayout = () => {
 			sx={{
 				display: 'flex',
 				alignItems: 'center',
-				justifyContent: 'space-around',
+				justifyContent: 'space-between',
 				width: '100%',
 				height: '100%',
-				border: 2,
-				borderColor: 'red',
-				padding: 5,
+				minHeight: '80vh',
+				gap: 5,
 			}}>
 			<RecipeAside />
 			<RecipeDetailContainer />

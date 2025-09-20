@@ -1,5 +1,3 @@
-@import 'tailwindcss';
-
 @font-face {
 	font-family: 'Dinot';
 	src: url('/public/fonts/DINOT-Regular.woff2') format('woff2');

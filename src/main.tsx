@@ -8,7 +8,6 @@ import { LoggedProvider } from '@/contexts/loggedContext/logged.provider.tsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme';
 import { CssBaseline } from '@mui/material';
-import { ScrollProvider } from './contexts/scrollContext/scroll.provider';
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
@@ -16,11 +15,9 @@ createRoot(document.getElementById('root')!).render(
 			<LoggedProvider>
 				<ThemeProvider theme={theme}>
 					<CssBaseline>
-						<ScrollProvider>
-							<ModalProvider>
-								<App />
-							</ModalProvider>
-						</ScrollProvider>
+						<ModalProvider>
+							<App />
+						</ModalProvider>
 					</CssBaseline>
 				</ThemeProvider>
 			</LoggedProvider>

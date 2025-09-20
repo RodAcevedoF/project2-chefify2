@@ -1,6 +1,7 @@
 import { memo, useState } from 'react';
 import type { Recipe } from '@/types/recipe.types';
 import { useGetRecipes } from '@/features/recipes/hooks/useGetRecipes';
+import { ChefHat, Utensils } from 'lucide-react';
 import {
 	Box,
 	ListItemButton,
@@ -10,10 +11,11 @@ import {
 	Typography,
 	useMediaQuery,
 } from '@mui/material';
-import { MenuIcon } from 'lucide-react';
+import { MenuIcon, X } from 'lucide-react';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { recipeStyles } from '../../recipe.theme';
+import { capitalize } from '@/features/common/utils/capitalize.helper';
 
 const RecipeAside = memo(() => {
 	const { data, isLoading, error, isError } = useGetRecipes();
@@ -29,7 +31,14 @@ const RecipeAside = memo(() => {
 	};
 
 	const primaryTypographyProps = {
-		sx: { color: theme.palette.background.paper },
+		sx: {
+			color: theme.palette.background.paper,
+			fontWeight: 'bolder',
+			transition: 'transform 0.2s',
+			'&:hover': {
+				transform: 'scale(1.05)',
+			},
+		},
 	};
 
 	const drawerProps = {
@@ -43,7 +52,9 @@ const RecipeAside = memo(() => {
 
 	const asideContent = (
 		<Box sx={rs.boxContent}>
-			<Typography sx={rs.title}>Last recipes</Typography>
+			<Typography sx={rs.title}>
+				Last recipes <ChefHat />
+			</Typography>
 			{isLoading && <Typography sx={rs.title}>Loading recipes...</Typography>}
 			{isError && (
 				<Typography color='error'>
@@ -53,20 +64,26 @@ const RecipeAside = memo(() => {
 			{data?.map((recipe: Recipe) => (
 				<ListItemButton
 					key={recipe._id}
-					onClick={() => handleGetDetails(recipe._id)}>
+					onClick={() => handleGetDetails(recipe._id)}
+					sx={{
+						borderRadius: 2,
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'justify-between',
+						gap: 2,
+						width: '100%',
+					}}>
+					<Box>
+						<Utensils width={15} height={15} />
+					</Box>
 					<ListItemText
-						primary={recipe.title}
+						primary={capitalize(recipe.title)}
 						slotProps={{ primary: primaryTypographyProps }}
 						sx={{
 							color: theme.palette.background.paper,
 							borderRadius: 2,
-							p: 1,
-							fontWeight: 'bold',
+							p: 0.5,
 							transition: 'background 0.2s',
-							'&:hover': {
-								backgroundColor: theme.palette.primary.main,
-								color: theme.palette.secondary.main,
-							},
 						}}
 					/>
 				</ListItemButton>
@@ -77,8 +94,24 @@ const RecipeAside = memo(() => {
 	if (isMdDown) {
 		return (
 			<>
-				<IconButton onClick={() => setDrawerOpen(true)} sx={{ m: 2 }}>
-					<MenuIcon />
+				<IconButton
+					onClick={() => setDrawerOpen((prev) => !prev)}
+					sx={{
+						position: 'absolute',
+						top: '50%',
+						right: 10,
+						zIndex: 1300,
+						background: theme.palette.background.default,
+						color: theme.palette.background.paper,
+						border: 1,
+						borderColor: theme.palette.primary.main,
+						transition: 'background 0.3s, color 0.3s',
+						'&:hover': {
+							background: theme.palette.background.paper,
+							color: theme.palette.primary.main,
+						},
+					}}>
+					{drawerOpen ? <X /> : <MenuIcon />}
 				</IconButton>
 				<Drawer
 					anchor='left'

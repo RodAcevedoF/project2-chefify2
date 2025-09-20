@@ -7,10 +7,11 @@ const RecipeDetailContainer = () => {
 			sx={{
 				display: 'flex',
 				flexDirection: 'column',
-				height: '100%',
-				border: 1,
-				padding: 5,
-				flex: 1,
+				height: 'fit-content',
+				justifyContent: 'center',
+				alignItems: 'center',
+				width: '100%',
+				p: 2,
 			}}>
 			<Outlet />
 		</Box>

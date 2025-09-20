@@ -3,7 +3,13 @@ import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useNavigate } from 'react-router-dom';
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
 import { memo } from 'react';
-import { AppBar, Toolbar, Box, CircularProgress } from '@mui/material';
+import {
+	AppBar,
+	Toolbar,
+	Box,
+	CircularProgress,
+	CardMedia,
+} from '@mui/material';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 
 export const Navbar = memo(() => {
@@ -36,10 +42,11 @@ export const Navbar = memo(() => {
 		<AppBar position='static' component='nav' sx={{ width: '100%', pr: 4 }}>
 			<Toolbar>
 				<Box sx={{ display: 'flex', alignItems: 'center', p: 0.5 }}>
-					<img
-						src='/logo.png'
+					<CardMedia
+						component='img'
+						image='/logo.png'
 						alt='Chefify Logo'
-						style={{ width: '100px', height: 'auto' }}
+						sx={{ width: { md: '80px', xs: '60px' }, height: 'auto' }}
 					/>
 				</Box>
 				{isLoading && <CircularProgress color='inherit' />}

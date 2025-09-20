@@ -1,4 +1,4 @@
-import type { IngredientDTO } from './ingredient.type';
+import type { IngredientRefDTO } from './ingredient.type';
 
 export enum RecipeCategories {
 	'vegan',
@@ -25,9 +25,9 @@ export enum RecipeCategories {
 
 export interface Recipe {
 	_id: string;
-	userId?: string;
+	userId?: { _id: string; name: string } | string;
 	title: string;
-	ingredients: IngredientDTO[];
+	ingredients: IngredientRefDTO[];
 	instructions: string[];
 	categories: RecipeCategories;
 	imgUrl: string;

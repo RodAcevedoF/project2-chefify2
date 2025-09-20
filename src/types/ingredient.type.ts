@@ -16,4 +16,8 @@ export interface Ingredient {
 	createdAt: Date;
 }
 
-export type IngredientDTO = Partial<Ingredient> & { quantity: number };
+export interface IngredientRefDTO {
+	_id: string;
+	ingredient: Ingredient; // El objeto Ingredient completo
+	quantity: number;
+}

@@ -35,17 +35,17 @@ export const Footer = () => {
 						alignItems: 'center',
 						gap: 2,
 						p: 0,
-						width: '440px',
+						width: { md: '440px', xs: '100%' },
 					}}>
 					<CardMedia
 						component='img'
 						image='/footerlogo.png'
 						alt='Chef logo'
-						sx={{ width: '400px' }}
+						sx={{ width: { md: '400px', xs: '300px' } }}
 					/>
 					<Typography
 						sx={{
-							fontSize: { xs: '1.2rem', md: '1.7rem', lg: '2rem' },
+							fontSize: { xs: '1.2rem', md: '1.4rem', lg: '1.6rem' },
 							fontWeight: 'bold',
 							textAlign: 'center',
 						}}>

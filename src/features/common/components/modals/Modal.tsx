@@ -38,7 +38,7 @@ export const Modal = ({ id, children }: ModalProps) => {
 					justifyContent: 'center',
 					boxShadow: 8,
 					background: '#ffffeb',
-					minWidth: 360,
+					minWidth: 300,
 					maxWidth: 400,
 					animation: 'fade-in 0.3s ease-out forwards',
 					border: 1,

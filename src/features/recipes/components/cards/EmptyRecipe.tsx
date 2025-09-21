@@ -1,20 +1,36 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Card, Typography } from '@mui/material';
+import { Carousel } from '../carousels/Carousel';
+import { ChefHat } from 'lucide-react';
 
 const EmptyRecipe = () => (
-	<Box
+	<Card
 		sx={{
 			display: 'flex',
+			p: 4,
+			boxShadow: 6,
+			borderRadius: 4,
 			flexDirection: 'column',
-			alignItems: 'center',
-			justifyContent: 'center',
-			width: '100%',
+			gap: 2,
 			height: '100%',
+			width: 'fit-content',
+			minHeight: '70vh',
 		}}>
-		<Typography variant='h4'>Select a recipe</Typography>
-		<Typography variant='subtitle1'>
-			Choose a recipe from the list to see its details
+		<Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+			<ChefHat width={50} color={'whitesmoke'} />
+			<Typography
+				variant='h4'
+				sx={{
+					fontWeight: 'bolder',
+					fontSize: { xs: 30, md: 40 },
+				}}>
+				Select a recipe
+			</Typography>
+		</Box>
+		<Typography sx={{ fontSize: { xs: 15, md: 18 } }}>
+			Choose a recipe from the list or try an AI generated one!
 		</Typography>
-	</Box>
+		<Carousel />
+	</Card>
 );
 
 export default EmptyRecipe;

@@ -1,6 +1,7 @@
 import RecipeAside from '@/features/recipes/components/navs/RecipeAside';
 import RecipeDetailContainer from '@/features/recipes/components/navs/RecipeDetailContainer';
 import { Box } from '@mui/material';
+import PrimarySearchAppBar from './components/SearchBar/SearchBar';
 
 export const RecipeLayout = () => {
 	return (
@@ -8,13 +9,15 @@ export const RecipeLayout = () => {
 			component='section'
 			sx={{
 				display: 'flex',
-				alignItems: 'center',
+				alignItems: 'flex-start',
 				justifyContent: 'space-between',
 				width: '100%',
-				gap: 5,
 			}}>
 			<RecipeAside />
-			<RecipeDetailContainer />
+			<Box sx={{ flexGrow: 1, width: '100%' }}>
+				<PrimarySearchAppBar />
+				<RecipeDetailContainer />
+			</Box>
 		</Box>
 	);
 };

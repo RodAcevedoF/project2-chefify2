@@ -10,7 +10,6 @@ export const recipeStyles = (theme: Theme) => ({
 		backgroundColor: theme.palette.secondary.light,
 		paddingTop: 5,
 		boxShadow: 'inset 0 20px 40px rgba(0, 0, 0, 0.51)',
-		border: '2px solid red',
 	},
 	boxContent: {
 		width: 200,

@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import LandingCard from '@/features/home/components/cards/LandingCard';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useScrollContext } from '@/contexts/scrollContext/scroll.context';
@@ -10,6 +11,19 @@ export const Home = () => {
 	const theme = useTheme();
 	const hs = homeStyles(theme, scrolled);
 
+	const sectionRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (scrolled && sectionRef.current) {
+			const offset = -80;
+			const top =
+				sectionRef.current.getBoundingClientRect().top +
+				window.scrollY +
+				offset;
+			window.scrollTo({ top, behavior: 'smooth' });
+		}
+	}, [scrolled]);
+
 	return (
 		<Container maxWidth={false}>
 			<Box
@@ -19,7 +33,7 @@ export const Home = () => {
 					width: '100%',
 					justifyContent: 'center',
 					alignItems: 'center',
-					mt: 10,
+					mt: 8,
 					mb: 5,
 					minHeight: '60vh',
 				}}>
@@ -44,36 +58,38 @@ export const Home = () => {
 						style={{ width: '100%', maxWidth: 600 }}
 					/>
 				</Box>
+			</Box>
 
-				<Box sx={{ visibility: scrolled ? 'visible' : 'hidden', mt: 40 }}>
-					<Typography
-						variant='body1'
-						fontSize={50}
-						fontWeight={'bolder'}
-						color={scrolled ? 'primary.dark' : 'primary.main'}
-						sx={{
-							width: '100%',
-							textAlign: 'center',
-							fontSize: { md: '3rem', xs: '2rem' },
-						}}>
-						Your culinary journey starts here.
-					</Typography>
+			<Box
+				sx={{ visibility: scrolled ? 'visible' : 'hidden', mt: 40 }}
+				ref={sectionRef}>
+				<Typography
+					variant='body1'
+					fontSize={50}
+					fontWeight={'bolder'}
+					color={scrolled ? 'primary.dark' : 'primary.main'}
+					sx={{
+						width: '100%',
+						textAlign: 'center',
+						fontSize: { md: '3rem', xs: '2rem' },
+					}}>
+					Your culinary journey starts here.
+				</Typography>
 
-					<Typography
-						variant='body1'
-						fontSize={30}
-						color={scrolled ? 'primary.dark' : 'primary.main'}
-						onClick={() => openModal('auth')}
-						sx={{
-							cursor: 'pointer',
-							width: '100%',
-							textAlign: 'center',
-							transition: 'transform 0.3s, font-weight 0.3s',
-							'&:hover': { transform: 'scale(1.05)', fontWeight: 'bolder' },
-						}}>
-						Please log in or register to continue.
-					</Typography>
-				</Box>
+				<Typography
+					variant='body1'
+					fontSize={30}
+					color={scrolled ? 'primary.dark' : 'primary.main'}
+					onClick={() => openModal('auth')}
+					sx={{
+						cursor: 'pointer',
+						width: '100%',
+						textAlign: 'center',
+						transition: 'transform 0.3s, font-weight 0.3s',
+						'&:hover': { transform: 'scale(1.05)', fontWeight: 'bolder' },
+					}}>
+					Please log in or register to continue.
+				</Typography>
 			</Box>
 			<Box
 				component='section'

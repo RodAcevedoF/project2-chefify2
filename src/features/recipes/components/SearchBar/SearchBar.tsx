@@ -6,60 +6,41 @@ import Typography from '@mui/material/Typography';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { SquareMenu } from 'lucide-react';
-import { ScanSearch } from 'lucide-react';
-import { CircleUserRound } from 'lucide-react';
-import { MailCheck } from 'lucide-react';
-import { Bell } from 'lucide-react';
-import { CircleEllipsis } from 'lucide-react';
+import {
+	Bot,
+	SquareMenu,
+	ScanSearch,
+	CircleUserRound,
+	SquarePen,
+	CircleEllipsis,
+} from 'lucide-react';
 import { useState } from 'react';
 import { Search, SearchIconWrapper, StyledInputBase } from './searchbar.styles';
+import { useDrawerContext } from '../../drawer-context/drawer.context';
+import { useMediaQuery, useTheme } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function PrimarySearchAppBar() {
-	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
 		useState<null | HTMLElement>(null);
-
-	const isMenuOpen = Boolean(anchorEl);
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-	const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
+	const { setDrawerOpen } = useDrawerContext();
+	const theme = useTheme();
+	const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
+	const nav = useNavigate();
 
 	const handleMobileMenuClose = () => {
 		setMobileMoreAnchorEl(null);
-	};
-
-	const handleMenuClose = () => {
-		setAnchorEl(null);
-		handleMobileMenuClose();
 	};
 
 	const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
 		setMobileMoreAnchorEl(event.currentTarget);
 	};
 
-	const menuId = 'primary-search-account-menu';
-	const renderMenu = (
-		<Menu
-			anchorEl={anchorEl}
-			anchorOrigin={{
-				vertical: 'top',
-				horizontal: 'right',
-			}}
-			id={menuId}
-			keepMounted
-			transformOrigin={{
-				vertical: 'top',
-				horizontal: 'right',
-			}}
-			open={isMenuOpen}
-			onClose={handleMenuClose}>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
-		</Menu>
-	);
+	const handleNavClick = (path: string) => {
+		if (!path) return;
+		return () => nav(path);
+	};
 
 	const mobileMenuId = 'primary-search-account-menu-mobile';
 	const renderMobileMenu = (
@@ -78,34 +59,30 @@ export default function PrimarySearchAppBar() {
 			open={isMobileMenuOpen}
 			onClose={handleMobileMenuClose}>
 			<MenuItem>
-				<IconButton size='large' aria-label='show 4 new mails' color='inherit'>
-					<Badge badgeContent={4} color='error'>
-						<MailCheck />
-					</Badge>
-				</IconButton>
-				<p>Messages</p>
-			</MenuItem>
-			<MenuItem>
 				<IconButton
 					size='large'
-					aria-label='show 17 new notifications'
+					aria-label='show ai recipes token left'
 					color='inherit'>
-					<Badge badgeContent={17} color='error'>
-						<Bell />
+					<Badge badgeContent={4} color='error'>
+						<Bot color={theme.palette.primary.main} />
 					</Badge>
 				</IconButton>
-				<p>Notifications</p>
+				<Typography>AI Recipe</Typography>
 			</MenuItem>
-			<MenuItem onClick={handleProfileMenuOpen}>
+			<MenuItem>
+				<IconButton size='large' aria-label='create new recipe' color='inherit'>
+					<SquarePen color={theme.palette.primary.main} />
+				</IconButton>
+				<Typography>Notifications</Typography>
+			</MenuItem>
+			<MenuItem onClick={handleNavClick('/profile')}>
 				<IconButton
 					size='large'
 					aria-label='account of current user'
-					aria-controls='primary-search-account-menu'
-					aria-haspopup='true'
 					color='inherit'>
-					<CircleUserRound />
+					<CircleUserRound color={theme.palette.primary.main} />
 				</IconButton>
-				<p>Profile</p>
+				<Typography>Profile</Typography>
 			</MenuItem>
 		</Menu>
 	);
@@ -119,14 +96,16 @@ export default function PrimarySearchAppBar() {
 						edge='start'
 						color='inherit'
 						aria-label='open drawer'
-						sx={{ mr: 2 }}>
+						sx={{ mr: 2 }}
+						onClick={() => setDrawerOpen(true)}
+						disabled={!isMdDown}>
 						<SquareMenu />
 					</IconButton>
 					<Typography
 						variant='h6'
 						noWrap
 						component='div'
-						sx={{ display: { xs: 'none', sm: 'block' } }}>
+						sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 'bolder' }}>
 						CHEFIFY
 					</Typography>
 					<Search>
@@ -145,24 +124,21 @@ export default function PrimarySearchAppBar() {
 							aria-label='show 4 new mails'
 							color='inherit'>
 							<Badge badgeContent={4} color='error'>
-								<MailCheck />
+								<Bot />
 							</Badge>
 						</IconButton>
 						<IconButton
 							size='large'
 							aria-label='show 17 new notifications'
 							color='inherit'>
-							<Badge badgeContent={17} color='error'>
-								<Bell />
-							</Badge>
+							<SquarePen />
 						</IconButton>
 						<IconButton
 							size='large'
 							edge='end'
 							aria-label='account of current user'
-							aria-controls={menuId}
 							aria-haspopup='true'
-							onClick={handleProfileMenuOpen}
+							onClick={handleNavClick('/profile')}
 							color='inherit'>
 							<CircleUserRound />
 						</IconButton>
@@ -181,7 +157,6 @@ export default function PrimarySearchAppBar() {
 				</Toolbar>
 			</AppBar>
 			{renderMobileMenu}
-			{renderMenu}
 		</Box>
 	);
 }

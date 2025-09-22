@@ -33,11 +33,6 @@ export const Navbar = memo(() => {
 		logoutMutation.mutate();
 	};
 
-	const handleNavClick = (path: string) => {
-		if (isLoading || !path) return;
-		return () => nav(path);
-	};
-
 	return (
 		<AppBar position='static' component='nav' sx={{ width: '100%', pr: 4 }}>
 			<Toolbar>
@@ -65,14 +60,6 @@ export const Navbar = memo(() => {
 								label={logoutMutation.isPending ? 'Logging out...' : 'Logout'}
 								parentMethod={handleLogout}
 								disabled={logoutMutation.isPending}
-							/>
-							<ButtonUsage
-								label={'Recipes'}
-								parentMethod={handleNavClick('/recipes')}
-							/>
-							<ButtonUsage
-								label={'Profile'}
-								parentMethod={handleNavClick('/profile')}
 							/>
 						</>
 					) : (

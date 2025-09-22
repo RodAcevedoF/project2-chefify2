@@ -14,6 +14,7 @@ const EmptyRecipe = () => (
 			height: '100%',
 			width: 'fit-content',
 			minHeight: '70vh',
+			mt: 5,
 		}}>
 		<Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
 			<ChefHat width={50} color={'whitesmoke'} />

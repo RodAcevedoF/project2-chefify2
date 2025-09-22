@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import type { Recipe } from '@/types/recipe.types';
 import { useGetRecipes } from '@/features/recipes/hooks/useGetRecipes';
 import { ChefHat, Utensils } from 'lucide-react';
@@ -7,15 +7,14 @@ import {
 	ListItemButton,
 	ListItemText,
 	Drawer,
-	IconButton,
 	Typography,
 	useMediaQuery,
 } from '@mui/material';
-import { MenuIcon, X } from 'lucide-react';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { recipeStyles } from '../../recipe.theme';
 import { capitalize } from '@/features/common/utils/capitalize.helper';
+import { useDrawerContext } from '../../drawer-context/drawer.context';
 
 const RecipeAside = memo(() => {
 	const { data, isLoading, error, isError } = useGetRecipes();
@@ -23,7 +22,7 @@ const RecipeAside = memo(() => {
 	const theme = useTheme();
 	const rs = recipeStyles(theme);
 	const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
-	const [drawerOpen, setDrawerOpen] = useState(false);
+	const { drawerOpen, setDrawerOpen } = useDrawerContext();
 
 	const handleGetDetails = (id: string) => {
 		navigate(`/recipes/${id}`);
@@ -94,25 +93,6 @@ const RecipeAside = memo(() => {
 	if (isMdDown) {
 		return (
 			<>
-				<IconButton
-					onClick={() => setDrawerOpen((prev) => !prev)}
-					sx={{
-						position: 'absolute',
-						top: '50%',
-						right: 10,
-						zIndex: 1300,
-						background: theme.palette.background.default,
-						color: theme.palette.background.paper,
-						border: 1,
-						borderColor: theme.palette.primary.main,
-						transition: 'background 0.3s, color 0.3s',
-						'&:hover': {
-							background: theme.palette.background.paper,
-							color: theme.palette.primary.main,
-						},
-					}}>
-					{drawerOpen ? <X /> : <MenuIcon />}
-				</IconButton>
 				<Drawer
 					anchor='left'
 					open={drawerOpen}

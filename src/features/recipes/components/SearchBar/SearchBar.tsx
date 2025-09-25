@@ -19,6 +19,7 @@ import { Search, SearchIconWrapper, StyledInputBase } from './searchbar.styles';
 import { useDrawerContext } from '../../drawer-context/drawer.context';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useModalContext } from '@/contexts/modalContext/modal.context';
 
 export default function PrimarySearchAppBar() {
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -27,6 +28,7 @@ export default function PrimarySearchAppBar() {
 	const { setDrawerOpen } = useDrawerContext();
 	const theme = useTheme();
 	const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
+	const { openModal } = useModalContext();
 	const nav = useNavigate();
 
 	const handleMobileMenuClose = () => {
@@ -130,7 +132,8 @@ export default function PrimarySearchAppBar() {
 						<IconButton
 							size='large'
 							aria-label='show 17 new notifications'
-							color='inherit'>
+							color='inherit'
+							onClick={() => openModal('recipe')}>
 							<SquarePen />
 						</IconButton>
 						<IconButton

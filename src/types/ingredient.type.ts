@@ -1,23 +1,20 @@
-export enum Units {
-	GRAMS = 'gr',
-	MILLILITERS = 'ml',
-	TEASPOON = 'tsp',
-	TABLESPOON = 'tbsp',
-	CLOVES = 'cloves',
-	UNIT = 'unit',
-}
+import { z } from 'zod';
 
-export interface Ingredient {
-	_id: string;
-	userId: string;
-	name: string;
-	unit: Units;
-	updatedAt: Date;
-	createdAt: Date;
-}
+export const Units = z.enum(['gr', 'ml', 'tsp', 'tbsp', 'cloves', 'unit']);
 
-export interface IngredientRefDTO {
-	_id: string;
-	ingredient: Ingredient; // El objeto Ingredient completo
-	quantity: number;
-}
+export const IngredientSchema = z.object({
+	_id: z.string(),
+	userId: z.string(),
+	name: z.string(),
+	unit: z.array(Units),
+	updatedAt: z.date(),
+	createdAt: z.date(),
+});
+export type Ingredient = z.infer<typeof IngredientSchema>;
+
+export const IngredientRefSchema = z.object({
+	_id: z.string(),
+	ingredient: IngredientSchema,
+	quantity: z.number(),
+});
+export type IngredientRefDTO = z.infer<typeof IngredientRefSchema>;

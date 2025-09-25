@@ -1,6 +1,7 @@
-import type { IngredientRefDTO } from './ingredient.type';
+import { IngredientRefSchema } from './ingredient.type';
+import { z } from 'zod';
 
-export enum RecipeCategories {
+export const RecipeCategoriesSchema = z.enum([
 	'vegan',
 	'carnivore',
 	'high-fat',
@@ -21,24 +22,33 @@ export enum RecipeCategories {
 	'quick-meals',
 	'salad',
 	'mediterranean',
-}
-
-export interface Recipe {
-	_id: string;
-	userId?: { _id: string; name: string } | string;
-	title: string;
-	ingredients: IngredientRefDTO[];
-	instructions: string[];
-	categories: RecipeCategories;
-	imgUrl: string;
-	imgPublicId: string;
-	servings: number;
-	prepTime: number;
-	utensils: string[];
-	createdAt?: Date;
-	updatedAt?: Date;
-}
+]);
+export type RecipeCategory = z.infer<typeof RecipeCategoriesSchema>;
+export const RecipeSchema = z.object({
+	_id: z.string(),
+	userId: z
+		.union([z.string(), z.object({ _id: z.string(), name: z.string() })])
+		.optional(),
+	title: z.string(),
+	ingredients: z.array(IngredientRefSchema),
+	instructions: z.array(z.string()),
+	categories: z.array(RecipeCategoriesSchema),
+	imgUrl: z.string(),
+	imgPublicId: z.string(),
+	servings: z.number(),
+	prepTime: z.number(),
+	utensils: z.array(z.string()),
+	createdAt: z.date().optional(),
+	updatedAt: z.date().optional(),
+});
+export type Recipe = z.infer<typeof RecipeSchema>;
 
 export type RecipeDTO = Partial<Recipe>;
 
 export type UpdateRecipeDTO = Partial<RecipeDTO> & { _id: string };
+
+export interface RecipeFormProps {
+	onSuccess?: () => void;
+	className?: string;
+	toggleForm?: () => void;
+}

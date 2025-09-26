@@ -16,7 +16,10 @@ export const RecipeModal = () => {
 		<>
 			<RecipeForm onSuccess={handleRecipeMutationSuccess} />
 			<Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-				<Button variant='text' onClick={() => closeModal()}>
+				<Button
+					variant='text'
+					sx={{ fontWeight: 900, fontSize: 16 }}
+					onClick={() => closeModal()}>
 					Cancel
 				</Button>
 			</Box>

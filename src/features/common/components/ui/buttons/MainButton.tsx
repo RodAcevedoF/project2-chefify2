@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
 interface MainButtonProps {
-	label: string | ReactNode;
+	label?: string | ReactNode;
 	parentMethod?: () => void;
 	disabled?: boolean;
 	icon?: LucideIcon;
@@ -27,8 +27,8 @@ export const ButtonUsage = (props: MainButtonProps) => {
 				borderRadius: 5,
 				borderColor: '#ffffeb',
 				display: 'flex',
-				alignItems: 'flex-start',
-				justifyContent: 'space-between',
+				alignItems: 'center',
+				justifyContent: 'center',
 				gap: 1,
 				'&:hover': {
 					borderColor: '#0cea74',

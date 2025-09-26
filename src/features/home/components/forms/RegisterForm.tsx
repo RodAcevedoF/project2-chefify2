@@ -14,6 +14,7 @@ import {
 	CardMedia,
 } from '@mui/material';
 import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ArrowBigRight } from 'lucide-react';
 
 export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 	const {
@@ -137,6 +138,7 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 							)
 						}
 						disabled={registerMutation.isPending}
+						icon={ArrowBigRight}
 					/>
 				</Box>
 				{registerMutation.isError && (

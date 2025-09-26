@@ -1,7 +1,7 @@
 import { IngredientRefSchema } from './ingredient.type';
 import { z } from 'zod';
 
-export const RecipeCategoriesSchema = z.enum([
+const RECIPE_CATEGORY_LIST = [
 	'vegan',
 	'carnivore',
 	'high-fat',
@@ -22,19 +22,27 @@ export const RecipeCategoriesSchema = z.enum([
 	'quick-meals',
 	'salad',
 	'mediterranean',
-]);
-export type RecipeCategory = z.infer<typeof RecipeCategoriesSchema>;
+] as const;
+
+export const RECIPE_CATEGORY_OPTIONS = Array.from(
+	RECIPE_CATEGORY_LIST,
+) as string[];
+
+export const RecipeCategoriesSchema = z.enum(RECIPE_CATEGORY_LIST);
+
 export const RecipeSchema = z.object({
-	_id: z.string(),
+	_id: z.string().optional(),
 	userId: z
 		.union([z.string(), z.object({ _id: z.string(), name: z.string() })])
 		.optional(),
 	title: z.string(),
+	instructions: z
+		.array(z.string())
+		.min(1, 'At least one instruction is required'),
 	ingredients: z.array(IngredientRefSchema),
-	instructions: z.array(z.string()),
 	categories: z.array(RecipeCategoriesSchema),
-	imgUrl: z.string(),
-	imgPublicId: z.string(),
+	imgUrl: z.string().optional(),
+	imgPublicId: z.string().optional(),
 	servings: z.number(),
 	prepTime: z.number(),
 	utensils: z.array(z.string()),

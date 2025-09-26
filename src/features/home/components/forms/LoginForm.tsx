@@ -116,13 +116,7 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 						}
 						disabled={loginMutation.isPending}
 						type='submit'
-					/>
-					<ArrowBigRight
-						style={{
-							fontSize: 24,
-							color: 'whitesmoke',
-							animation: 'ping 1s infinite',
-						}}
+						icon={ArrowBigRight}
 					/>
 				</Box>
 				{loginMutation.isError && (

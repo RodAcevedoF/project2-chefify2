@@ -37,11 +37,12 @@ export const Modal = ({ id, children }: ModalProps) => {
 					alignItems: 'center',
 					justifyContent: 'center',
 					boxShadow: 8,
-					background: '#ffffeb',
-					minWidth: 300,
-					maxWidth: 400,
+					width: 'fit-content',
 					animation: 'fade-in 0.3s ease-out forwards',
-					border: 1,
+					background: 'rgba(255, 255, 255, 0.25)',
+					backdropFilter: 'blur(12px)',
+					WebkitBackdropFilter: 'blur(12px)',
+					border: '1px solid rgba(255,255,255,0.4)',
 				}}
 				onClick={(e) => e.stopPropagation()}>
 				{children}

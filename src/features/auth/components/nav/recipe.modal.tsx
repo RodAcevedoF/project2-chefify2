@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button, Box } from '@mui/material';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
-import { RecipeForm } from '@/features/recipes/forms/RecipeForm';
+import { RecipeForm } from '@/features/recipes/forms/RecipeForm/RecipeForm';
 
 export const RecipeModal = () => {
 	const { closeModal } = useModalContext();
@@ -15,7 +15,7 @@ export const RecipeModal = () => {
 	return (
 		<>
 			<RecipeForm onSuccess={handleRecipeMutationSuccess} />
-			<Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+			<Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
 				<Button
 					variant='text'
 					sx={{ fontWeight: 900, fontSize: 16 }}

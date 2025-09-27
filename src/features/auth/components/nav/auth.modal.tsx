@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RegisterForm } from '@/features/home/components/forms/RegisterForm';
 import { LoginForm } from '@/features/home/components/forms/LoginForm';
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 
 export const AuthModal = () => {
@@ -11,6 +11,7 @@ export const AuthModal = () => {
 	const { setLogged } = useLoggedContext();
 	const { closeModal } = useModalContext();
 	const nav = useNavigate();
+	const theme = useTheme();
 
 	const handleLoginSuccess = () => {
 		setLogged(true);
@@ -41,7 +42,7 @@ export const AuthModal = () => {
 					mt: 3,
 					fontWeight: 'bold',
 					textDecoration: 'underline',
-					color: 'black',
+					color: theme.palette.primary.main,
 				}}
 				onClick={() => setShowRegister((prev) => !prev)}>
 				{showRegister ? 'Have an account? Sign in' : 'No account yet? Sign up'}

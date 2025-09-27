@@ -30,7 +30,7 @@ export const Modal = ({ id, children }: ModalProps) => {
 			<Box
 				sx={{
 					position: 'relative',
-					p: 4,
+					p: 2,
 					borderRadius: 2,
 					display: 'flex',
 					flexDirection: 'column',
@@ -53,7 +53,7 @@ export const Modal = ({ id, children }: ModalProps) => {
 						position: 'absolute',
 						top: 1,
 						right: 1,
-						color: 'background.default',
+						color: 'primary.main',
 						fontWeight: 'bold',
 					}}>
 					<CircleX />

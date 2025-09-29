@@ -26,6 +26,7 @@ export const Modal = ({ id, children }: ModalProps) => {
 				alignItems: 'center',
 				justifyContent: 'center',
 				zIndex: 100,
+				overflowY: 'auto',
 			}}>
 			<Box
 				sx={{
@@ -35,7 +36,7 @@ export const Modal = ({ id, children }: ModalProps) => {
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
-					justifyContent: 'center',
+					justifyContent: 'flex-start',
 					boxShadow: 8,
 					width: 'fit-content',
 					animation: 'fade-in 0.3s ease-out forwards',
@@ -43,6 +44,8 @@ export const Modal = ({ id, children }: ModalProps) => {
 					backdropFilter: 'blur(12px)',
 					WebkitBackdropFilter: 'blur(12px)',
 					border: '1px solid rgba(255,255,255,0.4)',
+					overflowY: 'auto',
+					maxHeight: '90vh',
 				}}
 				onClick={(e) => e.stopPropagation()}>
 				{children}

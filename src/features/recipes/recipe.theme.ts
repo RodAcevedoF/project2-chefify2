@@ -23,5 +23,6 @@ export const recipeStyles = (theme: Theme) => ({
 		display: 'flex',
 		alignItems: 'center',
 		gap: 1,
+		fontFamily: 'Alegreya',
 	},
 });

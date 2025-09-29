@@ -6,11 +6,13 @@ export const IngredientSchema = z.object({
 	_id: z.string(),
 	userId: z.string(),
 	name: z.string(),
-	unit: z.array(Units),
+	unit: Units,
 	updatedAt: z.date(),
 	createdAt: z.date(),
 });
 export type Ingredient = z.infer<typeof IngredientSchema>;
+
+export type IngredientDTO = Partial<Ingredient>;
 
 export const IngredientRefSchema = z.object({
 	_id: z.string(),

@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { RecipeService } from '@/features/recipes/services/recipe.service';
 import type { AxiosError } from 'axios';
-import type { Recipe, RecipeDTO } from '@/types/recipe.types';
+import type { RecipeDTO } from '@/types/recipe.types';
 import type { UseCommonOptions } from '@/types/common.types';
 
-export const useCreateRecipe = (options: UseCommonOptions<Recipe>) => {
+export const useCreateRecipe = (options: UseCommonOptions<void>) => {
 	const queryClient = useQueryClient();
 
-	return useMutation<Recipe, AxiosError, RecipeDTO>({
+	return useMutation<void, AxiosError, RecipeDTO>({
 		mutationKey: ['recipes', 'create'],
 
-		mutationFn: (data: RecipeDTO): Promise<Recipe> =>
+		mutationFn: (data: RecipeDTO): Promise<void> =>
 			RecipeService.createRecipe(data),
 
-		onSuccess: (data) => {
+		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['recipes', 'create'] });
-			options?.onSuccess?.(data);
+			options?.onSuccess?.();
 		},
 		onError: (axiosError) => {
 			console.error('Error creating recipe:', axiosError);

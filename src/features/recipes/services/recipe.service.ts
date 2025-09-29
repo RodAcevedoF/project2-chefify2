@@ -13,9 +13,8 @@ export const RecipeService = {
 		return recipe.data;
 	},
 
-	async createRecipe(data: RecipeDTO): Promise<Recipe> {
-		const recipe = await chefifyAPI.post('/recipe', data);
-		return recipe.data;
+	async createRecipe(data: RecipeDTO): Promise<void> {
+		await chefifyAPI.post('/recipe', data);
 	},
 
 	async updatedRecipe(data: UpdateRecipeDTO): Promise<void> {

@@ -37,6 +37,7 @@ const RecipeAside = memo(() => {
 			'&:hover': {
 				transform: 'scale(1.05)',
 			},
+			fontFamily: 'Alegreya',
 		},
 	};
 
@@ -56,14 +57,14 @@ const RecipeAside = memo(() => {
 			</Typography>
 			{isLoading && <Typography sx={rs.title}>Loading recipes...</Typography>}
 			{isError && (
-				<Typography color='error'>
+				<Typography color='error' sx={{ fontFamily: 'Alegreya' }}>
 					Error: {error?.message || 'There was an error'}
 				</Typography>
 			)}
 			{data?.map((recipe: Recipe) => (
 				<ListItemButton
 					key={recipe._id}
-					onClick={() => handleGetDetails(recipe._id)}
+					onClick={() => recipe._id && handleGetDetails(recipe._id)}
 					sx={{
 						borderRadius: 2,
 						display: 'flex',
@@ -83,6 +84,7 @@ const RecipeAside = memo(() => {
 							borderRadius: 2,
 							p: 0.5,
 							transition: 'background 0.2s',
+							fontFamily: 'Alegreya',
 						}}
 					/>
 				</ListItemButton>

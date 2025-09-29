@@ -5,7 +5,7 @@ import { Controller, type Control } from 'react-hook-form';
 export interface InstructionsInputProps {
 	control: Control;
 	color: string;
-	backGroundColor: string;
+	backgroundColor: string;
 	inputValue: string;
 	setInputValue: (value: string) => void;
 	name: string;
@@ -22,7 +22,7 @@ const InstructionsInput = (props: InstructionsInputProps) => {
 						sx={{
 							p: 0,
 							width: '100%',
-							backgroundColor: props.backGroundColor,
+							backgroundColor: props.backgroundColor,
 							boxShadow: 'none',
 							height: 'fit-content',
 							display: 'flex',
@@ -38,19 +38,19 @@ const InstructionsInput = (props: InstructionsInputProps) => {
 								position: 'relative',
 								maxHeight: '40px',
 								width: '100%',
-								mb: 1,
 							}}>
 							<TextField
 								placeholder='Add instruction...'
 								value={props.inputValue}
 								onChange={(e) => props.setInputValue(e.target.value)}
 								onKeyDown={(e) => {
-									if (e.key === 'Enter' && props.inputValue.trim().length > 0) {
-										field.onChange([
-											...(field.value || []),
-											props.inputValue.trim(),
-										]);
-										props.setInputValue('');
+									if (e.key === 'Enter') {
+										const v = props.inputValue.trim();
+										if (v.length > 0) {
+											field.onChange([...(field.value || []), v]);
+											props.setInputValue('');
+										}
+										e.preventDefault();
 									}
 								}}
 								size='small'
@@ -71,14 +71,14 @@ const InstructionsInput = (props: InstructionsInputProps) => {
 							<IconButton
 								size='small'
 								color='primary'
+								disabled={!props.inputValue.trim()}
 								onClick={() => {
-									field.onChange([
-										...(field.value || []),
-										props.inputValue.trim(),
-									]);
+									const v = props.inputValue.trim();
+									if (!v) return;
+									field.onChange([...(field.value || []), v]);
 									props.setInputValue('');
 								}}
-								sx={{ zIndex: 500, position: 'absolute', right: 0 }}
+								sx={{ zIndex: 500, position: 'absolute', right: 4 }}
 								aria-label='Add instruction'>
 								<Plus size={15} />
 							</IconButton>
@@ -98,7 +98,7 @@ const InstructionsInput = (props: InstructionsInputProps) => {
 									color='primary'
 									variant='outlined'
 									size='small'
-									sx={{ maxWidth: '200px' }}
+									sx={{ maxWidth: '200px', mt: 1 }}
 								/>
 							))}
 						</Box>

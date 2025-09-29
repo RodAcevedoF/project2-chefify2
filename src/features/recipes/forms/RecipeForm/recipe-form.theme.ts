@@ -1,6 +1,10 @@
 import type { Theme } from '@mui/material/styles';
+import type { CategoriesInputProps } from './components/categories-input';
 
-export const recipeFormStyles = (theme: Theme) => ({
+export const recipeFormStyles = (
+	theme: Theme,
+	props: Partial<CategoriesInputProps>,
+) => ({
 	recipeFormBox: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -58,5 +62,48 @@ export const recipeFormStyles = (theme: Theme) => ({
 		gap: 1,
 		mt: 3,
 		width: '80%',
+	},
+	categoriesInput: {
+		form: {
+			height: '40px',
+			width: '100%',
+		},
+		select: {
+			textAlign: 'left',
+			borderColor: props.color,
+			color: props.color,
+			'& .MuiOutlinedInput-notchedOutline': {
+				borderColor: props.color,
+			},
+			'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+				borderColor: props.color,
+			},
+			'&:hover .MuiOutlinedInput-notchedOutline': {
+				borderColor: props.color,
+			},
+			'& .MuiSvgIcon-root': {
+				color: props.color,
+			},
+			'& .MuiInputLabel-root': {
+				color: props.color,
+			},
+			height: '40px',
+			width: '100%',
+			minWidth: 130,
+		},
+		menuItem: {
+			'&:focus, &.Mui-focusVisible': {
+				bgcolor: 'rgba(25,118,210,0.12)',
+			},
+			'&:hover': { bgcolor: 'rgba(57, 140, 94, 0.25)' },
+			'&.Mui-selected': { bgcolor: 'rgba(25,118,210,0.16)' },
+			borderRadius: 1,
+		},
+		inputLabel: {
+			color: props.color,
+			p: 0,
+			position: 'absolute',
+			top: '-7px',
+		},
 	},
 });

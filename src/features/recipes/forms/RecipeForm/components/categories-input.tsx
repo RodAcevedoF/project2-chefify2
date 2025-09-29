@@ -5,8 +5,10 @@ import {
 	ListItemText,
 	MenuItem,
 	Select,
+	useTheme,
 } from '@mui/material';
 import { Controller, type Control } from 'react-hook-form';
+import { recipeFormStyles } from '../recipe-form.theme';
 
 export interface CategoriesInputProps {
 	control: Control;
@@ -18,19 +20,16 @@ export interface CategoriesInputProps {
 }
 
 const CategoriesInput = (props: CategoriesInputProps) => {
+	const theme = useTheme();
+	const rs = recipeFormStyles(theme, props);
+
 	return (
-		<FormControl
-			sx={{
-				height: '40px',
-				width: '100%',
-			}}>
+		<FormControl sx={rs.categoriesInput.form}>
 			<InputLabel
 				id={props.id}
 				sx={{
-					color: props.color,
-					p: 0,
-					position: 'absolute',
-					top: '-7px',
+					...rs.categoriesInput.inputLabel,
+					color: rs.categoriesInput.inputLabel.color || 'inherit',
 				}}>
 				Categories
 			</InputLabel>
@@ -46,40 +45,12 @@ const CategoriesInput = (props: CategoriesInputProps) => {
 						label={props.label}
 						renderValue={(selected) => (selected as string[]).join(',')}
 						sx={{
-							textAlign: 'left',
-							borderColor: props.color,
-							color: props.color,
-							'& .MuiOutlinedInput-notchedOutline': {
-								borderColor: props.color,
-							},
-							'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-								borderColor: props.color,
-							},
-							'&:hover .MuiOutlinedInput-notchedOutline': {
-								borderColor: props.color,
-							},
-							'& .MuiSvgIcon-root': {
-								color: props.color,
-							},
-							'& .MuiInputLabel-root': {
-								color: props.color,
-							},
-							height: '40px',
-							width: '100%',
-							minWidth: 130,
+							...rs.categoriesInput.select,
+							borderColor: rs.categoriesInput.select.borderColor || 'inherit',
+							color: rs.categoriesInput.select.color || 'inherit',
 						}}>
 						{props.categories.map((cat) => (
-							<MenuItem
-								key={cat}
-								value={cat}
-								sx={{
-									'&:focus, &.Mui-focusVisible': {
-										bgcolor: 'rgba(25,118,210,0.12)',
-									},
-									'&:hover': { bgcolor: 'rgba(57, 140, 94, 0.25)' },
-									'&.Mui-selected': { bgcolor: 'rgba(25,118,210,0.16)' },
-									borderRadius: 1,
-								}}>
+							<MenuItem key={cat} value={cat} sx={rs.categoriesInput.menuItem}>
 								<Checkbox
 									checked={(
 										(field.value as (typeof props.categories)[number][]) || []

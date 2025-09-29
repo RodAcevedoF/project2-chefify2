@@ -1,14 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-	Box,
-	TextField,
-	Typography,
-	CircularProgress,
-	CardMedia,
-	useTheme,
-} from '@mui/material';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { Box, TextField, Typography, CardMedia, useTheme } from '@mui/material';
 import {
 	RECIPE_CATEGORY_OPTIONS,
 	type RecipeDTO,
@@ -16,23 +8,52 @@ import {
 	RecipeSchema,
 } from '@/types/recipe.types';
 import { useCreateRecipe } from '../../hooks/useCreateRecipe';
-import { CirclePlus } from 'lucide-react';
 import { useState } from 'react';
 import CategoriesInput from './components/categories-input';
 import InstructionsInput from './components/instructions-input';
 import { recipeFormStyles } from './recipe-form.theme';
+import ServingInput from './components/serving-input';
+import PrepTimeInput from './components/prep-input';
+import UploadIUmageInput from './components/upload-image-input';
+import CreateBtn from './components/create-recipe';
+import IngredientsInput from './components/ingredients-input';
+
 export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		control,
+		setValue,
+		watch,
 	} = useForm<RecipeDTO>({
 		resolver: zodResolver(RecipeSchema.partial()),
 	});
 	const theme = useTheme();
 	const [inputValue, setInputValue] = useState('');
-	const rs = recipeFormStyles(theme);
+	const [IngredientInput, setIngredientInput] = useState('');
+	const rs = recipeFormStyles(theme, {});
+	const [imgPreview, setImgPreview] = useState<string | null>(null);
+
+	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (!file) return;
+		const url = URL.createObjectURL(file);
+		setImgPreview(url);
+		setValue('imgUrl', url);
+		setValue('imgPublicId', `local-${Date.now()}`);
+	};
+
+	const handleImageClear = () => {
+		if (imgPreview?.startsWith('blob:')) URL.revokeObjectURL(imgPreview);
+		setValue('imgUrl', '');
+		setValue('imgPublicId', '');
+		setImgPreview(null);
+		const input = document.getElementById(
+			'recipe-image-input',
+		) as HTMLInputElement | null;
+		if (input) input.value = '';
+	};
 
 	const createRecipeMutation = useCreateRecipe({
 		onSuccess: () => onSuccess?.(),
@@ -75,76 +96,37 @@ export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
 					color={theme.palette.primary.main}
 				/>
 				<Box sx={rs.form.box}>
-					<Box sx={rs.form.box.inBox}>
-						<TextField
-							label='Servings'
-							type='number'
-							size='small'
-							{...register('servings', { valueAsNumber: true })}
-							slotProps={{
-								input: { sx: { paddingRight: '44px' } },
-							}}
-							fullWidth
-						/>
-						<Typography
-							variant='body2'
-							color='text.secondary'
-							sx={rs.form.box.typo}>
-							people
-						</Typography>
-					</Box>
-
-					<Box sx={rs.form.box.inBox}>
-						<TextField
-							label='Prep time'
-							type='number'
-							size='small'
-							{...register('prepTime', { valueAsNumber: true })}
-							error={!!errors.prepTime}
-							slotProps={{
-								input: { sx: { paddingRight: '44px' } },
-							}}
-							fullWidth
-						/>
-						<Typography
-							variant='body2'
-							color='text.secondary'
-							sx={rs.form.box.typo}>
-							min
-						</Typography>
-					</Box>
+					<ServingInput register={register} />
+					<PrepTimeInput register={register} errors={errors} />
 				</Box>
+
 				<InstructionsInput
 					control={control}
 					name={'instructions'}
 					inputValue={inputValue}
 					setInputValue={setInputValue}
 					color={theme.palette.primary.main}
-					backGroundColor={theme.palette.background.default}
+					backgroundColor={theme.palette.background.default}
+				/>
+
+				<IngredientsInput
+					control={control}
+					name='ingredients'
+					inputValue={IngredientInput}
+					setInputValue={setIngredientInput}
+					color={theme.palette.primary.main}
+					backgroundColor={theme.palette.background.default}
+				/>
+
+				<UploadIUmageInput
+					imgPreview={imgPreview}
+					parentMethod={handleImageChange}
+					register={register}
+					watch={watch}
+					onClear={handleImageClear}
 				/>
 			</Box>
-			<Box sx={rs.createBtnBox}>
-				<ButtonUsage
-					label={
-						createRecipeMutation.isPending ? (
-							<CircularProgress
-								size={20}
-								sx={{ color: theme.palette.primary.main }}
-							/>
-						) : (
-							'CREATE'
-						)
-					}
-					disabled={createRecipeMutation.isPending}
-					type='submit'
-					icon={CirclePlus}
-				/>
-			</Box>
-			{createRecipeMutation.isError && (
-				<Typography color='error' mt={2}>
-					Error while creating the recipe. Please try again.
-				</Typography>
-			)}
+			<CreateBtn createRecipeMutation={createRecipeMutation} />
 		</Box>
 	);
 };

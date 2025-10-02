@@ -85,6 +85,20 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 		ingredient: Ingredient,
 		field: ControllerRenderProps,
 	) => {
+		const current = Array.isArray(field.value) ? field.value : [];
+		const exists = current.some(
+			(item: IngredientRefDTO) => item.ingredient?._id === ingredient._id,
+		);
+
+		if (exists) {
+			setSnackbar({
+				open: true,
+				message: 'Ingrediente ya agregado',
+				severity: 'info',
+			});
+			return; // No abrir modal si ya existe
+		}
+
 		setSelectedIngredient(ingredient);
 		setIsCreatingNew(false);
 		setQuantity('1');
@@ -138,7 +152,7 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 				message: 'Ingrediente ya agregado',
 				severity: 'info',
 			});
-			/* 	closeModal(); */
+			closeModal(); // Cerrar modal si estaba abierto
 			return;
 		}
 
@@ -149,6 +163,7 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 				message: 'Ingresa una cantidad válida',
 				severity: 'warning',
 			});
+			closeModal(); // Cerrar modal también aquí para consistencia
 			return;
 		}
 
@@ -162,7 +177,6 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 		props.setInputValue('');
 		closeModal();
 	};
-
 	const handleConfirmAdd = async () => {
 		if (!fieldRef.current) return;
 

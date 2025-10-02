@@ -32,6 +32,7 @@ import {
 	type Ingredient,
 	type IngredientRefDTO,
 } from '@/types/ingredient.type';
+import { theme } from '@/theme';
 
 export interface IngredientsInputProps {
 	control: Control;
@@ -52,11 +53,14 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 	const [newIngredientName, setNewIngredientName] = useState('');
 	const [selectedUnit, setSelectedUnit] = useState<string>(Units.options[0]);
 	const [quantity, setQuantity] = useState<string>('1');
+
+	// Estado para el Snackbar
 	const [snackbar, setSnackbar] = useState<{
 		open: boolean;
 		message: string;
 		severity: 'success' | 'info' | 'warning' | 'error';
 	}>({ open: false, message: '', severity: 'info' });
+	const closeSnackbar = () => setSnackbar((s) => ({ ...s, open: false }));
 
 	useEffect(() => {
 		const id = setTimeout(() => setSearchTerm(props.inputValue.trim()), 300);
@@ -131,9 +135,10 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 		if (exists) {
 			setSnackbar({
 				open: true,
-				message: 'Ingredient already added',
+				message: 'Ingrediente ya agregado',
 				severity: 'info',
 			});
+			/* 	closeModal(); */
 			return;
 		}
 
@@ -141,7 +146,7 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 		if (isNaN(quantityNum) || quantityNum <= 0) {
 			setSnackbar({
 				open: true,
-				message: 'Enter a valid quantity',
+				message: 'Ingresa una cantidad válida',
 				severity: 'warning',
 			});
 			return;
@@ -178,7 +183,21 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 						opt.name.toLowerCase() === newIngredientName.trim().toLowerCase(),
 				);
 
-				if (ingredient) addIngredientWithQuantity(ingredient, fieldRef.current);
+				if (ingredient) {
+					addIngredientWithQuantity(ingredient, fieldRef.current);
+					setSnackbar({
+						open: true,
+						message: 'Ingrediente creado y agregado',
+						severity: 'success',
+					});
+				} else {
+					setSnackbar({
+						open: true,
+						message:
+							'Ingrediente creado, pero no se pudo agregar inmediatamente',
+						severity: 'info',
+					});
+				}
 
 				closeModal();
 			} catch (error) {
@@ -243,8 +262,8 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 								loading={createIngredientMutation.isPending}
 								noOptionsText={
 									searchTerm.length < 2
-										? 'Enter at least 2 characters'
-										: 'No ingredients found'
+										? 'Ingresa al menos 2 caracteres'
+										: 'No se encontraron ingredientes'
 								}
 								renderInput={(params) => (
 									<TextField
@@ -270,7 +289,8 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 										<Box
 											component='li'
 											{...optionProps}
-											key={option._id || option.name}>
+											key={option._id || option.name}
+											sx={{ color: theme.palette.primary.main }}>
 											{typeof option === 'string' ? option : option.name}
 											{typeof option !== 'string' && option.unit && (
 												<Box
@@ -278,7 +298,7 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 													sx={{
 														ml: 1,
 														fontSize: '0.8em',
-														color: 'text.secondary',
+														color: 'whitesmoke',
 													}}>
 													(
 													{Array.isArray(option.unit)
@@ -347,24 +367,46 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 			<Dialog open={modalOpen} onClose={closeModal} maxWidth='sm' fullWidth>
 				<DialogTitle>
 					{isCreatingNew
-						? `Create new ingredient: "${newIngredientName}"`
+						? `Create new: "${newIngredientName}"`
 						: `Add: ${selectedIngredient?.name}`}
 				</DialogTitle>
 				<DialogContent sx={{ pt: 2 }}>
-					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							gap: 2,
+						}}>
 						{isCreatingNew && (
 							<>
-								<Typography variant='body2' color='text.secondary'>
-									Select unit for "{newIngredientName}":
+								<Typography variant='body2' color='primary'>
+									Selecct unit for "{newIngredientName}":
 								</Typography>
 								<FormControl fullWidth>
-									<InputLabel>Unidad</InputLabel>
+									<InputLabel sx={{ color: theme.palette.primary.main }}>
+										Unit
+									</InputLabel>
 									<Select
 										value={selectedUnit}
 										label='Unit'
+										sx={{
+											color: theme.palette.primary.main,
+											'& .MuiOutlinedInput-notchedOutline': {
+												borderColor: theme.palette.primary.main,
+											},
+											'&:hover .MuiOutlinedInput-notchedOutline': {
+												borderColor: theme.palette.primary.main,
+											},
+											'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+												borderColor: theme.palette.primary.main,
+											},
+										}}
 										onChange={(e) => setSelectedUnit(e.target.value)}>
 										{Units.options.map((unit) => (
-											<MenuItem key={unit} value={unit}>
+											<MenuItem
+												key={unit}
+												value={unit}
+												sx={{ color: theme.palette.primary.main }}>
 												{unit}
 											</MenuItem>
 										))}
@@ -374,8 +416,8 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 						)}
 
 						{selectedIngredient && !isCreatingNew && (
-							<Typography variant='body2' color='text.secondary'>
-								Unit:{' '}
+							<Typography variant='body2' color='primary'>
+								Unidad:{' '}
 								{Array.isArray(selectedIngredient.unit)
 									? selectedIngredient.unit.join(', ')
 									: selectedIngredient.unit}
@@ -383,7 +425,7 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 						)}
 
 						<TextField
-							label='Cantidad'
+							label='Quantity'
 							type='number'
 							value={quantity}
 							onChange={(e) => setQuantity(e.target.value)}
@@ -393,15 +435,31 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 					</Box>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={closeModal}>Cancel</Button>
+					<Button onClick={closeModal}>Cancelar</Button>
 					<Button
 						onClick={handleConfirmAdd}
 						variant='contained'
 						disabled={!quantity || parseFloat(quantity) <= 0}>
-						{isCreatingNew ? 'Create and add' : 'Add'}
+						{isCreatingNew ? 'Crear y agregar' : 'Agregar'}
 					</Button>
 				</DialogActions>
 			</Dialog>
+
+			{/* Snackbar para notificaciones */}
+			<Snackbar
+				open={snackbar.open}
+				autoHideDuration={4000}
+				onClose={(event, reason) => {
+					if (reason !== 'clickaway') closeSnackbar();
+				}}
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+				<Alert
+					onClose={closeSnackbar}
+					severity={snackbar.severity}
+					sx={{ width: '100%' }}>
+					{snackbar.message}
+				</Alert>
+			</Snackbar>
 		</>
 	);
 };

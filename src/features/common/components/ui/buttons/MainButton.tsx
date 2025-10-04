@@ -17,7 +17,7 @@ export const ButtonUsage = (props: MainButtonProps) => {
 	return (
 		<Button
 			variant='outlined'
-			onClick={parentMethod}
+			{...(parentMethod ? { onClick: parentMethod } : {})}
 			disabled={disabled}
 			type={props.type || 'button'}
 			sx={{

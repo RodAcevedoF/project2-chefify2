@@ -12,6 +12,7 @@ import {
 import { useParams, Navigate } from 'react-router-dom';
 import { useGetRecipeByID } from '@/features/recipes/hooks/useGetRecipes';
 import { capitalize } from '@/features/common/utils/capitalize.helper';
+import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
 
 const RecipeDetail = () => {
 	const { id } = useParams<{ id: string }>();
@@ -66,39 +67,57 @@ const RecipeDetail = () => {
 						{recipe.ingredients.map((ing) => (
 							<ListItem key={ing._id}>
 								<Typography variant='body2'>
-									{ing.ingredient?.name || ''}
+									{typeof ing.ingredient === 'object' && ing.ingredient !== null
+										? ing.ingredient.name
+										: ing.ingredient || ''}
 								</Typography>
 							</ListItem>
 						))}
 					</List>
+					<Box>
+						<Typography variant='h6'>Utensils:</Typography>
+						{Array.isArray(recipe.utensils) && (
+							<Typography variant='subtitle2' mb={1}>
+								{recipe.utensils.join(', ')}
+							</Typography>
+						)}
+					</Box>
 				</Box>
 				<CardMedia
 					component='img'
-					image={recipe.imgUrl}
+					image={recipe.imgUrl || '/default-recipe.png'}
 					alt={recipe.title}
 					sx={{ borderRadius: 2, mb: 2, width: 240, objectFit: 'cover' }}
 				/>
 			</Box>
-			<Container maxWidth={false} sx={{ display: 'flex' }}>
+			<Container
+				maxWidth={false}
+				sx={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					position: 'relative',
+					alignItems: 'flex-end',
+				}}>
 				<Box>
-					<Typography variant='h6' mb={1}>
-						Instructions:
-					</Typography>
-					<ol>
+					<Typography variant='h6'>Instructions:</Typography>
+					<ol style={{ color: 'whitesmoke', fontSize: 12 }}>
 						{recipe.instructions.map((step, idx) => (
 							<li key={step + idx}>
-								<Typography variant='body2'>{step}</Typography>
+								<Typography variant='body1'>{step}</Typography>
 							</li>
 						))}
 					</ol>
 				</Box>
-				{Array.isArray(recipe.utensils) && (
-					<Box mt={2}>
-						<Typography variant='subtitle2' mb={1}>
-							Utensils: {recipe.utensils.join(', ')}
-						</Typography>
-					</Box>
-				)}
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						gap: 2,
+						height: '100%',
+					}}>
+					<ButtonUsage label='Edit' />
+					<ButtonUsage label='Delete' />
+				</Box>
 			</Container>
 		</Card>
 	);

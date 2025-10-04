@@ -60,7 +60,6 @@ export const recipeFormStyles = (
 		alignItems: 'center',
 		justifyContent: 'center',
 		gap: 1,
-		mt: 3,
 		width: '80%',
 	},
 	categoriesInput: {

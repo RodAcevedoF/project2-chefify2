@@ -1,11 +1,10 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, type Resolver } from 'react-hook-form';
 import { Box, TextField, Typography, CardMedia, useTheme } from '@mui/material';
 import {
 	RECIPE_CATEGORY_OPTIONS,
+	RecipeSchema,
 	type RecipeDTO,
 	type RecipeFormProps,
-	RecipeSchema,
 } from '@/types/recipe.types';
 import { useCreateRecipe } from '../../hooks/useCreateRecipe';
 import { useState } from 'react';
@@ -17,6 +16,8 @@ import PrepTimeInput from './components/prep-input';
 import UploadIUmageInput from './components/upload-image-input';
 import CreateBtn from './components/create-recipe';
 import IngredientsInput from './components/ingredients-input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { IngredientRefDTO } from '@/types/ingredient.type';
 
 export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
 	const {
@@ -27,7 +28,9 @@ export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
 		setValue,
 		watch,
 	} = useForm<RecipeDTO>({
-		resolver: zodResolver(RecipeSchema.partial()),
+		resolver: zodResolver(
+			RecipeSchema.partial(),
+		) as unknown as Resolver<RecipeDTO>,
 	});
 	const theme = useTheme();
 	const [inputValue, setInputValue] = useState('');
@@ -56,12 +59,50 @@ export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
 	};
 
 	const createRecipeMutation = useCreateRecipe({
-		onSuccess: () => onSuccess?.(),
+		onSuccess: () => {
+			console.log('Recipe created successfully');
+			onSuccess?.();
+		},
+		onError: (error) => {
+			console.error('Error creating recipe:', error);
+		},
 	});
 
 	const onSubmit = (data: RecipeDTO) => {
-		createRecipeMutation.mutate(data);
+		const payload = {
+			...data,
+			ingredients: (data.ingredients || []).map((ing: IngredientRefDTO) => ({
+				ingredient:
+					typeof ing.ingredient === 'string'
+						? ing.ingredient
+						: ing.ingredient?._id || String(ing.ingredient),
+				quantity: Number(ing.quantity),
+			})),
+		};
+		console.log('Submitting payload:', payload);
+		createRecipeMutation.mutate(payload);
 	};
+
+	handleSubmit(
+		(data) => {
+			console.log('Form onSubmit triggered');
+			onSubmit(data);
+		},
+		(errors) => {
+			console.log('Form validation errors:', errors);
+			if (errors.ingredients) {
+				if (Array.isArray(errors.ingredients)) {
+					errors.ingredients.forEach((err, idx) => {
+						if (err) {
+							console.log(`Ingrediente #${idx + 1} inválido:`, err);
+						}
+					});
+				} else {
+					console.log('Error en ingredientes:', errors.ingredients);
+				}
+			}
+		},
+	);
 
 	return (
 		<Box sx={rs.recipeFormBox} className={className}>
@@ -125,8 +166,8 @@ export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
 					watch={watch}
 					onClear={handleImageClear}
 				/>
+				<CreateBtn createRecipeMutation={createRecipeMutation} />
 			</Box>
-			<CreateBtn createRecipeMutation={createRecipeMutation} />
 		</Box>
 	);
 };

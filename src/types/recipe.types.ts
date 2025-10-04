@@ -45,7 +45,7 @@ export const RecipeSchema = z.object({
 	imgPublicId: z.string().optional(),
 	servings: z.number(),
 	prepTime: z.number(),
-	utensils: z.array(z.string()),
+	utensils: z.array(z.string()).optional(),
 	createdAt: z.date().optional(),
 	updatedAt: z.date().optional(),
 });

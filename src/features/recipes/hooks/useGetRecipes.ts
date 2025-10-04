@@ -16,7 +16,7 @@ export const useGetRecipes = (
 	options?: UseQueryOptions<CommonResponse<Recipe[]>, AxiosError, Recipe[]>,
 ) => {
 	return useQuery<CommonResponse<Recipe[]>, AxiosError, Recipe[]>({
-		queryKey: recipeKeys.lists(params),
+		queryKey: ['recipes', 'list', params],
 		queryFn: () => RecipeService.getRecipes(params),
 		staleTime: Infinity,
 		select: (resp) => resp.data,
@@ -30,7 +30,7 @@ export const useGetRecipeByID = (
 	options?: UseQueryOptions<CommonResponse<Recipe>, AxiosError, Recipe>,
 ) => {
 	return useQuery<CommonResponse<Recipe>, AxiosError, Recipe>({
-		queryKey: recipeKeys.detail(id ?? ''),
+		queryKey: ['recipes', 'detail', id],
 		queryFn: () => RecipeService.getRecipeById(id as string),
 		enabled: Boolean(id),
 		staleTime: Infinity,

@@ -1,4 +1,5 @@
 import chefifyAPI from '@/lib/api';
+import noAuthApi from '@/lib/noAuthApi';
 import type { LoginParams, RegisterParams } from '@/types/auth.types';
 
 export const AuthService = {
@@ -30,7 +31,7 @@ export const AuthService = {
 	},
 
 	async refresh() {
-		const res = await chefifyAPI.post('/auth/refresh');
+		const res = await noAuthApi.post('/auth/refresh');
 		return res.data;
 	},
 };

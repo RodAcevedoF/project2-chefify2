@@ -8,6 +8,7 @@ import { LoggedProvider } from '@/contexts/loggedContext/logged.provider.tsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme';
 import { CssBaseline } from '@mui/material';
+import ErrorBoundary from '@/features/common/components/ErrorBoundary';
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
@@ -15,9 +16,11 @@ createRoot(document.getElementById('root')!).render(
 			<LoggedProvider>
 				<ThemeProvider theme={theme}>
 					<CssBaseline>
-						<ModalProvider>
-							<App />
-						</ModalProvider>
+						<ErrorBoundary>
+							<ModalProvider>
+								<App />
+							</ModalProvider>
+						</ErrorBoundary>
 					</CssBaseline>
 				</ThemeProvider>
 			</LoggedProvider>

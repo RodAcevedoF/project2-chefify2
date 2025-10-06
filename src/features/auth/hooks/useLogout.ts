@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AuthService } from '@/features/auth/services/auth.service';
+import { clearRefreshQueue } from '@/lib/api';
 import type { AxiosError } from 'axios';
 import type { AuthResponse } from '@/types/auth.types';
 import type { UseCommonOptions } from '@/types/common.types';
@@ -16,6 +17,8 @@ export const useLogout = (options?: UseCommonOptions<AuthResponse>) => {
 
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({ queryKey: ['auth', 'me'] });
+			// Clear any pending refresh queue to avoid retrying requests after logout
+			clearRefreshQueue(new Error('User logged out'));
 			options?.onSuccess?.(data);
 			options?.redirectTo?.();
 		},

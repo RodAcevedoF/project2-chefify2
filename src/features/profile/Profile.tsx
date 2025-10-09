@@ -11,9 +11,11 @@ import {
 	ListItemText,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useModalContext } from '@/contexts/modalContext/modal.context';
 
 export const ProfileLayout = () => {
 	const nav = useNavigate();
+	const { openModal } = useModalContext();
 
 	const handleNavigate = (path: string) => {
 		return () => nav(path);
@@ -41,14 +43,14 @@ export const ProfileLayout = () => {
 							<Button
 								variant='contained'
 								size='small'
-								onClick={handleNavigate('/profile/edit')}>
-								Editar perfil
+								onClick={() => openModal('profileEdit')}>
+								Edit profile
 							</Button>
 							<Button
 								variant='outlined'
 								size='small'
 								onClick={handleNavigate('/recipes')}>
-								Mis recetas
+								My recipes
 							</Button>
 						</Box>
 					</Paper>

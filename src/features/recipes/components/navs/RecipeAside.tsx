@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import type { Recipe } from '@/types/recipe.types';
-import { useGetRecipes } from '@/features/recipes/hooks/useGetRecipes';
+import { useGetRecipes } from '@/features/recipes/hooks';
 import { ChefHat, Utensils } from 'lucide-react';
 import {
 	Box,

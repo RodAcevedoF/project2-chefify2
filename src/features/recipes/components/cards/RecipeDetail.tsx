@@ -10,7 +10,7 @@ import {
 	ListItem,
 } from '@mui/material';
 import { useParams, Navigate } from 'react-router-dom';
-import { useGetRecipeByID } from '@/features/recipes/hooks/useGetRecipes';
+import { useGetRecipeByID } from '@/features/recipes/hooks';
 import { capitalize } from '@/features/common/utils/capitalize.helper';
 import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
 

@@ -6,7 +6,7 @@ import {
 	type RecipeDTO,
 	type RecipeFormProps,
 } from '@/types/recipe.types';
-import { useCreateRecipe } from '../../hooks/useCreateRecipe';
+import { useCreateRecipe } from '@/features/recipes/hooks';
 import { useState } from 'react';
 import CategoriesInput from './components/categories-input';
 import InstructionsInput from './components/instructions-input';

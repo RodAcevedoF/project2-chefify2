@@ -5,8 +5,10 @@ import {
 	type ControllerRenderProps,
 } from 'react-hook-form';
 import { useState, useEffect, useRef } from 'react';
-import { useGetIngredients } from '@/features/ingredients/hooks/useGetIngredient';
-import { useCreateIngredient } from '@/features/ingredients/hooks/useCreateIngredient';
+import {
+	useGetIngredients,
+	useCreateIngredient,
+} from '@/features/ingredients/hooks';
 import {
 	Units,
 	type Ingredient,

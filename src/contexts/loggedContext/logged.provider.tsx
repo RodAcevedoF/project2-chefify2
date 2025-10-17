@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { LoggedContext } from './logged.context';
-import { useVerified } from '../../features/auth/hooks/useVerified';
+import { useVerified } from '@/features/auth/hooks';
 import { LoggedManager } from './LoggedManager';
 
 interface LoggedProviderProps {

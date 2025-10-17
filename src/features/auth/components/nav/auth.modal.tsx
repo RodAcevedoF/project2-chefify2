@@ -26,14 +26,9 @@ export const AuthModal = () => {
 	return (
 		<>
 			{showRegister ? (
-				<RegisterForm
-					onSuccess={handleRegisterSuccess}
-					/* className='bg-neutral-200' */
-				/>
+				<RegisterForm onSuccess={handleRegisterSuccess} />
 			) : (
-				<LoginForm
-					onSuccess={handleLoginSuccess} /* className='bg-neutral-200' */
-				/>
+				<LoginForm onSuccess={handleLoginSuccess} />
 			)}
 
 			<Button

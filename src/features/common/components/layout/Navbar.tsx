@@ -1,5 +1,5 @@
 import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
-import { useLogout } from '@/features/auth/hooks/useLogout';
+import { useLogout } from '@/features/auth/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
 import { memo } from 'react';

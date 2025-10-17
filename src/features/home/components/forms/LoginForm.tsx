@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useLogin } from '@/features/auth/hooks/useLogin';
+import { useLogin } from '@/features/auth/hooks';
 import {
 	LoginSchema,
 	type AuthFormProps,

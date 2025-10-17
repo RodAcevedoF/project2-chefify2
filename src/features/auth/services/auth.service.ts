@@ -2,9 +2,11 @@ import chefifyAPI from '@/lib/api';
 import noAuthApi from '@/lib/noAuthApi';
 import type { LoginParams, RegisterParams } from '@/types/auth.types';
 
+const BASE = '/auth';
+
 export const AuthService = {
 	async login({ email, password }: LoginParams) {
-		const res = await chefifyAPI.post('/auth/login', {
+		const res = await chefifyAPI.post(`${BASE}/login`, {
 			email,
 			password,
 		});
@@ -12,7 +14,7 @@ export const AuthService = {
 	},
 
 	async register({ name, email, password }: RegisterParams) {
-		const res = await chefifyAPI.post('/auth/register', {
+		const res = await chefifyAPI.post(`${BASE}/register`, {
 			name,
 			email,
 			password,
@@ -21,17 +23,17 @@ export const AuthService = {
 	},
 
 	async getMe() {
-		const res = await chefifyAPI.get('/auth/me');
+		const res = await chefifyAPI.get(`${BASE}/me`);
 		return res;
 	},
 
 	async logout() {
-		const res = await chefifyAPI.post('/auth/logout');
+		const res = await chefifyAPI.post(`${BASE}/logout`);
 		return res;
 	},
 
 	async refresh() {
-		const res = await noAuthApi.post('/auth/refresh');
+		const res = await noAuthApi.post(`${BASE}/refresh`);
 		return res.data;
 	},
 };

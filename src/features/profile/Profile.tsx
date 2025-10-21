@@ -2,25 +2,38 @@ import {
 	Box,
 	Typography,
 	Button,
-	Avatar,
 	Paper,
 	Card,
 	CardContent,
 	List,
 	ListItem,
 	ListItemText,
+	useTheme,
 } from '@mui/material';
+import ProfileCard from './components/cards/ProfileCard';
 import { useNavigate } from 'react-router-dom';
-import { useModalContext } from '@/contexts/modalContext/modal.context';
+//import { ButtonUsage } from '../common/components/ui/buttons/MainButton';
+import ProfileRecipesCard from './components/cards/ProfileRecipesCard';
+import {
+	useGetUser,
+	useGetOwnRecipes,
+	useGetSavedRecipes,
+} from './hooks/useUser';
 
 export const ProfileLayout = () => {
 	const nav = useNavigate();
-	const { openModal } = useModalContext();
 
 	const handleNavigate = (path: string) => {
 		return () => nav(path);
 	};
 
+	const theme = useTheme();
+
+	// color is handled inside UserAvatar
+	const { data: me } = useGetUser();
+	const { data: ownRecipes } = useGetOwnRecipes();
+	const { data: savedRecipes } = useGetSavedRecipes();
+	console.log('me', me);
 	return (
 		<Box sx={{ width: '100%', p: { xs: 2, md: 4 } }}>
 			<Box
@@ -31,71 +44,24 @@ export const ProfileLayout = () => {
 				}}>
 				{/* Left: Profile Card */}
 				<Box>
-					<Paper sx={{ p: 3, textAlign: 'center' }} elevation={2}>
-						<Avatar sx={{ width: 96, height: 96, mx: 'auto', mb: 2 }}>U</Avatar>
-						<Typography variant='h6' fontWeight={700} gutterBottom>
-							User Name
-						</Typography>
-						<Typography variant='body2' color='text.secondary' sx={{ mb: 2 }}>
-							Short bio — write a brief introduction or description here.
-						</Typography>
-						<Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
-							<Button
-								variant='contained'
-								size='small'
-								onClick={() => openModal('profileEdit')}>
-								Edit profile
-							</Button>
-							<Button
-								variant='outlined'
-								size='small'
-								onClick={handleNavigate('/recipes')}>
-								My recipes
-							</Button>
-						</Box>
-					</Paper>
+					<ProfileCard />
 				</Box>
 
 				{/* Center: Activity / Recipes */}
 				<Box>
-					<Card elevation={1} sx={{ mb: 2 }}>
-						<CardContent>
-							<Typography variant='h6' gutterBottom>
-								Your recipes
-							</Typography>
-							<List>
-								<ListItem>
-									<ListItemText
-										primary='Sample recipe 1'
-										secondary='Last edited: 3 days ago'
-									/>
-								</ListItem>
-								<ListItem>
-									<ListItemText
-										primary='Sample recipe 2'
-										secondary='Last edited: 2 weeks ago'
-									/>
-								</ListItem>
-								<ListItem>
-									<ListItemText
-										primary='Sample recipe 3'
-										secondary='Created: 1 month ago'
-									/>
-								</ListItem>
-							</List>
-							<Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-								<Button
-									variant='contained'
-									onClick={handleNavigate('/recipes')}>
-									See all recipes
-								</Button>
-							</Box>
-						</CardContent>
-					</Card>
+					<ProfileRecipesCard />
 
 					<Card elevation={1}>
 						<CardContent>
-							<Typography variant='h6' gutterBottom>
+							<Typography
+								variant='h6'
+								sx={{
+									fontFamily: 'Alegreya',
+									border: 1,
+									borderColor: theme.palette.background.default,
+									p: 1,
+									borderRadius: 3,
+								}}>
 								Recent activity
 							</Typography>
 							<List>
@@ -119,13 +85,26 @@ export const ProfileLayout = () => {
 				{/* Right: Stats / Actions */}
 				<Box>
 					<Paper sx={{ p: 2 }} elevation={2}>
-						<Typography variant='subtitle1' fontWeight={600} gutterBottom>
+						<Typography
+							variant='h6'
+							sx={{
+								fontFamily: 'Alegreya',
+								border: 1,
+								borderColor: theme.palette.background.default,
+								p: 1,
+								borderRadius: 3,
+								mb: 2,
+							}}>
 							Statistics
 						</Typography>
-						<Typography variant='body2'>Recipes: 12</Typography>
-						<Typography variant='body2'>Favorites: 4</Typography>
+						<Typography variant='body2'>
+							Recipes: {ownRecipes?.length ?? 0}
+						</Typography>
+						<Typography variant='body2'>
+							Favorites: {savedRecipes?.length ?? 0}
+						</Typography>
 						<Typography variant='body2' sx={{ mb: 2 }}>
-							Followers: 34
+							Followers: {me?.followersCount ?? 0}
 						</Typography>
 						<Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
 							<Button

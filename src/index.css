@@ -1,11 +1,11 @@
 @font-face {
 	font-family: 'Dinot';
-	src: url('/public/fonts/DINOT-Regular.woff2') format('woff2');
+	src: url('@/assets/fonts/DINOT-Regular.woff2') format('woff2');
 }
 
 @font-face {
 	font-family: 'Alegreya';
-	src: url('/public/fonts/AlegreyaSC-Bold.woff') format('woff');
+	src: url('@/assets/fonts/AlegreyaSC-Bold.woff') format('woff');
 }
 
 body {

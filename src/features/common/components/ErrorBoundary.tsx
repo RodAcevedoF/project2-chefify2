@@ -29,8 +29,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
 	}
 
 	componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-		// You can log the error to an external service here
-		// Example: analytics.logError(error, errorInfo);
+		// may use logerror service here
 		this.setState({ error, errorInfo });
 		// capture with logger
 		logger.error(error, { componentStack: errorInfo.componentStack });
@@ -38,7 +37,6 @@ export class ErrorBoundary extends React.Component<Props, State> {
 	}
 
 	handleReload = () => {
-		// Reset state and reload page
 		this.setState({ hasError: false, error: null, errorInfo: null });
 		window.location.reload();
 	};
@@ -57,11 +55,9 @@ export class ErrorBoundary extends React.Component<Props, State> {
 			if (navigator.clipboard && navigator.clipboard.writeText) {
 				await navigator.clipboard.writeText(text);
 			} else {
-				// fallback: open prompt so user can copy
-				window.prompt('Copia el reporte manualmente (CTRL/CMD+C):', text);
+				window.prompt('Copy report manually (CTRL/CMD+C):', text);
 			}
 
-			// feedback
 			this.setState({ copied: true });
 			logger.info('Error report copied to clipboard', {
 				message: this.state.error?.message,
@@ -103,13 +99,13 @@ export class ErrorBoundary extends React.Component<Props, State> {
 								variant='contained'
 								color='primary'
 								onClick={this.handleReload}>
-								Recargar
+								Reload
 							</Button>
 							<Button
 								variant='outlined'
 								color='primary'
 								onClick={this.handleCopyReport}>
-								{this.state.copied ? 'Copiado' : 'Copiar reporte'}
+								{this.state.copied ? 'Copy' : 'Copied report'}
 							</Button>
 						</Box>
 					</Box>

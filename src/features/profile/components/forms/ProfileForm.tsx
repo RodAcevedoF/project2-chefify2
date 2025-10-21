@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, TextField, Button, Avatar, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography, useTheme } from '@mui/material';
+import UserAvatar from '../avatar/UserAvatar';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProfileEditSchema, type UserDTO } from '@/types/user.types';
 import type { ChangeEvent } from 'react';
@@ -11,6 +12,7 @@ export type ProfileFormData = UserDTO;
 export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 	const { data: me } = useGetUser();
 	const update = useUpdateUser();
+	const theme = useTheme();
 
 	const {
 		register,
@@ -29,22 +31,18 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 			try {
 				const clean = ProfileEditSchema.parse(me);
 				reset(clean as Partial<ProfileFormData>);
-			} catch (err) {
-				console.warn('Profile parsing failed, using raw me for reset', err);
+			} catch {
 				reset(me as Partial<ProfileFormData>);
 			}
 		}
 	}, [me, reset]);
 
 	const onSubmit = (data: ProfileFormData) => {
-		console.log('Submitting profile update', data);
 		update.mutate(data, {
 			onSuccess: () => {
 				onCancel();
 			},
-			onError: (err) => {
-				console.error('Failed to update profile', err);
-			},
+			onError: () => {},
 		});
 	};
 
@@ -53,18 +51,14 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 		if (!file) return;
 		const url = URL.createObjectURL(file);
 		setValue('imgUrl', url);
-		console.log('Selected avatar', file, url);
 	};
+
+	// UserAvatar handles color and initial logic
 
 	return (
 		<Box
 			component='form'
-			onSubmit={handleSubmit(onSubmit, (errs) =>
-				console.log('Validation errors on submit (form):', errs),
-			)}
-			onSubmitCapture={(e) =>
-				console.log('form onSubmitCapture event', e?.type)
-			}
+			onSubmit={handleSubmit(onSubmit)}
 			sx={{
 				width: 360,
 				p: 2,
@@ -73,11 +67,15 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 				gap: 2,
 			}}>
 			<Box sx={{ textAlign: 'center' }}>
-				<Avatar
-					sx={{ width: 64, height: 64, mx: 'auto', mb: 1 }}
-					src={watch('imgUrl') ?? undefined}>
-					U
-				</Avatar>
+				<UserAvatar
+					name={(
+						watch('name') ??
+						(me as Partial<ProfileFormData>)?.name ??
+						''
+					).toString()}
+					imgUrl={watch('imgUrl') ?? undefined}
+					size={64}
+				/>
 				<Typography variant='subtitle1'>Edit your profile</Typography>
 			</Box>
 
@@ -125,7 +123,11 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 				error={Boolean(errors.shortBio)}
 				helperText={errors.shortBio?.message as string | undefined}
 				slotProps={{
-					inputLabel: { shrink: Boolean(watch('shortBio')) },
+					inputLabel: {
+						shrink: Boolean(watch('shortBio')),
+						sx: { color: theme.palette.primary.main },
+					},
+					input: { sx: { color: theme.palette.primary.main } },
 				}}
 			/>
 
@@ -133,12 +135,7 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 				<Button variant='text' onClick={onCancel}>
 					Cancel
 				</Button>
-				<Button
-					variant='contained'
-					type='submit'
-					onClick={handleSubmit(onSubmit, (errs) =>
-						console.log('Validation errors on submit (click):', errs),
-					)}>
+				<Button variant='contained' type='submit'>
 					Save
 				</Button>
 			</Box>

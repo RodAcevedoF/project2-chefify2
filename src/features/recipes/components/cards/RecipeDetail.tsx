@@ -10,14 +10,32 @@ import {
 	ListItem,
 } from '@mui/material';
 import { useParams, Navigate } from 'react-router-dom';
+import {} from 'react';
 import { useGetRecipeByID } from '@/features/recipes/hooks';
+import LikeButton from '@/features/recipes/components/LikeButton';
+import AuthorFollow from '@/features/recipes/components/AuthorFollow';
+import { useGetUser } from '@/features/profile/hooks/useUser';
 import { capitalize } from '@/features/common/utils/capitalize.helper';
 import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
 
 const RecipeDetail = () => {
 	const { id } = useParams<{ id: string }>();
 	const { data: recipe, isLoading, error } = useGetRecipeByID(id);
-	console.log(recipe);
+	const { data: me } = useGetUser();
+
+	const author =
+		typeof recipe?.userId === 'object' && recipe?.userId
+			? (recipe.userId as {
+					_id?: string;
+					name?: string;
+					isFollowing?: boolean;
+			  })
+			: null;
+	// author id is available on `author._id` or recipe.userId when string
+	// follow state and fetching moved to AuthorFollow component
+
+	// like & follow behavior moved to separate components: LikeButton and AuthorFollow
+
 	if (!id) return <Navigate to='/recipes' replace />;
 	if (isLoading) return <Typography>Loading recipe details...</Typography>;
 	if (error) return <Typography>Error loading recipe details.</Typography>;
@@ -40,6 +58,13 @@ const RecipeDetail = () => {
 					<Typography variant='h4' fontWeight='bold' mb={1}>
 						{capitalize(recipe.title)}
 					</Typography>
+					<Stack direction='row' spacing={1} alignItems='center' mb={1}>
+						<LikeButton
+							recipeId={id ?? ''}
+							initialHasLiked={recipe.hasLiked}
+							initialLikesCount={recipe.likesCount}
+						/>
+					</Stack>
 					<Stack direction='row' spacing={1} mb={2}>
 						{Array.isArray(recipe.categories) &&
 							recipe.categories.map((cat) => (
@@ -56,9 +81,19 @@ const RecipeDetail = () => {
 					</Typography>
 					<Typography variant='subtitle2' mb={2}>
 						By:{' '}
-						{typeof recipe.userId === 'object' && recipe.userId !== null
-							? recipe.userId.name
-							: recipe.userId}
+						{typeof recipe.userId === 'object' && recipe.userId !== null ? (
+							<>
+								{recipe.userId.name} {/* Follow button next to author name */}
+								{author &&
+									(() => {
+										// don't show follow for own profile
+										if (!author._id || author._id === me?._id) return null;
+										return <AuthorFollow authorId={author._id} recipeId={id} />;
+									})()}
+							</>
+						) : (
+							recipe.userId
+						)}
 					</Typography>
 					<Typography variant='h6' mt={2} mb={1}>
 						Ingredients:

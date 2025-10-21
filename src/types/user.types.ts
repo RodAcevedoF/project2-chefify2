@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const UserSchema = z
 	.object({
+		_id: z.string().optional(),
 		name: z.string().min(1, 'Title is required'),
 		email: z.email('Invalid email data'),
 		password: z.string().min(8, 'At least 8 characters'),
@@ -28,6 +29,9 @@ export const UserSchema = z
 		resetPasswordToken: z.string().optional().nullable(),
 		resetPasswordExpires: z.date().optional().nullable(),
 		isVerified: z.boolean().default(false),
+		followersCount: z.number().optional(),
+		followingCount: z.number().optional(),
+		isFollowing: z.boolean().optional(),
 	})
 	.strict();
 

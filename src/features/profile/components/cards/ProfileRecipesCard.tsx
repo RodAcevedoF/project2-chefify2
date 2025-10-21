@@ -29,10 +29,10 @@ const ProfileRecipesCard = () => {
 
 	const { data: recipes, isLoading } = useGetSavedRecipes();
 
-	// Ensure we render a de-duplicated list in case the API returned duplicates
 	const uniqueRecipes = (recipes ?? []).filter(
 		(r, i, arr) => arr.findIndex((x) => x._id === r._id) === i,
 	);
+	console.log(recipes);
 
 	return (
 		<Card elevation={1} sx={{ mb: 2 }}>
@@ -104,7 +104,7 @@ const ProfileRecipesCard = () => {
 									}}>
 									<Box
 										component='img'
-										src={recipe.imgUrl ?? DEFAULT_THUMB}
+										src={!recipe.imgUrl ? DEFAULT_THUMB : recipe.imgUrl}
 										alt={recipe.title}
 										sx={{
 											width: 64,

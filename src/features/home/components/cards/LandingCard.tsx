@@ -1,5 +1,5 @@
 import { Card, CardMedia, Box, Typography, useTheme } from '@mui/material';
-import { homeStyles } from '../../home-theme';
+import { homeStyles } from '../../home.theme';
 import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
 import { ArrowRight } from 'lucide-react';
 

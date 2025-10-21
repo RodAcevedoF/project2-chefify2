@@ -2,7 +2,7 @@ import { AuthModal } from '@/features/auth/components/nav/auth.modal';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { Modal } from './Modal';
 import { RecipeModal } from '@/features/auth/components/nav/recipe.modal';
-import ProfileModal from '@/features/profile/components/ProfileModal';
+import ProfileModal from '@/features/profile/components/modal/ProfileModal';
 
 export const MODALS = {
 	auth: <AuthModal />,

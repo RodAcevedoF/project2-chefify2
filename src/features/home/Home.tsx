@@ -3,7 +3,7 @@ import LandingCard from '@/features/home/components/cards/LandingCard';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useScrollContext } from '@/contexts/scrollContext/scroll.context';
 import { Box, Typography, Container, useTheme } from '@mui/material';
-import { homeStyles } from './home-theme';
+import { homeStyles } from './home.theme';
 
 export const Home = () => {
 	const { scrolled } = useScrollContext();

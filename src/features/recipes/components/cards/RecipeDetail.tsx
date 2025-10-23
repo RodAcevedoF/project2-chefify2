@@ -10,8 +10,16 @@ import {
 	ListItem,
 } from '@mui/material';
 import { useParams, Navigate } from 'react-router-dom';
-import {} from 'react';
-import { useGetRecipeByID } from '@/features/recipes/hooks';
+import {
+	useGetRecipeByID,
+	useLike,
+	useUnlike,
+	useHasLiked,
+	useFollow,
+	useUnfollow,
+	useIsFollowing,
+} from '@/features/recipes/hooks';
+import { useRef } from 'react';
 import LikeButton from '@/features/recipes/components/LikeButton';
 import AuthorFollow from '@/features/recipes/components/AuthorFollow';
 import { useGetUser } from '@/features/profile/hooks/useUser';
@@ -22,19 +30,45 @@ const RecipeDetail = () => {
 	const { id } = useParams<{ id: string }>();
 	const { data: recipe, isLoading, error } = useGetRecipeByID(id);
 	const { data: me } = useGetUser();
+	const renderCount = useRef(0);
+	renderCount.current += 1;
 
+	// Like hooks
+	const like = useLike(id as string);
+	const unlike = useUnlike(id as string);
+	const hasLikedQuery = useHasLiked(id);
+
+	const displayedHasLiked =
+		hasLikedQuery.data?.hasLiked ?? recipe?.hasLiked ?? false;
+	const displayedLikesCount = recipe?.likesCount ?? 0;
+
+	const handleToggleLike = () => {
+		if (displayedHasLiked) {
+			unlike.mutate();
+		} else {
+			like.mutate();
+		}
+	};
+
+	// Author / follow hooks
+	const rawAuthor = recipe?.userId;
 	const author =
-		typeof recipe?.userId === 'object' && recipe?.userId
-			? (recipe.userId as {
-					_id?: string;
-					name?: string;
-					isFollowing?: boolean;
-			  })
-			: null;
-	// author id is available on `author._id` or recipe.userId when string
-	// follow state and fetching moved to AuthorFollow component
+		rawAuthor && typeof rawAuthor === 'object' ? rawAuthor : undefined;
+	const authorId =
+		author?._id ?? (typeof rawAuthor === 'string' ? rawAuthor : undefined);
+	const authorName = author?.name ?? 'Unknown';
 
-	// like & follow behavior moved to separate components: LikeButton and AuthorFollow
+	const isFollowingQuery = useIsFollowing(authorId);
+	const follow = useFollow(authorId as string);
+	const unfollow = useUnfollow(authorId as string);
+
+	const handleToggleFollow = () => {
+		if (isFollowingQuery.data?.isFollowing) {
+			unfollow.mutate();
+		} else {
+			follow.mutate();
+		}
+	};
 
 	if (!id) return <Navigate to='/recipes' replace />;
 	if (isLoading) return <Typography>Loading recipe details...</Typography>;
@@ -56,13 +90,19 @@ const RecipeDetail = () => {
 			<Box sx={{ display: 'flex', justifyContent: 'space-between', p: 5 }}>
 				<Box>
 					<Typography variant='h4' fontWeight='bold' mb={1}>
-						{capitalize(recipe.title)}
+						{capitalize(recipe.title)}{' '}
+						<span style={{ fontSize: 12, color: 'gray' }}>
+							({renderCount.current})
+						</span>
 					</Typography>
 					<Stack direction='row' spacing={1} alignItems='center' mb={1}>
 						<LikeButton
-							recipeId={id ?? ''}
-							initialHasLiked={recipe.hasLiked}
-							initialLikesCount={recipe.likesCount}
+							displayedHasLiked={displayedHasLiked}
+							displayedLikesCount={displayedLikesCount}
+							disabled={
+								like.status === 'pending' || unlike.status === 'pending'
+							}
+							onToggle={handleToggleLike}
 						/>
 					</Stack>
 					<Stack direction='row' spacing={1} mb={2}>
@@ -80,19 +120,15 @@ const RecipeDetail = () => {
 						Prep time: {recipe.prepTime} min | Servings: {recipe.servings}
 					</Typography>
 					<Typography variant='subtitle2' mb={2}>
-						By:{' '}
-						{typeof recipe.userId === 'object' && recipe.userId !== null ? (
-							<>
-								{recipe.userId.name} {/* Follow button next to author name */}
-								{author &&
-									(() => {
-										// don't show follow for own profile
-										if (!author._id || author._id === me?._id) return null;
-										return <AuthorFollow authorId={author._id} recipeId={id} />;
-									})()}
-							</>
-						) : (
-							recipe.userId
+						By: <strong>{authorName}</strong>{' '}
+						{authorId && me?._id !== authorId && (
+							<AuthorFollow
+								isFollowing={isFollowingQuery.data?.isFollowing ?? false}
+								loading={
+									follow.status === 'pending' || unfollow.status === 'pending'
+								}
+								onToggle={handleToggleFollow}
+							/>
 						)}
 					</Typography>
 					<Typography variant='h6' mt={2} mb={1}>

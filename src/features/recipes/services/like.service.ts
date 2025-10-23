@@ -7,9 +7,6 @@ export const LikeService = {
 	async like(
 		recipeId: string,
 	): Promise<CommonResponse<{ likesCount: number; hasLiked: boolean }>> {
-		if (process.env.NODE_ENV === 'development') {
-			console.debug('[LikeService.like] called', { recipeId });
-		}
 		const res = await chefifyAPI.post(`${BASE}/${recipeId}/like`);
 		return res.data;
 	},
@@ -17,9 +14,6 @@ export const LikeService = {
 	async unlike(
 		recipeId: string,
 	): Promise<CommonResponse<{ likesCount: number; hasLiked: boolean }>> {
-		if (process.env.NODE_ENV === 'development') {
-			console.debug('[LikeService.unlike] called', { recipeId });
-		}
 		const res = await chefifyAPI.delete(`${BASE}/${recipeId}/unlike`);
 		return res.data;
 	},

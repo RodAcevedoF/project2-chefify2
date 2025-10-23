@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
-import { LikeService } from '../services/like.service';
+import { LikeService } from '@/features/recipes/services/like.service';
 import { recipesKeys } from './useRecipes';
 
 type ToggleLikeResponse = { likesCount: number; hasLiked: boolean };
@@ -43,6 +43,7 @@ export const useLike = (recipeId: string) => {
 			context?: { previous?: RecipeCache },
 		) => {
 			if (context?.previous) qc.setQueryData(key, context.previous);
+			console.error('useLike - mutation error', _err);
 		},
 		onSuccess: (resp) => {
 			const data = resp.data as ToggleLikeResponse;
@@ -51,10 +52,18 @@ export const useLike = (recipeId: string) => {
 				likesCount: data.likesCount,
 				hasLiked: data.hasLiked,
 			}));
+			qc.setQueryData(['like', 'hasLiked', recipeId ?? ''], {
+				hasLiked: data.hasLiked,
+			});
+			console.log('useLike - mutation success', { recipeId, data, resp });
 		},
 		onSettled: () => {
 			qc.invalidateQueries({ queryKey: ['user', 'saved-recipes'] });
 			qc.invalidateQueries({ queryKey: ['user', 'me'] });
+			// ensure recipe detail is refetched from server to reflect authoritative likes
+			qc.invalidateQueries({ queryKey: key });
+			// also refresh recipes lists so aggregate views update
+			qc.invalidateQueries({ queryKey: recipesKeys.all });
 		},
 	});
 };
@@ -92,6 +101,7 @@ export const useUnlike = (recipeId: string) => {
 			context?: { previous?: RecipeCache },
 		) => {
 			if (context?.previous) qc.setQueryData(key, context.previous);
+			console.error('useUnlike - mutation error', _err);
 		},
 		onSuccess: (resp) => {
 			const data = resp.data as ToggleLikeResponse;
@@ -100,10 +110,18 @@ export const useUnlike = (recipeId: string) => {
 				likesCount: data.likesCount,
 				hasLiked: data.hasLiked,
 			}));
+			qc.setQueryData(['like', 'hasLiked', recipeId ?? ''], {
+				hasLiked: data.hasLiked,
+			});
+			console.log('useUnlike - mutation success', { recipeId, data, resp });
 		},
 		onSettled: () => {
 			qc.invalidateQueries({ queryKey: ['user', 'saved-recipes'] });
 			qc.invalidateQueries({ queryKey: ['user', 'me'] });
+			// ensure recipe detail is refetched from server to reflect authoritative likes
+			qc.invalidateQueries({ queryKey: key });
+			// also refresh recipes lists so aggregate views update
+			qc.invalidateQueries({ queryKey: recipesKeys.all });
 		},
 	});
 };
@@ -116,7 +134,6 @@ export const useHasLiked = (recipeId?: string) => {
 		queryKey: ['like', 'hasLiked', recipeId ?? ''],
 		queryFn: async () => {
 			const resp = await LikeService.hasLiked(recipeId as string);
-			// LikeService returns CommonResponse<{ hasLiked: boolean }>
 			return (resp.data ?? {}) as { hasLiked?: boolean };
 		},
 		enabled: Boolean(recipeId),

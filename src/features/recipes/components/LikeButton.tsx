@@ -1,8 +1,7 @@
 import { Button, Typography } from '@mui/material';
-import { memo, useRef } from 'react';
+import { memo } from 'react';
 
 type Props = {
-	// presentational props: displayed state comes from parent
 	displayedHasLiked: boolean;
 	displayedLikesCount: number;
 	disabled?: boolean;
@@ -15,9 +14,6 @@ function LikeButton({
 	disabled,
 	onToggle,
 }: Props) {
-	const renderCount = useRef(0);
-	renderCount.current += 1;
-
 	return (
 		<>
 			<Button
@@ -25,15 +21,24 @@ function LikeButton({
 				disabled={disabled}
 				variant={displayedHasLiked ? 'contained' : 'outlined'}
 				color={displayedHasLiked ? 'error' : 'primary'}
-				size='small'>
+				size='small'
+				sx={{
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+				}}>
 				{displayedHasLiked ? '❤️' : '🤍'}
+				<Typography
+					variant='body2'
+					component='span'
+					sx={{ ml: 1, fontWeight: 'bold' }}>
+					{displayedLikesCount}
+				</Typography>
 			</Button>
-			<Typography variant='body2' component='span' sx={{ ml: 1 }}>
-				{displayedLikesCount}
-			</Typography>
-			<Typography variant='caption' color='text.secondary' sx={{ ml: 1 }}>
-				({renderCount.current})
-			</Typography>
+			<Typography
+				variant='caption'
+				color='text.secondary'
+				sx={{ ml: 1 }}></Typography>
 		</>
 	);
 }

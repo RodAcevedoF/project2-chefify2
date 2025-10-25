@@ -71,11 +71,15 @@ export default function PrimarySearchAppBar() {
 				</IconButton>
 				<Typography>AI Recipe</Typography>
 			</MenuItem>
-			<MenuItem>
+			<MenuItem
+				onClick={() => {
+					openModal('recipe');
+					handleMobileMenuClose();
+				}}>
 				<IconButton size='large' aria-label='create new recipe' color='inherit'>
 					<SquarePen color={theme.palette.primary.main} />
 				</IconButton>
-				<Typography>Notifications</Typography>
+				<Typography>Create Recipe</Typography>
 			</MenuItem>
 			<MenuItem onClick={handleNavClick('/profile')}>
 				<IconButton

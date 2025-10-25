@@ -1,5 +1,6 @@
-import { Button } from '@mui/material';
-import { memo, useRef } from 'react';
+import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { UserRoundMinus, UserRoundPlus } from 'lucide-react';
+import { memo } from 'react';
 
 type Props = {
 	isFollowing: boolean;
@@ -8,20 +9,14 @@ type Props = {
 };
 
 function AuthorFollow({ isFollowing, loading, onToggle }: Props) {
-	const renderCount = useRef(0);
-	renderCount.current += 1;
-
 	return (
-		<Button
-			size='small'
-			variant='outlined'
-			onClick={onToggle}
-			disabled={loading}>
-			{isFollowing ? 'Unfollow' : 'Follow'}
-			<span style={{ marginLeft: 8, color: 'gray', fontSize: 12 }}>
-				({renderCount.current})
-			</span>
-		</Button>
+		<ButtonUsage
+			disabled={loading}
+			parentMethod={onToggle}
+			extraSx={{ ml: 1, p: 0 }}
+			icon={isFollowing ? UserRoundMinus : UserRoundPlus}
+			iconSx={{ width: 20 }}
+		/>
 	);
 }
 

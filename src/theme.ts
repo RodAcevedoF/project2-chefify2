@@ -15,6 +15,7 @@ const themeOptions: ThemeOptions = {
 			default: '#5ea85e',
 			paper: '#232524',
 		},
+		divider: '#5ea85e75',
 	},
 	typography: {
 		fontFamily: 'Dinot',

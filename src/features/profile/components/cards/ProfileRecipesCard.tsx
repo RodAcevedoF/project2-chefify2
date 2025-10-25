@@ -32,7 +32,6 @@ const ProfileRecipesCard = () => {
 	const uniqueRecipes = (recipes ?? []).filter(
 		(r, i, arr) => arr.findIndex((x) => x._id === r._id) === i,
 	);
-	console.log(recipes);
 
 	return (
 		<Card elevation={1} sx={{ mb: 2 }}>

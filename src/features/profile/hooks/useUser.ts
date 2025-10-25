@@ -10,19 +10,11 @@ import type { User, UserDTO } from '@/types/user.types';
 import type { Recipe } from '@/types/recipe.types';
 import type { CommonResponse } from '@/types/common.types';
 
-export const userKeys = {
-	all: ['user'] as const,
-	lists: () => [...userKeys.all, 'list'] as const,
-	details: () => [...userKeys.all, 'detail'] as const,
-	detail: (id: string) => [...userKeys.details(), id] as const,
-	me: () => [...userKeys.all, 'me'] as const,
-};
-
 export const useGetUser = (
 	options?: UseQueryOptions<CommonResponse<User>, AxiosError, User>,
 ) => {
 	return useQuery<CommonResponse<User>, AxiosError, User>({
-		queryKey: userKeys.lists(),
+		queryKey: ['me'],
 		queryFn: () => UserService.getUsers(),
 		staleTime: Infinity,
 		select: (resp) => resp.data,
@@ -36,7 +28,7 @@ export const useGetUserByEmail = (
 	options?: UseQueryOptions<CommonResponse<User>, AxiosError, User>,
 ) => {
 	return useQuery<CommonResponse<User>, AxiosError, User>({
-		queryKey: userKeys.detail(email ?? ''),
+		queryKey: ['user', 'email', email],
 		queryFn: () => UserService.getUserByEmail(email as string),
 		enabled: Boolean(email),
 		staleTime: Infinity,
@@ -77,8 +69,6 @@ export const useUpdateUser = () => {
 	return useMutation<void, AxiosError, UserDTO>({
 		mutationFn: (payload) => UserService.updateUser(payload),
 		onSuccess: () => {
-			// invalidate user-related queries so UI refreshes
-			qc.invalidateQueries({ queryKey: userKeys.all });
 			qc.invalidateQueries({ queryKey: ['user', 'me'] });
 		},
 	});

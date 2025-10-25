@@ -11,7 +11,6 @@ export const RecipeLayout = () => {
 				component='section'
 				sx={{
 					display: 'flex',
-					alignItems: 'flex-start',
 					justifyContent: 'space-between',
 					width: '100%',
 				}}>

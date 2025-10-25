@@ -29,11 +29,11 @@ export const ProfileLayout = () => {
 
 	const theme = useTheme();
 
-	// color is handled inside UserAvatar
 	const { data: me } = useGetUser();
+	console.log('me', me);
 	const { data: ownRecipes } = useGetOwnRecipes();
 	const { data: savedRecipes } = useGetSavedRecipes();
-	console.log('me', me);
+
 	return (
 		<Box sx={{ width: '100%', p: { xs: 2, md: 4 } }}>
 			<Box

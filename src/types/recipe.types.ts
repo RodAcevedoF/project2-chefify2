@@ -45,7 +45,6 @@ export const RecipeSchema = z.object({
 	imgPublicId: z.string().optional(),
 	servings: z.number(),
 	likesCount: z.number().optional(),
-	hasLiked: z.boolean().optional(),
 	prepTime: z.number(),
 	utensils: z.array(z.string()).optional(),
 	createdAt: z.date().optional(),
@@ -62,3 +61,8 @@ export interface RecipeFormProps {
 	className?: string;
 	toggleForm?: () => void;
 }
+
+export type AuthorObject = {
+	_id?: string;
+	name?: string;
+};

@@ -12,9 +12,11 @@ const Instructions = ({ instructions }: InstructionsProps) => {
 			</Typography>
 			<List style={{ color: 'whitesmoke', fontSize: 12 }}>
 				{instructions.map((step, idx) => (
-					<ListItem key={step + idx}>
-						<Carrot />
-						<Typography variant='body2' ml={1}>
+					<ListItem
+						key={step + idx}
+						sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+						<Carrot size={20} style={{ flexShrink: 0, marginTop: 4 }} />
+						<Typography variant='body1' ml={1} sx={{ whiteSpace: 'pre-line' }}>
 							{step}
 						</Typography>
 					</ListItem>

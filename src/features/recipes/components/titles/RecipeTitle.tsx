@@ -1,6 +1,7 @@
 import { capitalize } from '@/features/common/utils/capitalize.helper';
 import {
 	Box,
+	CardActionArea,
 	CardMedia,
 	Chip,
 	Stack,
@@ -12,6 +13,7 @@ import type { RecipeDTO } from '@/types/recipe.types';
 import { useHasLike, useLike, useUnlike } from '../../hooks';
 import FollowAuthor from '../cards/FollowElement';
 import { recipeStyles } from '../../recipe.theme';
+import { useModalContext } from '@/contexts/modalContext/modal.context';
 
 type RecipeTitleProps = {
 	recipe: RecipeDTO;
@@ -24,20 +26,26 @@ const RecipeTitle = ({ recipe, params }: RecipeTitleProps) => {
 	const userLiked = useHasLike(params.id as string).data;
 	const likeMutation = useLike(params.id as string);
 	const unlikeMutation = useUnlike(params.id as string);
+	const { openModal } = useModalContext();
 
 	return (
 		<Box border={1} sx={style.recipeDetail.title.container}>
 			<Box display={'flex'} gap={2}>
-				<CardMedia
-					component='img'
-					image={recipe.imgUrl || '/default-recipe.png'}
-					alt={recipe.title ?? ''}
-					sx={{
-						borderRadius: 2,
-						width: { xs: '80px', sm: '100px' },
-						objectFit: 'cover',
-					}}
-				/>
+				<CardActionArea
+					onClick={() => openModal('recipeImg', recipe)}
+					sx={{ width: 'fit-content', height: 'fit-content', zIndex: 0 }}
+					aria-label={`Open ${recipe.title ?? 'recipe'} modal`}>
+					<CardMedia
+						component='img'
+						image={recipe.imgUrl || '/default-recipe.png'}
+						alt={recipe.title ?? 'default recipe image'}
+						sx={{
+							borderRadius: 2,
+							width: { xs: '80px', sm: '100px', zIndex: 0 },
+							objectFit: 'cover',
+						}}
+					/>
+				</CardActionArea>
 				<Box>
 					<Typography
 						variant='h4'

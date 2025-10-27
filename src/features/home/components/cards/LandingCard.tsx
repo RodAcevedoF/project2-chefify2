@@ -2,15 +2,18 @@ import { Card, CardMedia, Box, Typography, useTheme } from '@mui/material';
 import { homeStyles } from '../../home.theme';
 import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
 import { ArrowRight } from 'lucide-react';
+import { useModalContext } from '@/contexts/modalContext/modal.context';
 
 export type LandingCardProps = {
 	reverse?: boolean;
 	mediaContainer?: string;
+	imgUrl?: string;
 };
 
 const LandingCard = (props: LandingCardProps) => {
 	const theme = useTheme();
 	const styles = homeStyles(theme);
+	const { openModal } = useModalContext();
 
 	return (
 		<Card
@@ -28,11 +31,12 @@ const LandingCard = (props: LandingCardProps) => {
 					icon={ArrowRight}
 					label='Get Started'
 					iconSx={{ width: 20 }}
+					parentMethod={() => openModal('auth')}
 				/>
 			</Box>
 			<CardMedia
 				component='img'
-				image='/cook.webp'
+				image={props.imgUrl || '/cook.webp'}
 				alt='Chef cocinando'
 				sx={{ ...styles.landingCard.cardMedia }}
 			/>

@@ -9,6 +9,7 @@ import {
 	Box,
 	CircularProgress,
 	CardMedia,
+	Typography,
 } from '@mui/material';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 
@@ -43,6 +44,18 @@ export const Navbar = memo(() => {
 						alt='Chefify Logo'
 						sx={{ width: { md: '80px', xs: '60px' }, height: 'auto' }}
 					/>
+					<Typography
+						variant='h6'
+						noWrap
+						component='div'
+						sx={{
+							display: { xs: 'none', sm: 'block' },
+							fontWeight: 'bolder',
+							color: 'black',
+							fontFamily: 'Alegreya',
+						}}>
+						CHEFIFY
+					</Typography>
 				</Box>
 				{isLoading && <CircularProgress color='inherit' />}
 

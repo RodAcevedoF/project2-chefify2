@@ -29,7 +29,8 @@ export const homeStyles = (theme: Theme, scrolled: boolean = false) => ({
 		variant: 'h1',
 		fontWeight: 'bolder',
 		fontSize: { md: '22vw', xs: '18vw' },
-
+		fontFamily: 'Alegreya',
+		textShadow: '5px 8px 12px rgba(0, 0, 0, 0.66)',
 		zIndex: 100,
 		color: scrolled ? theme.palette.primary.dark : theme.palette.primary.main,
 		borderRadius: 2,

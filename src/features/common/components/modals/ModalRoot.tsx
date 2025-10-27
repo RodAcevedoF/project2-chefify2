@@ -1,19 +1,18 @@
-import { AuthModal } from '@/features/auth/components/nav/auth.modal';
+import React from 'react';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { Modal } from './Modal';
-import { RecipeModal } from '@/features/auth/components/nav/recipe.modal';
-import ProfileModal from '@/features/profile/components/modal/ProfileModal';
-
-export const MODALS = {
-	auth: <AuthModal />,
-	recipe: <RecipeModal />,
-	profileEdit: <ProfileModal />,
-} as const;
+import MODALS from './modals.registry';
 
 export const ModalRoot = () => {
-	const { activeModal } = useModalContext();
+	const { activeModal, modalParams } = useModalContext();
 
 	if (!activeModal || !(activeModal in MODALS)) return null;
 
-	return <Modal id={activeModal}>{MODALS[activeModal]}</Modal>;
+	const Component = MODALS[activeModal as keyof typeof MODALS];
+	const child = React.createElement(
+		Component,
+		(modalParams ?? {}) as Record<string, unknown>,
+	);
+
+	return <Modal id={activeModal}>{child}</Modal>;
 };

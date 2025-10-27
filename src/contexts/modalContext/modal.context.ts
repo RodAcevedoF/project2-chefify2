@@ -1,11 +1,11 @@
-import type { MODALS } from '@/features/common/components/modals/ModalRoot';
 import { createContext, useContext } from 'react';
 
-export type ModalId = keyof typeof MODALS | null;
+export type ModalId = string | null;
 
 type ModalContextType = {
 	activeModal: ModalId;
-	openModal: (id: string) => void;
+	modalParams?: unknown;
+	openModal: (id: string, params?: unknown) => void;
 	closeModal: () => void;
 };
 

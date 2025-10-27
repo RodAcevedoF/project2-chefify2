@@ -10,12 +10,18 @@ interface LoggedProviderProps {
 
 export const LoggedProvider = ({ children }: LoggedProviderProps) => {
 	const [logged, setLogged] = useState<boolean | undefined>(undefined);
+	const [userId, setUserId] = useState<string | null | undefined>(undefined);
 	const setLoggedRef = useRef(setLogged);
+	const setUserIdRef = useRef(setUserId);
 	const { data, isLoading } = useVerified();
 
 	useEffect(() => {
 		setLoggedRef.current = setLogged;
 	}, [setLogged]);
+
+	useEffect(() => {
+		setUserIdRef.current = setUserId;
+	}, [setUserId]);
 
 	useEffect(() => {
 		LoggedManager.getInstance().setLoggedManager((value: boolean) =>
@@ -26,6 +32,11 @@ export const LoggedProvider = ({ children }: LoggedProviderProps) => {
 	useEffect(() => {
 		if (!isLoading) {
 			setLogged(!!data?.isVerified);
+			const maybe = data as unknown as
+				| { id?: string; _id?: string }
+				| undefined;
+			const id = maybe?.id ?? maybe?._id ?? null;
+			setUserId(id);
 		}
 	}, [data, isLoading]);
 
@@ -39,7 +50,8 @@ export const LoggedProvider = ({ children }: LoggedProviderProps) => {
 	}
 
 	return (
-		<LoggedContext.Provider value={{ logged, setLogged, isLoading }}>
+		<LoggedContext.Provider
+			value={{ logged, setLogged, isLoading, userId, setUserId }}>
 			{children}
 		</LoggedContext.Provider>
 	);

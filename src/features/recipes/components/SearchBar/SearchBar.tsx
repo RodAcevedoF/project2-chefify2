@@ -1,25 +1,22 @@
+import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import {
 	Bot,
 	SquareMenu,
-	ScanSearch,
 	CircleUserRound,
 	SquarePen,
 	CircleEllipsis,
 } from 'lucide-react';
-import { useState } from 'react';
-import { Search, SearchIconWrapper, StyledInputBase } from './searchbar.styles';
 import { useDrawerContext } from '../../drawer-context/drawer.context';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
+import SearchElement from './components/SearchElement';
+import MobileSearchBar from './components/MobileSearchBar';
 
 export default function PrimarySearchAppBar() {
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -40,63 +37,32 @@ export default function PrimarySearchAppBar() {
 	};
 
 	const handleNavClick = (path: string) => {
-		if (!path) return;
+		if (!path) return () => {};
 		return () => nav(path);
 	};
 
 	const mobileMenuId = 'primary-search-account-menu-mobile';
 	const renderMobileMenu = (
-		<Menu
-			anchorEl={mobileMoreAnchorEl}
-			anchorOrigin={{
-				vertical: 'top',
-				horizontal: 'right',
-			}}
-			id={mobileMenuId}
-			keepMounted
-			transformOrigin={{
-				vertical: 'top',
-				horizontal: 'right',
-			}}
-			open={isMobileMenuOpen}
-			onClose={handleMobileMenuClose}>
-			<MenuItem>
-				<IconButton
-					size='large'
-					aria-label='show ai recipes token left'
-					color='inherit'>
-					<Badge badgeContent={4} color='error'>
-						<Bot color={theme.palette.primary.main} />
-					</Badge>
-				</IconButton>
-				<Typography>AI Recipe</Typography>
-			</MenuItem>
-			<MenuItem
-				onClick={() => {
-					openModal('recipe');
-					handleMobileMenuClose();
-				}}>
-				<IconButton size='large' aria-label='create new recipe' color='inherit'>
-					<SquarePen color={theme.palette.primary.main} />
-				</IconButton>
-				<Typography>Create Recipe</Typography>
-			</MenuItem>
-			<MenuItem onClick={handleNavClick('/profile')}>
-				<IconButton
-					size='large'
-					aria-label='account of current user'
-					color='inherit'>
-					<CircleUserRound color={theme.palette.primary.main} />
-				</IconButton>
-				<Typography>Profile</Typography>
-			</MenuItem>
-		</Menu>
+		<MobileSearchBar
+			mobileAnchorEl={mobileMoreAnchorEl}
+			isMenuOpen={isMobileMenuOpen}
+			handleMenuClose={handleMobileMenuClose}
+			handleNavClick={handleNavClick}
+			openModal={openModal}
+			theme={theme}
+			mobileMenuId={mobileMenuId}
+		/>
 	);
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position='static'>
-				<Toolbar>
+		<Box sx={{ flexGrow: 1, zIndex: 1300 }}>
+			<AppBar position='static' sx={{ display: 'flex' }}>
+				<Toolbar
+					sx={{
+						width: '100%',
+						display: 'flex',
+						justifyContent: 'space-between',
+					}}>
 					<IconButton
 						size='large'
 						edge='start'
@@ -107,28 +73,16 @@ export default function PrimarySearchAppBar() {
 						disabled={!isMdDown}>
 						<SquareMenu />
 					</IconButton>
-					<Typography
-						variant='h6'
-						noWrap
-						component='div'
-						sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 'bolder' }}>
-						CHEFIFY
-					</Typography>
-					<Search>
-						<SearchIconWrapper>
-							<ScanSearch />
-						</SearchIconWrapper>
-						<StyledInputBase
-							placeholder='Search…'
-							inputProps={{ 'aria-label': 'search' }}
-						/>
-					</Search>
-					<Box sx={{ flexGrow: 1 }} />
-					<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+					<SearchElement />
+					<Box
+						sx={{
+							display: { xs: 'none', md: 'flex' },
+						}}>
 						<IconButton
 							size='large'
 							aria-label='show 4 new mails'
-							color='inherit'>
+							color='inherit'
+							onClick={() => openModal('recipeSuggest')}>
 							<Badge badgeContent={4} color='error'>
 								<Bot />
 							</Badge>

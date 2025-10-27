@@ -29,27 +29,6 @@ const RecipeAside = memo(() => {
 		setDrawerOpen(false);
 	};
 
-	const primaryTypographyProps = {
-		sx: {
-			color: theme.palette.background.paper,
-			fontWeight: 'bolder',
-			transition: 'transform 0.2s',
-			'&:hover': {
-				transform: 'scale(1.05)',
-			},
-			fontFamily: 'Alegreya',
-		},
-	};
-
-	const drawerProps = {
-		sx: {
-			backgroundColor: theme.palette.secondary.light,
-			width: 250,
-			paddingTop: 5,
-			minHeight: '100vh',
-		},
-	};
-
 	const asideContent = (
 		<Box sx={rs.boxContent}>
 			<Typography sx={rs.title}>
@@ -61,31 +40,22 @@ const RecipeAside = memo(() => {
 					Error: {error?.message || 'There was an error'}
 				</Typography>
 			)}
-			{data?.map((recipe: Recipe) => (
+			{data?.slice(0, 8).map((recipe: Recipe) => (
 				<ListItemButton
 					key={recipe._id}
 					onClick={() => recipe._id && handleGetDetails(recipe._id)}
-					sx={{
-						borderRadius: 2,
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'justify-between',
-						gap: 2,
-						width: '100%',
-					}}>
+					sx={rs.recipeAside.listItemBtn}>
 					<Box>
-						<Utensils width={15} height={15} />
+						<Utensils
+							width={15}
+							height={15}
+							color={theme.palette.primary.main}
+						/>
 					</Box>
 					<ListItemText
 						primary={capitalize(recipe.title)}
-						slotProps={{ primary: primaryTypographyProps }}
-						sx={{
-							color: theme.palette.background.paper,
-							borderRadius: 2,
-							p: 0.5,
-							transition: 'background 0.2s',
-							fontFamily: 'Alegreya',
-						}}
+						slotProps={{ primary: rs.recipeAside.primaryTypoProps }}
+						sx={rs.recipeAside.listItemTxt}
 					/>
 				</ListItemButton>
 			))}
@@ -99,7 +69,7 @@ const RecipeAside = memo(() => {
 					anchor='left'
 					open={drawerOpen}
 					onClose={() => setDrawerOpen(false)}
-					slotProps={{ paper: drawerProps }}>
+					slotProps={{ paper: rs.recipeAside.drawerProps }}>
 					{asideContent}
 				</Drawer>
 			</>

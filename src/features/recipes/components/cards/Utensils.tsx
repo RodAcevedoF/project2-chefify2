@@ -11,7 +11,7 @@ const Utensils = ({ utensils }: UtensilsProps) => {
 				Utensils:
 			</Typography>
 			{Array.isArray(utensils) && (
-				<Typography variant='subtitle2' mb={1}>
+				<Typography variant='subtitle1' mb={1}>
 					{utensils.join(', ')}
 				</Typography>
 			)}

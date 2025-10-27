@@ -105,4 +105,33 @@ export const recipeFormStyles = (
 			top: '-7px',
 		},
 	},
+	searchElement: {
+		select: {
+			borderColor: theme.palette.text.primary,
+			color: theme.palette.text.primary,
+			'& .MuiOutlinedInput-notchedOutline': {
+				borderColor: theme.palette.text.primary,
+			},
+			'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+				borderColor: theme.palette.text.primary,
+			},
+			'&:hover .MuiOutlinedInput-notchedOutline': {
+				borderColor: theme.palette.text.primary,
+			},
+			'& .MuiSvgIcon-root': {
+				color: theme.palette.text.primary,
+			},
+			'& .MuiInputLabel-root': {
+				color: theme.palette.text.primary,
+			},
+		},
+		menuItem: {
+			'&:focus, &.Mui-focusVisible': {
+				bgcolor: 'rgba(25,118,210,0.12)',
+			},
+			'&:hover': { bgcolor: 'rgba(57, 140, 94, 0.25)' },
+			'&.Mui-selected': { bgcolor: 'rgba(25,118,210,0.16)' },
+			borderRadius: 1,
+		},
+	},
 });

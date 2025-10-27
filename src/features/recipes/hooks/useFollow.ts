@@ -21,6 +21,8 @@ export const useFollow = (userId: string) => {
 			qc.invalidateQueries({
 				queryKey: ['follow', 'isFollowing'],
 			});
+			// refresh recent activity
+			qc.invalidateQueries({ queryKey: ['user', 'operations'] });
 		},
 	});
 };
@@ -41,6 +43,8 @@ export const useUnfollow = (userId: string) => {
 			qc.invalidateQueries({
 				queryKey: ['follow', 'isFollowing'],
 			});
+			// refresh recent activity
+			qc.invalidateQueries({ queryKey: ['user', 'operations'] });
 		},
 	});
 };

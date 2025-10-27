@@ -5,17 +5,11 @@ import type { Recipe, UpdateRecipeDTO, RecipeDTO } from '@/types/recipe.types';
 import type { UseCommonOptions } from '@/types/common.types';
 import type { QueryParams, CommonResponse } from '@/types/common.types';
 
-export const recipesKeys = {
-	all: ['recipes'] as const,
-	lists: (params?: QueryParams) =>
-		[...recipesKeys.all, 'list', params] as const,
-	details: () => [...recipesKeys.all, 'detail'] as const,
-	detail: (id: string) => [...recipesKeys.details(), id] as const,
-};
+const recipesKeys = ['recipes', 'all', 'recipe'];
 
 export const useGetRecipes = (params: QueryParams = {}) => {
 	return useQuery<CommonResponse<Recipe[]>, AxiosError, Recipe[]>({
-		queryKey: recipesKeys.lists(params),
+		queryKey: [...recipesKeys, params],
 		queryFn: () => RecipeService.getRecipes(params),
 		staleTime: Infinity,
 		select: (resp) => resp.data,
@@ -25,7 +19,7 @@ export const useGetRecipes = (params: QueryParams = {}) => {
 
 export const useGetRecipeByID = (id?: string) => {
 	return useQuery<CommonResponse<Recipe>, AxiosError, Recipe>({
-		queryKey: recipesKeys.detail(id ?? ''),
+		queryKey: [...recipesKeys, id],
 		queryFn: () => RecipeService.getRecipeById(id as string),
 		enabled: Boolean(id),
 		staleTime: Infinity,
@@ -40,7 +34,9 @@ export const useCreateRecipe = (options?: UseCommonOptions<void>) => {
 		mutationKey: ['recipes', 'create'],
 		mutationFn: (data) => RecipeService.createRecipe(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: recipesKeys.all });
+			queryClient.invalidateQueries({ queryKey: recipesKeys });
+			// refresh recent activity
+			queryClient.invalidateQueries({ queryKey: ['user', 'operations'] });
 			options?.onSuccess?.();
 		},
 		onError: (err) => {
@@ -53,10 +49,17 @@ export const useCreateRecipe = (options?: UseCommonOptions<void>) => {
 export const useUpdateRecipe = (options?: UseCommonOptions<void>) => {
 	const queryClient = useQueryClient();
 	return useMutation<void, AxiosError, UpdateRecipeDTO>({
-		mutationKey: ['recipes', 'update'],
+		mutationKey: [...recipesKeys, 'update'],
 		mutationFn: (data) => RecipeService.updatedRecipe(data),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: recipesKeys.all });
+		onSuccess: (_data, variables) => {
+			if (variables?._id) {
+				queryClient.invalidateQueries({
+					queryKey: [...recipesKeys, variables._id],
+				});
+			}
+			queryClient.invalidateQueries({ queryKey: recipesKeys });
+			// refresh recent activity
+			queryClient.invalidateQueries({ queryKey: ['user', 'operations'] });
 			options?.onSuccess?.();
 		},
 		onError: (err) => {
@@ -69,10 +72,12 @@ export const useUpdateRecipe = (options?: UseCommonOptions<void>) => {
 export const useDeleteRecipe = (options?: UseCommonOptions<void>) => {
 	const queryClient = useQueryClient();
 	return useMutation<void, AxiosError, { id: string }>({
-		mutationKey: ['recipes', 'delete'],
+		mutationKey: [...recipesKeys, 'delete'],
 		mutationFn: ({ id }) => RecipeService.deleteRecipe(id),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: recipesKeys.all });
+			queryClient.invalidateQueries({ queryKey: recipesKeys });
+			// refresh recent activity
+			queryClient.invalidateQueries({ queryKey: ['user', 'operations'] });
 			options?.onSuccess?.();
 		},
 		onError: (err) => {
@@ -84,7 +89,7 @@ export const useDeleteRecipe = (options?: UseCommonOptions<void>) => {
 
 export const useSuggestRecipe = () => {
 	return useQuery<RecipeDTO, AxiosError>({
-		queryKey: ['recipe', 'suggestion'],
+		queryKey: [...recipesKeys, 'suggestion'],
 		queryFn: () => RecipeService.getSuggestedRecipe(),
 		retry: false,
 	});

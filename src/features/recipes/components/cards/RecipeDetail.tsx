@@ -35,7 +35,7 @@ const RecipeDetail = () => {
 				</Box>
 				<Box sx={style.recipeDetail.leftBox}>
 					<Instructions instructions={recipe.instructions} />
-					<RecipeButtons />
+					<RecipeButtons recipe={recipe} />
 				</Box>
 			</Box>
 		</Card>

@@ -30,7 +30,7 @@ export default function IngredientCard({ ing }: IngredientProp) {
 	return (
 		<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
 			<CookingPot color={theme.palette.primary.main} width={15} />
-			<Typography variant='body2'>{formatIngredientLine(ing)}</Typography>
+			<Typography variant='body1'>{formatIngredientLine(ing)}</Typography>
 		</Box>
 	);
 }

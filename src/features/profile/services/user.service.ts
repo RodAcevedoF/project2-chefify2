@@ -28,6 +28,11 @@ export const UserService = {
 		return recipes.data;
 	},
 
+	async getRecentOperations(): Promise<CommonResponse<unknown[]>> {
+		const resp = await chefifyAPI.get(`${BASE}/ops`);
+		return resp.data;
+	},
+
 	async getSavedRecipes(): Promise<CommonResponse<Recipe[]>> {
 		const recipes = await chefifyAPI.get(`${BASE}/saved-recipes`);
 		return recipes.data;

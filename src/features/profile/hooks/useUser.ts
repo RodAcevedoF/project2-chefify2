@@ -90,6 +90,7 @@ export const useSaveRecipe = () => {
 		mutationFn: (recipeId) => UserService.saveRecipe(recipeId),
 		onSuccess: () => {
 			qc.invalidateQueries({ queryKey: ['user', 'saved-recipes'] });
+			qc.invalidateQueries({ queryKey: ['user', 'operations'] });
 		},
 	});
 };
@@ -100,6 +101,20 @@ export const useDeleteSavedRecipe = () => {
 		mutationFn: (recipeId) => UserService.deleteSavedRecipe(recipeId),
 		onSuccess: () => {
 			qc.invalidateQueries({ queryKey: ['user', 'saved-recipes'] });
+			qc.invalidateQueries({ queryKey: ['user', 'operations'] });
 		},
+	});
+};
+
+export const useGetRecentOperations = (
+	options?: UseQueryOptions<CommonResponse<unknown[]>, AxiosError, unknown[]>,
+) => {
+	return useQuery<CommonResponse<unknown[]>, AxiosError, unknown[]>({
+		queryKey: ['user', 'operations'],
+		queryFn: () => UserService.getRecentOperations(),
+		staleTime: Infinity,
+		select: (resp) => resp.data,
+		retry: false,
+		...options,
 	});
 };

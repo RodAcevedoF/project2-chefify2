@@ -1,15 +1,5 @@
-import {
-	Box,
-	Typography,
-	Button,
-	Paper,
-	Card,
-	CardContent,
-	List,
-	ListItem,
-	ListItemText,
-	useTheme,
-} from '@mui/material';
+import { Box, Typography, Button, Paper, useTheme } from '@mui/material';
+import RecentActivityCard from './components/cards/RecentActivityCard';
 import ProfileCard from './components/cards/ProfileCard';
 import { useNavigate } from 'react-router-dom';
 //import { ButtonUsage } from '../common/components/ui/buttons/MainButton';
@@ -51,38 +41,11 @@ export const ProfileLayout = () => {
 				<Box>
 					<ProfileRecipesCard />
 
-					<Card elevation={1}>
-						<CardContent>
-							<Typography
-								variant='h6'
-								sx={{
-									fontFamily: 'Alegreya',
-									border: 1,
-									borderColor: theme.palette.background.default,
-									p: 1,
-									borderRadius: 3,
-								}}>
-								Recent activity
-							</Typography>
-							<List>
-								<ListItem>
-									<ListItemText
-										primary='You saved a recipe'
-										secondary='2 hours ago'
-									/>
-								</ListItem>
-								<ListItem>
-									<ListItemText
-										primary='You edited your profile'
-										secondary='3 days ago'
-									/>
-								</ListItem>
-							</List>
-						</CardContent>
-					</Card>
+					{/* Recent activity */}
+					<Box sx={{ mb: 2 }}>
+						<RecentActivityCard />
+					</Box>
 				</Box>
-
-				{/* Right: Stats / Actions */}
 				<Box>
 					<Paper sx={{ p: 2 }} elevation={2}>
 						<Typography

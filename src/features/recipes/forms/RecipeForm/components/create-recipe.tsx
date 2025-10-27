@@ -5,36 +5,47 @@ import { recipeFormStyles } from '../recipe-form.theme';
 
 export interface CreateBtnProps {
 	createRecipeMutation: {
-		isPending: boolean;
-		isError: boolean;
+		isPending?: boolean;
+		isLoading?: boolean;
+		isError?: boolean;
 	};
+	mode?: 'create' | 'edit';
 }
 
-const CreateBtn = ({ createRecipeMutation }: CreateBtnProps) => {
+const CreateBtn = ({
+	createRecipeMutation,
+	mode = 'create',
+}: CreateBtnProps) => {
 	const theme = useTheme();
 	const rs = recipeFormStyles(theme, {});
+	const isPending =
+		createRecipeMutation?.isPending ?? createRecipeMutation?.isLoading ?? false;
+	const isError = createRecipeMutation?.isError ?? false;
+
 	return (
 		<>
 			<Box sx={rs.createBtnBox}>
 				<ButtonUsage
 					label={
-						createRecipeMutation.isPending ? (
+						isPending ? (
 							<CircularProgress
 								size={20}
 								sx={{ color: theme.palette.primary.main }}
 							/>
+						) : mode === 'edit' ? (
+							'SAVE'
 						) : (
 							'CREATE'
 						)
 					}
-					disabled={createRecipeMutation.isPending}
+					disabled={isPending}
 					type='submit'
 					icon={CirclePlus}
 				/>
 			</Box>
-			{createRecipeMutation.isError && (
+			{isError && (
 				<Typography color='error' mt={2}>
-					Error while creating the recipe. Please try again.
+					Error while processing the recipe. Please try again.
 				</Typography>
 			)}
 		</>

@@ -1,12 +1,15 @@
 import { useForm, type Resolver } from 'react-hook-form';
 import { Box, TextField, Typography, CardMedia, useTheme } from '@mui/material';
+import { useEffect } from 'react';
 import {
 	RECIPE_CATEGORY_OPTIONS,
 	RecipeSchema,
 	type RecipeDTO,
+	type UpdateRecipeDTO,
 	type RecipeFormProps,
 } from '@/types/recipe.types';
-import { useCreateRecipe } from '@/features/recipes/hooks';
+import type { Recipe } from '@/types/recipe.types';
+import { useCreateRecipe, useUpdateRecipe } from '@/features/recipes/hooks';
 import { useState } from 'react';
 import CategoriesInput from './components/categories-input';
 import InstructionsInput from './components/instructions-input';
@@ -19,7 +22,11 @@ import IngredientsInput from './components/ingredients-input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { IngredientRefDTO } from '@/types/ingredient.type';
 
-export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
+export const RecipeForm = ({
+	onSuccess,
+	className = '',
+	initialData,
+}: RecipeFormProps) => {
 	const {
 		register,
 		handleSubmit,
@@ -47,6 +54,36 @@ export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
 		setValue('imgPublicId', `local-${Date.now()}`);
 	};
 
+	useEffect(() => {
+		if (!initialData) return;
+		if (initialData.title) setValue('title', initialData.title);
+		if (initialData.imgUrl) {
+			setImgPreview(initialData.imgUrl as string);
+			setValue('imgUrl', initialData.imgUrl as string);
+		}
+		if (initialData.imgPublicId)
+			setValue('imgPublicId', initialData.imgPublicId as string);
+		if (initialData.servings !== undefined)
+			setValue('servings', initialData.servings as number);
+		if (initialData.prepTime !== undefined)
+			setValue('prepTime', initialData.prepTime as number);
+		if (initialData.categories)
+			setValue(
+				'categories',
+				initialData.categories as unknown as Recipe['categories'],
+			);
+		if (initialData.utensils)
+			setValue('utensils', initialData.utensils as string[]);
+
+		if (initialData.instructions)
+			setValue('instructions', initialData.instructions as string[]);
+		if (initialData.ingredients)
+			setValue(
+				'ingredients',
+				initialData.ingredients as unknown as Recipe['ingredients'],
+			);
+	}, [initialData, setValue]);
+
 	const handleImageClear = () => {
 		if (imgPreview?.startsWith('blob:')) URL.revokeObjectURL(imgPreview);
 		setValue('imgUrl', '');
@@ -60,13 +97,22 @@ export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
 
 	const createRecipeMutation = useCreateRecipe({
 		onSuccess: () => {
-			console.log('Recipe created successfully');
 			onSuccess?.();
 		},
 		onError: (error) => {
 			console.error('Error creating recipe:', error);
 		},
 	});
+
+	const updateRecipeMutation = useUpdateRecipe({
+		onSuccess: () => {
+			onSuccess?.();
+		},
+		onError: (error) => {
+			console.error('Error updating recipe:', error);
+		},
+	});
+	const editId = initialData?._id;
 
 	const onSubmit = (data: RecipeDTO) => {
 		const payload = {
@@ -79,17 +125,29 @@ export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
 				quantity: Number(ing.quantity),
 			})),
 		};
-		console.log('Submitting payload:', payload);
-		createRecipeMutation.mutate(payload);
+
+		if (editId) {
+			const updatePayload: UpdateRecipeDTO = {
+				_id: editId,
+				...payload,
+			} as UpdateRecipeDTO;
+			updateRecipeMutation.mutate(updatePayload, {
+				onSuccess: () => {
+					onSuccess?.(editId);
+				},
+			});
+		} else {
+			createRecipeMutation.mutate(payload, {
+				onSuccess: () => onSuccess?.(),
+			});
+		}
 	};
 
 	handleSubmit(
 		(data) => {
-			console.log('Form onSubmit triggered');
 			onSubmit(data);
 		},
 		(errors) => {
-			console.log('Form validation errors:', errors);
 			if (errors.ingredients) {
 				if (Array.isArray(errors.ingredients)) {
 					errors.ingredients.forEach((err, idx) => {
@@ -107,7 +165,9 @@ export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
 	return (
 		<Box sx={rs.recipeFormBox} className={className}>
 			<Box sx={rs.recipeFormBox.box}>
-				<Typography sx={rs.recipeFormBox.typo}>Create Recipe</Typography>
+				<Typography sx={rs.recipeFormBox.typo}>
+					{editId ? 'Edit Recipe' : 'Create Recipe'}
+				</Typography>
 				<CardMedia
 					component={'img'}
 					image='/logo.png'
@@ -166,7 +226,12 @@ export const RecipeForm = ({ onSuccess, className = '' }: RecipeFormProps) => {
 					watch={watch}
 					onClear={handleImageClear}
 				/>
-				<CreateBtn createRecipeMutation={createRecipeMutation} />
+				<CreateBtn
+					createRecipeMutation={
+						editId ? updateRecipeMutation : createRecipeMutation
+					}
+					mode={editId ? 'edit' : 'create'}
+				/>
 			</Box>
 		</Box>
 	);

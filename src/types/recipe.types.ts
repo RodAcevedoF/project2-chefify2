@@ -57,9 +57,10 @@ export type RecipeDTO = Partial<Recipe>;
 export type UpdateRecipeDTO = Partial<RecipeDTO> & { _id: string };
 
 export interface RecipeFormProps {
-	onSuccess?: () => void;
+	onSuccess?: (id?: string) => void;
 	className?: string;
 	toggleForm?: () => void;
+	initialData?: Partial<Recipe>;
 }
 
 export type AuthorObject = {

@@ -1,4 +1,5 @@
 import chefifyAPI from '@/lib/api';
+import normalizeSuggestedRecipeResponse from '@/features/recipes/utils/normalizeSuggestedResponse';
 import type { Recipe, RecipeDTO, UpdateRecipeDTO } from '@/types/recipe.types';
 import type { QueryParams, CommonResponse } from '@/types/common.types';
 
@@ -24,10 +25,9 @@ export const RecipeService = {
 	},
 
 	async getSuggestedRecipe(): Promise<RecipeDTO> {
-		const suggestedRecipe: RecipeDTO = await chefifyAPI.get(
-			`${BASE}/suggested`,
-		);
-		return suggestedRecipe;
+		const resp = await chefifyAPI.get(`${BASE}/suggested`);
+		const normalized = normalizeSuggestedRecipeResponse(resp);
+		return normalized as unknown as RecipeDTO;
 	},
 
 	async deleteRecipe(id: string): Promise<void> {

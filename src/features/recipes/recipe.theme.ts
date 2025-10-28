@@ -56,6 +56,7 @@ export const recipeStyles = (theme: Theme) => ({
 	boxContent: {
 		width: 200,
 		p: 2,
+		pt: 0,
 	},
 	title: {
 		fontSize: '1.5rem',

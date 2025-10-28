@@ -1,6 +1,8 @@
-import { memo } from 'react';
+import { memo, useState, useMemo } from 'react';
 import type { Recipe } from '@/types/recipe.types';
 import { useGetRecipes } from '@/features/recipes/hooks';
+import { useGetSavedRecipes } from '@/features/profile/hooks/useUser';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { ChefHat, Utensils } from 'lucide-react';
 import {
 	Box,
@@ -17,7 +19,6 @@ import { capitalize } from '@/features/common/utils/capitalize.helper';
 import { useDrawerContext } from '../../drawer-context/drawer.context';
 
 const RecipeAside = memo(() => {
-	const { data, isLoading, error, isError } = useGetRecipes();
 	const navigate = useNavigate();
 	const theme = useTheme();
 	const rs = recipeStyles(theme);
@@ -29,18 +30,73 @@ const RecipeAside = memo(() => {
 		setDrawerOpen(false);
 	};
 
+	const [mode, setMode] = useState<'latest' | 'mostVoted' | 'favorites'>(
+		'latest',
+	);
+
+	const handleMode = (
+		_event: React.MouseEvent<HTMLElement>,
+		value: 'latest' | 'mostVoted' | 'favorites',
+	) => {
+		if (value) setMode(value);
+	};
+
+	// For 'latest' we only need a small page; for 'mostVoted' we fetch more so we can sort client-side
+	const {
+		data: latestData,
+		isLoading,
+		error,
+		isError,
+	} = useGetRecipes({ limit: 8 });
+	const { data: bulkData } = useGetRecipes({ limit: 200 });
+	const { data: savedRecipes } = useGetSavedRecipes();
+
+	const displayed = useMemo(() => {
+		switch (mode) {
+			case 'mostVoted':
+				return bulkData
+					? [...bulkData]
+							.sort((a, b) => (b.likesCount ?? 0) - (a.likesCount ?? 0))
+							.slice(0, 8)
+					: [];
+			case 'favorites':
+				return savedRecipes ?? [];
+			case 'latest':
+			default:
+				return latestData ?? [];
+		}
+	}, [mode, latestData, bulkData, savedRecipes]);
+
 	const asideContent = (
 		<Box sx={rs.boxContent}>
-			<Typography sx={rs.title}>
-				Last recipes <ChefHat />
-			</Typography>
+			<Box
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+					flexDirection: 'column',
+					justifyContent: 'space-between',
+					mb: 1,
+				}}>
+				<Typography sx={rs.title}>
+					Recipes <ChefHat />
+				</Typography>
+				<ToggleButtonGroup
+					value={mode}
+					exclusive
+					onChange={handleMode}
+					size='small'>
+					<ToggleButton value='latest'>Last</ToggleButton>
+					<ToggleButton value='mostVoted'>Top</ToggleButton>
+					<ToggleButton value='favorites'>My fav</ToggleButton>
+				</ToggleButtonGroup>
+			</Box>
 			{isLoading && <Typography sx={rs.title}>Loading recipes...</Typography>}
 			{isError && (
 				<Typography color='error' sx={{ fontFamily: 'Alegreya' }}>
 					Error: {error?.message || 'There was an error'}
 				</Typography>
 			)}
-			{data?.slice(0, 8).map((recipe: Recipe) => (
+			{displayed?.slice(0, 8).map((recipe: Recipe) => (
 				<ListItemButton
 					key={recipe._id}
 					onClick={() => recipe._id && handleGetDetails(recipe._id)}

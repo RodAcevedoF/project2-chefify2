@@ -12,6 +12,7 @@ import {
 	Typography,
 } from '@mui/material';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
+import { DoorOpen, KeyRound } from 'lucide-react';
 
 export const Navbar = memo(() => {
 	const { logged, setLogged, isLoading } = useLoggedContext();
@@ -73,12 +74,14 @@ export const Navbar = memo(() => {
 								label={logoutMutation.isPending ? 'Logging out...' : 'Logout'}
 								parentMethod={handleLogout}
 								disabled={logoutMutation.isPending}
+								icon={DoorOpen}
 							/>
 						</>
 					) : (
 						<ButtonUsage
 							label='Sign In'
 							parentMethod={() => openModal('auth')}
+							icon={KeyRound}
 						/>
 					)}
 				</Box>

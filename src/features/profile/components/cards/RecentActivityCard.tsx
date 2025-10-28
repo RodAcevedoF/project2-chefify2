@@ -9,21 +9,8 @@ import {
 	useTheme,
 } from '@mui/material';
 import { useGetRecentOperations } from '@/features/profile/hooks/useUser';
-import { BrushCleaning } from 'lucide-react';
-
-function timeAgo(input?: string | Date): string {
-	if (!input) return '';
-	const then = typeof input === 'string' ? new Date(input) : input;
-	const diff = Date.now() - then.getTime();
-	const sec = Math.floor(diff / 1000);
-	if (sec < 60) return `${sec}s ago`;
-	const min = Math.floor(sec / 60);
-	if (min < 60) return `${min}m ago`;
-	const hr = Math.floor(min / 60);
-	if (hr < 24) return `${hr}h ago`;
-	const days = Math.floor(hr / 24);
-	return `${days}d ago`;
-}
+import { BrushCleaning, ClipboardList } from 'lucide-react';
+import { timeAgo } from '../../utils/calcTime.util';
 
 const RecentActivityCard: React.FC = () => {
 	const theme = useTheme();
@@ -80,8 +67,25 @@ const RecentActivityCard: React.FC = () => {
 							const primary = item?.summary ?? item?.type ?? 'Activity';
 							const secondary = item?.createdAt ? timeAgo(item.createdAt) : '';
 							return (
-								<ListItem key={idx}>
-									<ListItemText primary={primary} secondary={secondary} />
+								<ListItem
+									key={idx}
+									sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+									<ClipboardList color={theme.palette.primary.main} />
+									<ListItemText
+										primary={primary}
+										secondary={secondary}
+										slotProps={{
+											primary: {
+												sx: {
+													fontWeight: 700,
+													fontSize: '18px',
+												},
+											},
+											secondary: {
+												sx: { color: 'primary', fontSize: '14px' },
+											},
+										}}
+									/>
 								</ListItem>
 							);
 						})}

@@ -1,13 +1,15 @@
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
 import { useLogout } from '@/features/auth/hooks';
 import { handleNavigate } from '@/utils/handleNavigate';
-import { Button, Paper, Typography, useTheme, Box } from '@mui/material';
+import { Paper, Typography, useTheme, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
 	useGetOwnRecipes,
 	useGetSavedRecipes,
 	useGetUser,
 } from '../../hooks/useUser';
+import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { Donut, DoorOpen } from 'lucide-react';
 
 const Statistics = () => {
 	const { setLogged } = useLoggedContext();
@@ -31,7 +33,11 @@ const Statistics = () => {
 	const { data: ownRecipes } = useGetOwnRecipes();
 	const { data: savedRecipes } = useGetSavedRecipes();
 	const { data: me } = useGetUser();
-
+	const stats = [
+		{ label: 'Recipes', value: ownRecipes?.length ?? 0 },
+		{ label: 'Favorites', value: savedRecipes?.length ?? 0 },
+		{ label: 'Followers', value: me?.followersCount ?? 0 },
+	];
 	return (
 		<Paper sx={{ p: 2 }} elevation={2}>
 			<Typography
@@ -46,28 +52,35 @@ const Statistics = () => {
 				}}>
 				Statistics
 			</Typography>
-			<Typography variant='body2'>
-				Recipes: {ownRecipes?.length ?? 0}
-			</Typography>
-			<Typography variant='body2'>
-				Favorites: {savedRecipes?.length ?? 0}
-			</Typography>
-			<Typography variant='body2' sx={{ mb: 2 }}>
-				Followers: {me?.followersCount ?? 0}
-			</Typography>
+			{(() => {
+				return stats.map((s) => (
+					<Box
+						key={s.label}
+						sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+						<Donut color={theme.palette.primary.main} />
+						<Typography variant='body1'>
+							{s.label}: {s.value}
+						</Typography>
+					</Box>
+				));
+			})()}
 			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-				<Button
-					variant='outlined'
-					onClick={handleNavigate('/profile/settings', nav)}>
-					Settings
-				</Button>
-				<Button
-					variant='outlined'
-					color='error'
-					onClick={handleLogout}
-					disabled={logoutMutation.isLoading}>
-					Log out
-				</Button>
+				<ButtonUsage
+					label='Settings'
+					parentMethod={handleNavigate('/profile/settings', nav)}
+				/>
+				<ButtonUsage
+					label={logoutMutation.isPending ? 'Logging out...' : 'Logout'}
+					parentMethod={handleLogout}
+					disabled={logoutMutation.isPending}
+					extraSx={{
+						backgroundColor: 'transparent',
+						borderColor: 'red',
+						color: 'red',
+						'&:hover': { backgroundColor: 'rgba(255, 0, 0, 0.1)' },
+					}}
+					icon={DoorOpen}
+				/>
 			</Box>
 		</Paper>
 	);

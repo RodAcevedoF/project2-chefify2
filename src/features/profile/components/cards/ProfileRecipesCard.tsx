@@ -115,11 +115,11 @@ const ProfileRecipesCard = () => {
 									/>
 
 									<Box sx={{ flex: 1, minWidth: 0 }}>
-										<Typography variant='subtitle1' fontWeight={700} noWrap>
+										<Typography variant='h6' fontWeight={700} noWrap>
 											{recipe.title}
 										</Typography>
 										<Typography
-											variant='caption'
+											variant='body1'
 											color='primary'
 											display='block'
 											sx={{ mt: 0.5 }}>
@@ -134,7 +134,7 @@ const ProfileRecipesCard = () => {
 														<Chip
 															key={cat}
 															label={cat}
-															size='small'
+															size='medium'
 															variant='outlined'
 															color='primary'
 															sx={{ mr: 0.5 }}

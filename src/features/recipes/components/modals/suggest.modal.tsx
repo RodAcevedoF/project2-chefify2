@@ -4,6 +4,7 @@ import {
 	Button,
 	CircularProgress,
 	Alert,
+	useTheme,
 } from '@mui/material';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useMutation } from '@tanstack/react-query';
@@ -11,10 +12,11 @@ import { RecipeService } from '@/features/recipes/services/recipe.service';
 import { IngredientService } from '@/features/ingredients/services/ingredient.service';
 import normalizeSuggestedRecipeResponse from '@/features/recipes/utils/normalizeSuggestedResponse';
 import type { AxiosError } from 'axios';
+import { Bot } from 'lucide-react';
 
 export const SuggestRecipeModal = () => {
 	const { closeModal, openModal } = useModalContext();
-
+	const theme = useTheme();
 	const mutation = useMutation({
 		mutationFn: async () => {
 			const res = await RecipeService.getSuggestedRecipe();
@@ -81,11 +83,12 @@ export const SuggestRecipeModal = () => {
 	})();
 
 	return (
-		<Box sx={{ p: 2, minWidth: 360 }}>
-			<Typography variant='h6' mb={1}>
-				Generate AI recipe
-			</Typography>
-			<Typography variant='body2' mb={2}>
+		<Box sx={{ p: 2, width: 500 }}>
+			<Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, mb: 2 }}>
+				<Typography variant='h6'>Generate AI recipe</Typography>
+				<Bot color={theme.palette.primary.main} />
+			</Box>
+			<Typography variant='body1' mb={2}>
 				Ask the AI to generate a realistic recipe. The generated JSON will be
 				loaded into the recipe form so you can review and save it. Do you want
 				to continue?

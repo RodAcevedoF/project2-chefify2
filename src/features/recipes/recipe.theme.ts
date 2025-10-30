@@ -54,7 +54,7 @@ export const recipeStyles = (theme: Theme) => ({
 		},
 	},
 	boxContent: {
-		width: 200,
+		width: 220,
 		p: 2,
 		pt: 0,
 	},

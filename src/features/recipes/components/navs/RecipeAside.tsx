@@ -41,7 +41,6 @@ const RecipeAside = memo(() => {
 		if (value) setMode(value);
 	};
 
-	// For 'latest' we only need a small page; for 'mostVoted' we fetch more so we can sort client-side
 	const {
 		data: latestData,
 		isLoading,
@@ -84,10 +83,47 @@ const RecipeAside = memo(() => {
 					value={mode}
 					exclusive
 					onChange={handleMode}
-					size='small'>
-					<ToggleButton value='latest'>Last</ToggleButton>
-					<ToggleButton value='mostVoted'>Top</ToggleButton>
-					<ToggleButton value='favorites'>My fav</ToggleButton>
+					size='small'
+					sx={{ backdropFilter: 'blur(10px)' }}>
+					<ToggleButton
+						value='latest'
+						sx={{
+							fontFamily: 'Alegreya',
+							width: '65px',
+							fontWeight: 'bolder',
+							color: theme.palette.primary.main,
+							'&.Mui-selected': {
+								color: theme.palette.background.default,
+							},
+						}}>
+						Last
+					</ToggleButton>
+					<ToggleButton
+						value='mostVoted'
+						sx={{
+							fontFamily: 'Alegreya',
+							width: '65px',
+							fontWeight: 'bolder',
+							color: theme.palette.primary.main,
+							'&.Mui-selected': {
+								color: theme.palette.background.default,
+							},
+						}}>
+						Top
+					</ToggleButton>
+					<ToggleButton
+						value='favorites'
+						sx={{
+							fontFamily: 'Alegreya',
+							width: '65px',
+							fontWeight: 'bolder',
+							color: theme.palette.primary.main,
+							'&.Mui-selected': {
+								color: theme.palette.background.default,
+							},
+						}}>
+						My fav
+					</ToggleButton>
 				</ToggleButtonGroup>
 			</Box>
 			{isLoading && <Typography sx={rs.title}>Loading recipes...</Typography>}

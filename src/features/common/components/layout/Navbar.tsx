@@ -12,10 +12,10 @@ import {
 	Typography,
 } from '@mui/material';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
-import { DoorOpen, KeyRound } from 'lucide-react';
+import { DoorOpen, KeyRound, ShieldUser } from 'lucide-react';
 
 export const Navbar = memo(() => {
-	const { logged, setLogged, isLoading } = useLoggedContext();
+	const { logged, setLogged, isLoading, isAdmin } = useLoggedContext();
 	const nav = useNavigate();
 	const { openModal } = useModalContext();
 
@@ -68,6 +68,13 @@ export const Navbar = memo(() => {
 						gap: 2,
 						width: '100%',
 					}}>
+					{logged && isAdmin && (
+						<ButtonUsage
+							label='Admin Panel'
+							parentMethod={() => nav('/admin')}
+							icon={ShieldUser}
+						/>
+					)}
 					{logged && !isLoading ? (
 						<>
 							<ButtonUsage

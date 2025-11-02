@@ -16,11 +16,22 @@ export const RecipeService = {
 		return recipe.data;
 	},
 
-	async createRecipe(data: RecipeDTO): Promise<void> {
-		await chefifyAPI.post(`${BASE}`, data);
+	async createRecipe(data: RecipeDTO | FormData): Promise<void> {
+		await chefifyAPI.post(
+			`${BASE}`,
+			data as unknown as Record<string, unknown>,
+		);
 	},
 
-	async updatedRecipe(data: UpdateRecipeDTO): Promise<void> {
+	async updatedRecipe(data: UpdateRecipeDTO | FormData): Promise<void> {
+		if (data instanceof FormData) {
+			const id = data.get('_id') as string;
+			await chefifyAPI.patch(
+				`${BASE}/${id}`,
+				data as unknown as Record<string, unknown>,
+			);
+			return;
+		}
 		await chefifyAPI.patch(`${BASE}/${data._id}`, data);
 	},
 

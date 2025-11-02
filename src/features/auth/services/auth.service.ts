@@ -1,5 +1,4 @@
 import chefifyAPI from '@/lib/api';
-import noAuthApi from '@/lib/noAuthApi';
 import type { LoginParams, RegisterParams } from '@/types/auth.types';
 
 const BASE = '/auth';
@@ -32,8 +31,22 @@ export const AuthService = {
 		return res;
 	},
 
-	async refresh() {
-		const res = await noAuthApi.post(`${BASE}/refresh`);
-		return res.data;
+	async changePassword(payload: {
+		currentPassword?: string;
+		newPassword: string;
+		targetUserId?: string;
+	}) {
+		const res = await chefifyAPI.post(`${BASE}/change-password`, payload);
+		return res;
+	},
+
+	async forgotPassword(payload: { email: string }) {
+		const res = await chefifyAPI.post(`${BASE}/forgot-password`, payload);
+		return res;
+	},
+
+	async resetPassword(payload: { token: string; newPassword: string }) {
+		const res = await chefifyAPI.post(`${BASE}/reset-password`, payload);
+		return res;
 	},
 };

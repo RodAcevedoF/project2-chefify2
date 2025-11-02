@@ -1,4 +1,8 @@
-import { createTheme, type ThemeOptions } from '@mui/material';
+import { createTheme, type ThemeOptions } from '@mui/material/styles';
+
+const CIRCLE_GRADIENT = 'radial-gradient(circle, #5ea85e 0%, #4c8a4cff 100%)';
+const LIGHT_CIRCLE_GRADIENT =
+	'radial-gradient(circle, #ffffeb 0%, #e0e0cdff 100%)';
 
 const themeOptions: ThemeOptions = {
 	palette: {
@@ -8,11 +12,13 @@ const themeOptions: ThemeOptions = {
 			light: '#ffffeb7f',
 		},
 		secondary: {
-			main: '#f50057',
+			main: '#f500149d',
 			light: '#E7D2B0',
 		},
 		background: {
 			default: '#5ea85e',
+			gradient: CIRCLE_GRADIENT,
+			lightGradient: LIGHT_CIRCLE_GRADIENT,
 			paper: '#232524',
 		},
 		divider: '#5ea85e75',

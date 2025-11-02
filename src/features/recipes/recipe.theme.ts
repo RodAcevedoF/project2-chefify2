@@ -8,7 +8,7 @@ export const recipeStyles = (theme: Theme) => ({
 		alignItems: 'flex-start',
 		minHeight: '100vh',
 		paddingTop: 5,
-		backgroundColor: '#291e04ff',
+		background: '#291e04ff',
 		backgroundImage: 'url("/wood-pattern.png")',
 		backgroundRepeat: 'repeat',
 		backgroundPosition: 'center',
@@ -23,7 +23,7 @@ export const recipeStyles = (theme: Theme) => ({
 			transition: 'background 0.15s, transform 0.15s',
 			'&:hover': {
 				transform: 'translateY(-2px)',
-				backgroundColor: 'rgba(255, 255, 255, 0.17)',
+				background: 'rgba(255, 255, 255, 0.17)',
 				'& .MuiListItemText-root': {
 					color: theme.palette.primary.light,
 					filter: 'brightness(1.5)',
@@ -40,17 +40,18 @@ export const recipeStyles = (theme: Theme) => ({
 		primaryTypoProps: {
 			color: theme.palette.primary.main,
 			fontWeight: 'bolder',
-			transition: 'transform 0.2s',
-			'&:hover': {
-				transform: 'scale(1.05)',
-			},
 			fontFamily: 'Alegreya',
 		},
 		drawerProps: {
-			backgroundColor: theme.palette.secondary.light,
+			background: '#291e04ff',
 			width: 250,
 			paddingTop: 5,
+			paddingLeft: 1,
 			minHeight: '100vh',
+			backgroundImage: 'url("/wood-pattern.png")',
+			backgroundRepeat: 'repeat',
+			backgroundPosition: 'center',
+			backgroundSize: 'auto',
 		},
 	},
 	boxContent: {

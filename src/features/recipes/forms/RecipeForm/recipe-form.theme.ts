@@ -17,6 +17,7 @@ export const recipeFormStyles = (
 		boxShadow: 3,
 		p: 2,
 		bgcolor: 'background.default',
+		background: theme.palette.background.gradient,
 		box: {
 			display: 'flex',
 			justifyContent: 'center',
@@ -26,6 +27,7 @@ export const recipeFormStyles = (
 		typo: {
 			fontSize: '1.5rem',
 			fontWeight: 700,
+			fontFamily: 'Alegreya',
 		},
 	},
 	form: {
@@ -107,22 +109,23 @@ export const recipeFormStyles = (
 	},
 	searchElement: {
 		select: {
-			borderColor: theme.palette.text.primary,
-			color: theme.palette.text.primary,
+			fontWeight: 'bolder',
+			borderColor: theme.palette.primary.main,
+			color: theme.palette.primary.main,
 			'& .MuiOutlinedInput-notchedOutline': {
-				borderColor: theme.palette.text.primary,
+				borderColor: theme.palette.primary.main,
 			},
 			'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-				borderColor: theme.palette.text.primary,
+				borderColor: theme.palette.primary.main,
 			},
 			'&:hover .MuiOutlinedInput-notchedOutline': {
-				borderColor: theme.palette.text.primary,
+				borderColor: theme.palette.primary.main,
 			},
 			'& .MuiSvgIcon-root': {
-				color: theme.palette.text.primary,
+				color: theme.palette.primary.main,
 			},
 			'& .MuiInputLabel-root': {
-				color: theme.palette.text.primary,
+				color: theme.palette.primary.main,
 			},
 		},
 		menuItem: {

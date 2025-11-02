@@ -47,7 +47,7 @@ export const useLogout = (options?: UseCommonOptions<AuthResponse>) => {
 		},
 		onSuccess: (data) => {
 			qc.invalidateQueries({ queryKey: ['auth', 'me'] });
-			clearRefreshQueue(new Error('User logged out'));
+			clearRefreshQueue();
 			options?.onSuccess?.(data);
 			options?.redirectTo?.();
 		},
@@ -58,26 +58,7 @@ export const useLogout = (options?: UseCommonOptions<AuthResponse>) => {
 	});
 };
 
-export const useRefresh = (options?: UseCommonOptions<AuthResponse>) => {
-	const qc = useQueryClient();
-	return useMutation<AuthResponse, AxiosError, void>({
-		mutationKey: ['auth', 'refresh'],
-		mutationFn: async () => {
-			const response = await AuthService.refresh();
-			return response;
-		},
-		onSuccess: (data) => {
-			qc.invalidateQueries({ queryKey: ['auth'] });
-			qc.invalidateQueries({ queryKey: ['user', 'refresh'] });
-			options?.onSuccess?.(data);
-			options?.redirectTo?.();
-		},
-		onError: (axiosError) => {
-			console.error('Error refreshing token:', axiosError);
-			options?.onError?.(axiosError);
-		},
-	});
-};
+// refresh flow removed - useRefresh deprecated and removed.
 
 export const useRegister = (options?: UseCommonOptions<AuthResponse>) => {
 	const qc = useQueryClient();
@@ -107,6 +88,67 @@ export const useRegister = (options?: UseCommonOptions<AuthResponse>) => {
 	});
 };
 
+export const useChangePassword = (options?: UseCommonOptions<void>) => {
+	const qc = useQueryClient();
+	return useMutation<
+		void,
+		AxiosError,
+		{ currentPassword?: string; newPassword: string; targetUserId?: string }
+	>({
+		mutationKey: ['auth', 'change-password'],
+		mutationFn: async (payload) => {
+			const response = await AuthService.changePassword(payload);
+			return response.data;
+		},
+		onSuccess: (data) => {
+			// invalidate user/me queries so UI reflects any session/state changes
+			qc.invalidateQueries({ queryKey: ['me'] });
+			options?.onSuccess?.(data as unknown as void);
+			options?.redirectTo?.();
+		},
+		onError: (axiosError) => {
+			console.error('Error changing password:', axiosError);
+			options?.onError?.(axiosError as AxiosError);
+		},
+	});
+};
+
+export const useForgotPassword = (options?: UseCommonOptions<void>) => {
+	return useMutation<void, AxiosError, { email: string }>({
+		mutationKey: ['auth', 'forgot-password'],
+		mutationFn: async (payload) => {
+			const response = await AuthService.forgotPassword(payload);
+			return response.data;
+		},
+		onSuccess: (data) => {
+			options?.onSuccess?.(data as unknown as void);
+			options?.redirectTo?.();
+		},
+		onError: (axiosError) => {
+			console.error('Error in forgot password:', axiosError);
+			options?.onError?.(axiosError as AxiosError);
+		},
+	});
+};
+
+export const useResetPassword = (options?: UseCommonOptions<void>) => {
+	return useMutation<void, AxiosError, { token: string; newPassword: string }>({
+		mutationKey: ['auth', 'reset-password'],
+		mutationFn: async (payload) => {
+			const response = await AuthService.resetPassword(payload);
+			return response.data;
+		},
+		onSuccess: (data) => {
+			options?.onSuccess?.(data as unknown as void);
+			options?.redirectTo?.();
+		},
+		onError: (axiosError) => {
+			console.error('Error in reset password:', axiosError);
+			options?.onError?.(axiosError as AxiosError);
+		},
+	});
+};
+
 export const useVerified = () => {
 	return useQuery<AuthResponse, AxiosError>({
 		queryKey: ['auth', 'me'],
@@ -115,6 +157,8 @@ export const useVerified = () => {
 			return response.data.data;
 		},
 		staleTime: 5 * 60 * 1000,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
 		retry: false,
 	});
 };

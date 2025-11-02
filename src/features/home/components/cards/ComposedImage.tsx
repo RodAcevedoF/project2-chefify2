@@ -6,7 +6,7 @@ type Props = {
 	alt?: string;
 };
 
-const ComposedImage = ({ maxWidth = 700, alt = 'Composed Image' }: Props) => {
+const ComposedImage = ({ maxWidth = 750, alt = 'Composed Image' }: Props) => {
 	const floatUp = keyframes`
 		from { opacity: 0; transform: translateY(12px) scale(0.98); }
 		to { opacity: 1; transform: translateY(0) scale(1); }

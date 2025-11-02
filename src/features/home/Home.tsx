@@ -6,6 +6,15 @@ import { Box, Typography, Container, useTheme, CardMedia } from '@mui/material';
 import { motion, useReducedMotion } from 'framer-motion';
 import { homeStyles } from './home.theme';
 import ComposedImage from './components/cards/ComposedImage';
+import {
+	imageSlide,
+	imgVariant,
+	listContainer,
+	listItem,
+	textSlide,
+	titleVariants,
+	viewportOptions,
+} from './animation.home';
 
 export const Home = () => {
 	const { scrolled } = useScrollContext();
@@ -17,36 +26,6 @@ export const Home = () => {
 	const shouldReduceMotion = useReducedMotion();
 
 	const initialState = shouldReduceMotion ? 'show' : 'hidden';
-	const viewportOptions = { once: true, amount: 0.25 } as const;
-
-	const titleVariants = {
-		hidden: { opacity: 0, y: 12 },
-		show: { opacity: 1, y: 0, transition: { duration: 0.45 } },
-	};
-	const imgVariant = {
-		hidden: { opacity: 0, y: 100 },
-		show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-	};
-
-	const textSlide = {
-		hidden: { opacity: 0, x: -40 },
-		show: { opacity: 1, x: 0, transition: { duration: 0.45 } },
-	};
-
-	const imageSlide = {
-		hidden: { opacity: 0, x: 40 },
-		show: { opacity: 1, x: 0, transition: { duration: 0.45 } },
-	};
-
-	const listContainer = {
-		hidden: {},
-		show: { transition: { staggerChildren: 0.12 } },
-	};
-
-	const listItem = {
-		hidden: { opacity: 0, y: 12 },
-		show: { opacity: 1, y: 0, transition: { duration: 0.45 } },
-	};
 
 	useEffect(() => {
 		if (scrolled && sectionRef.current) {
@@ -68,7 +47,7 @@ export const Home = () => {
 					width: '100%',
 					justifyContent: 'center',
 					alignItems: 'center',
-					mt: 8,
+					mt: 10,
 					mb: 5,
 					minHeight: '60vh',
 				}}>

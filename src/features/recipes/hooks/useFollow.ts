@@ -58,6 +58,8 @@ export const useIsFollowing = (userId?: string) => {
 		},
 		enabled: Boolean(userId),
 		staleTime: 1000 * 30,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
 		retry: false,
 	});
 };
@@ -70,6 +72,9 @@ export const useFollowers = (userId?: string) => {
 			return resp as CommonResponse<User[]>;
 		},
 		enabled: Boolean(userId),
+		staleTime: 1000 * 60,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
 		retry: false,
 	});
 };
@@ -82,6 +87,9 @@ export const useFollowing = (userId?: string) => {
 			return resp as CommonResponse<User[]>;
 		},
 		enabled: Boolean(userId),
+		staleTime: 1000 * 60,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
 		retry: false,
 	});
 };

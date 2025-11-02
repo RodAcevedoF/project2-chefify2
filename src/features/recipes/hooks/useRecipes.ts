@@ -9,10 +9,12 @@ const recipesKeys = ['recipes', 'all', 'recipe'];
 
 export const useGetRecipes = (params: QueryParams = {}) => {
 	return useQuery<CommonResponse<Recipe[]>, AxiosError, Recipe[]>({
-		queryKey: [...recipesKeys, params],
+		queryKey: [...recipesKeys, JSON.stringify(params)],
 		queryFn: () => RecipeService.getRecipes(params),
 		staleTime: Infinity,
 		select: (resp) => resp.data,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
 		retry: false,
 	});
 };
@@ -24,13 +26,15 @@ export const useGetRecipeByID = (id?: string) => {
 		enabled: Boolean(id),
 		staleTime: Infinity,
 		select: (resp) => resp.data,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
 		retry: false,
 	});
 };
 
 export const useCreateRecipe = (options?: UseCommonOptions<void>) => {
 	const queryClient = useQueryClient();
-	return useMutation<void, AxiosError, RecipeDTO>({
+	return useMutation<void, AxiosError, RecipeDTO | FormData>({
 		mutationKey: ['recipes', 'create'],
 		mutationFn: (data) => RecipeService.createRecipe(data),
 		onSuccess: () => {
@@ -48,13 +52,19 @@ export const useCreateRecipe = (options?: UseCommonOptions<void>) => {
 
 export const useUpdateRecipe = (options?: UseCommonOptions<void>) => {
 	const queryClient = useQueryClient();
-	return useMutation<void, AxiosError, UpdateRecipeDTO>({
+	return useMutation<void, AxiosError, UpdateRecipeDTO | FormData>({
 		mutationKey: [...recipesKeys, 'update'],
 		mutationFn: (data) => RecipeService.updatedRecipe(data),
 		onSuccess: (_data, variables) => {
-			if (variables?._id) {
+			let id: string | undefined;
+			if (variables instanceof FormData) {
+				id = (variables.get('_id') as string) || undefined;
+			} else {
+				id = variables?._id;
+			}
+			if (id) {
 				queryClient.invalidateQueries({
-					queryKey: [...recipesKeys, variables._id],
+					queryKey: [...recipesKeys, id],
 				});
 			}
 			queryClient.invalidateQueries({ queryKey: recipesKeys });
@@ -91,6 +101,9 @@ export const useSuggestRecipe = () => {
 	return useQuery<RecipeDTO, AxiosError>({
 		queryKey: [...recipesKeys, 'suggestion'],
 		queryFn: () => RecipeService.getSuggestedRecipe(),
+		staleTime: Infinity,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
 		retry: false,
 	});
 };

@@ -46,6 +46,8 @@ export const useHasLike = (recipeId: string) => {
 		queryFn: () => LikeService.hasLiked(recipeId),
 		staleTime: Infinity,
 		select: (resp) => resp.data,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
 		retry: false,
 	});
 };

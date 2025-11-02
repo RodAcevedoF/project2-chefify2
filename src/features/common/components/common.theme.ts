@@ -1,0 +1,68 @@
+import type { Theme } from '@mui/material/styles';
+
+export const commonStyles = (
+	theme: Theme,
+	extraSx?: object,
+	disabled?: boolean,
+) => ({
+	mainBtn: {
+		color: disabled ? '#9c9c94ff' : '#ffffeb',
+		padding: '8px 16px',
+		background: disabled ? '#2d2e2dff' : '#033018',
+		borderRadius: 5,
+		borderColor: theme.palette.primary.main,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		gap: 1,
+		fontFamily: 'Alegreya',
+		'&:hover': {
+			borderColor: '#0cea74',
+			background: 'inherit',
+			fontWeight: 'bold',
+		},
+		border: 2,
+		'&.Mui-disabled': {
+			borderColor: '#b6b6b1ff',
+			color: disabled ? '#9c9c94ff' : '#ffffeb',
+			background: '#2d2e2dff',
+			border: 2,
+		},
+		...extraSx,
+	},
+	typo: {
+		fontFamily: 'Alegreya',
+		color: disabled ? '#9c9c94ff' : '#ffffeb',
+	},
+	cancelVariant: {
+		backgroundColor: theme.palette.secondary.main,
+		'&:hover': {
+			borderColor: '#972727ff',
+			background: '#97272781',
+			fontWeight: 'bold',
+		},
+	},
+	lightVariant: {
+		fontFamily: 'Alegreya',
+		fontWeight: 600,
+		px: 3,
+		py: 1,
+		backgroundColor: '#ffffeb',
+		color: '#272726ff',
+		boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.3)',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		gap: 1,
+	},
+	outlinedVariant: {
+		fontFamily: 'Alegreya',
+		fontWeight: 600,
+		px: 3,
+		py: 1,
+		gap: 1,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+});

@@ -1,5 +1,5 @@
 import type { Theme } from '@mui/material/styles';
-import type { CategoriesInputProps } from './components/categories-input';
+import type { CategoriesInputProps } from './components/CategoriesInput';
 
 export const recipeFormStyles = (
 	theme: Theme,

@@ -1,3 +1,4 @@
+import type { AIUsage } from '@/types/auth.types';
 import { createContext, useContext, type Dispatch } from 'react';
 
 export type LoggedContextType = {
@@ -5,7 +6,9 @@ export type LoggedContextType = {
 	setLogged: Dispatch<React.SetStateAction<boolean | undefined>>;
 	isLoading?: boolean;
 	userId?: string | null;
-	setUserId?: Dispatch<React.SetStateAction<string | null | undefined>>;
+	role?: string | null;
+	isAdmin?: boolean;
+	aiUsage?: AIUsage;
 };
 
 export const LoggedContext = createContext<LoggedContextType | undefined>(

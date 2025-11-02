@@ -1,7 +1,15 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import {
+	useEffect,
+	useState,
+	useMemo,
+	useCallback,
+	type ReactNode,
+	type SetStateAction,
+} from 'react';
 import { LoggedContext } from './logged.context';
 import { useVerified } from '@/features/auth/hooks';
 import { LoggedManager } from './LoggedManager';
+import type { AIUsage } from '@/types/auth.types';
 
 interface LoggedProviderProps {
 	children: ReactNode;
@@ -9,38 +17,66 @@ interface LoggedProviderProps {
 }
 
 export const LoggedProvider = ({ children }: LoggedProviderProps) => {
-	const [logged, setLogged] = useState<boolean | undefined>(undefined);
-	const [userId, setUserId] = useState<string | null | undefined>(undefined);
-	const setLoggedRef = useRef(setLogged);
-	const setUserIdRef = useRef(setUserId);
+	const [auth, setAuth] = useState<{
+		logged: boolean | undefined;
+		userId: string | null | undefined;
+		role: string | null | undefined;
+		aiUsage: AIUsage | undefined;
+	}>(() => ({
+		logged: undefined,
+		userId: undefined,
+		role: undefined,
+		aiUsage: undefined,
+	}));
+
 	const { data, isLoading } = useVerified();
 
-	useEffect(() => {
-		setLoggedRef.current = setLogged;
-	}, [setLogged]);
-
-	useEffect(() => {
-		setUserIdRef.current = setUserId;
-	}, [setUserId]);
-
-	useEffect(() => {
-		LoggedManager.getInstance().setLoggedManager((value: boolean) =>
-			setLoggedRef.current(value),
-		);
+	const setLogged = useCallback((v: SetStateAction<boolean | undefined>) => {
+		setAuth((p) => ({
+			...p,
+			logged: typeof v === 'function' ? v(p.logged) : v,
+		}));
 	}, []);
 
 	useEffect(() => {
+		LoggedManager.getInstance().setLoggedManager(setLogged);
+	}, [setLogged]);
+
+	useEffect(() => {
 		if (!isLoading) {
-			setLogged(!!data?.isVerified);
 			const maybe = data as unknown as
-				| { id?: string; _id?: string }
+				| {
+						id?: string;
+						_id?: string;
+						isVerified?: boolean;
+						role?: string;
+						aiUsage?: object;
+				  }
 				| undefined;
 			const id = maybe?.id ?? maybe?._id ?? null;
-			setUserId(id);
+			setAuth({
+				logged: !!maybe?.isVerified,
+				userId: id,
+				role: maybe?.role ?? null,
+				aiUsage: (data?.aiUsage as AIUsage) ?? null,
+			});
 		}
 	}, [data, isLoading]);
 
-	if (logged === undefined) {
+	const contextValue = useMemo(
+		() => ({
+			logged: auth.logged,
+			setLogged,
+			isLoading,
+			userId: auth.userId,
+			role: auth.role ?? null,
+			isAdmin: auth.role === 'admin',
+			aiUsage: auth.aiUsage,
+		}),
+		[auth.logged, auth.userId, auth.role, isLoading, auth.aiUsage, setLogged],
+	);
+
+	if (auth.logged === undefined) {
 		return (
 			<div className='flex items-center justify-center h-screen'>
 				<div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
@@ -50,8 +86,7 @@ export const LoggedProvider = ({ children }: LoggedProviderProps) => {
 	}
 
 	return (
-		<LoggedContext.Provider
-			value={{ logged, setLogged, isLoading, userId, setUserId }}>
+		<LoggedContext.Provider value={contextValue}>
 			{children}
 		</LoggedContext.Provider>
 	);

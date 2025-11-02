@@ -39,7 +39,7 @@ const ProfileRecipesCard = () => {
 				src='/banner.png'
 				component='img'
 				alt='recipes banner'
-				sx={{ mb: 3, height: 220, objectFit: 'cover', objectPosition: 'top' }}
+				sx={{ mb: 3, height: 350, objectFit: 'cover', objectPosition: 'top' }}
 			/>
 
 			<CardContent>

@@ -1,5 +1,11 @@
 import React from 'react';
-import { Box, Typography, Paper, useTheme } from '@mui/material';
+import {
+	Box,
+	Typography,
+	Paper,
+	useTheme,
+	CardActionArea,
+} from '@mui/material';
 import UserAvatar from '@/features/profile/components/avatar/UserAvatar';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useGetUser } from '../../hooks/useUser';
@@ -14,17 +20,31 @@ const ProfileCard: React.FC = () => {
 	const nav = handleNavigate('/recipes', useNavigate());
 
 	return (
-		<Paper sx={{ p: 3, textAlign: 'center' }} elevation={10}>
-			<UserAvatar
-				name={me?.name ?? ''}
-				imgUrl={me?.imgUrl ?? undefined}
-				size={80}
-			/>
+		<Paper
+			sx={{
+				p: 3,
+				textAlign: 'center',
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'center',
+				alignItems: 'center',
+			}}
+			elevation={10}>
+			<CardActionArea
+				onClick={() => openModal('generalImg', { imgUrl: me?.imgUrl })}
+				sx={{ width: 'fit-content', height: 'fit-content', zIndex: 0 }}
+				aria-label={`Open ${me?.name ?? 'profile'} modal`}>
+				<UserAvatar
+					name={me?.name ?? ''}
+					imgUrl={me?.imgUrl ?? undefined}
+					size={150}
+				/>
+			</CardActionArea>
 			<Typography
 				variant='h4'
 				fontWeight={700}
 				gutterBottom
-				sx={{ mt: 3, fontFamily: 'Alegreya' }}>
+				sx={{ mt: 1, fontFamily: 'Alegreya' }}>
 				{me?.name ?? 'User Name'}
 			</Typography>
 			<Typography
@@ -34,7 +54,7 @@ const ProfileCard: React.FC = () => {
 					me?.shortBio || 'write a brief introduction or description here.'
 				}`}
 			</Typography>
-			<Box sx={{ display: 'flex', gap: 1 }}>
+			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
 				<ButtonUsage
 					label='Edit Profile'
 					parentMethod={() => openModal('profileEdit')}

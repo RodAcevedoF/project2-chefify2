@@ -1,6 +1,5 @@
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
 import { useLogout } from '@/features/auth/hooks';
-import { handleNavigate } from '@/utils/handleNavigate';
 import { Paper, Typography, useTheme, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -10,9 +9,12 @@ import {
 } from '../../hooks/useUser';
 import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
 import { Donut, DoorOpen } from 'lucide-react';
+import { ButtonVariants } from '@/types/common.types';
+import { useModalContext } from '@/contexts/modalContext/modal.context';
 
 const Statistics = () => {
 	const { setLogged } = useLoggedContext();
+	const { openModal } = useModalContext();
 	const logoutMutation = useLogout({
 		onSuccess: () => {
 			setLogged(false);
@@ -67,18 +69,13 @@ const Statistics = () => {
 			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
 				<ButtonUsage
 					label='Settings'
-					parentMethod={handleNavigate('/profile/settings', nav)}
+					parentMethod={() => openModal('settings')}
 				/>
 				<ButtonUsage
 					label={logoutMutation.isPending ? 'Logging out...' : 'Logout'}
 					parentMethod={handleLogout}
 					disabled={logoutMutation.isPending}
-					extraSx={{
-						backgroundColor: 'transparent',
-						borderColor: 'red',
-						color: 'red',
-						'&:hover': { backgroundColor: 'rgba(255, 0, 0, 0.1)' },
-					}}
+					variant={ButtonVariants.CANCEL}
 					icon={DoorOpen}
 				/>
 			</Box>

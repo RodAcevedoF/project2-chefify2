@@ -1,12 +1,11 @@
 import { Box, CardMedia } from '@mui/material';
-import type { RecipeDTO } from '@/types/recipe.types';
 
 type ImgModalProps = {
-	recipe?: RecipeDTO;
+	imgUrl?: string;
 };
 
 export const ImgModal = (props: ImgModalProps = {}) => {
-	const { recipe } = props;
+	const { imgUrl } = props;
 
 	return (
 		<>
@@ -19,8 +18,8 @@ export const ImgModal = (props: ImgModalProps = {}) => {
 				}}>
 				<CardMedia
 					component='img'
-					image={recipe?.imgUrl || '/default-recipe.png'}
-					alt={recipe?.title ?? 'default recipe image'}
+					image={imgUrl || '/default-recipe.png'}
+					alt={imgUrl ?? 'default image'}
 					sx={{
 						borderRadius: 2,
 						width: { xs: '95%', sm: '70%', md: '60%', lg: '50%' },

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { Modal } from './Modal';
-import MODALS from './modals.registry';
+import { MODALS } from './modals.constants';
 
 export const ModalRoot = () => {
 	const { activeModal, modalParams } = useModalContext();

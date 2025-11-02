@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useState, type ReactNode, useCallback, useMemo } from 'react';
 import { ModalContext, type ModalId } from './modal.context';
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
@@ -6,20 +6,22 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
 	const [modalParams, setModalParams] = useState<unknown>(undefined);
 
-	const openModal = (id: string, params?: unknown) => {
+	const openModal = useCallback((id: string, params?: unknown) => {
 		setModalParams(params);
 		setActiveModal(id as ModalId);
-	};
+	}, []);
 
-	const closeModal = () => {
+	const closeModal = useCallback(() => {
 		setActiveModal(null);
 		setModalParams(undefined);
-	};
+	}, []);
+
+	const value = useMemo(
+		() => ({ activeModal, modalParams, openModal, closeModal }),
+		[activeModal, modalParams, openModal, closeModal],
+	);
 
 	return (
-		<ModalContext.Provider
-			value={{ activeModal, modalParams, openModal, closeModal }}>
-			{children}
-		</ModalContext.Provider>
+		<ModalContext.Provider value={value}>{children}</ModalContext.Provider>
 	);
 };

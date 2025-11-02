@@ -1,18 +1,13 @@
-import {
-	Box,
-	Typography,
-	Button,
-	CircularProgress,
-	Alert,
-	useTheme,
-} from '@mui/material';
+import { Box, Typography, Alert, useTheme } from '@mui/material';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useMutation } from '@tanstack/react-query';
 import { RecipeService } from '@/features/recipes/services/recipe.service';
 import { IngredientService } from '@/features/ingredients/services/ingredient.service';
 import normalizeSuggestedRecipeResponse from '@/features/recipes/utils/normalizeSuggestedResponse';
 import type { AxiosError } from 'axios';
-import { Bot } from 'lucide-react';
+import { Bot, Brain } from 'lucide-react';
+import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonVariants } from '@/types/common.types';
 
 export const SuggestRecipeModal = () => {
 	const { closeModal, openModal } = useModalContext();
@@ -83,15 +78,22 @@ export const SuggestRecipeModal = () => {
 	})();
 
 	return (
-		<Box sx={{ p: 2, width: 500 }}>
-			<Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, mb: 2 }}>
-				<Typography variant='h6'>Generate AI recipe</Typography>
-				<Bot color={theme.palette.primary.main} />
+		<Box
+			sx={{
+				p: 4,
+				width: 500,
+				background: theme.palette.background.gradient,
+				borderRadius: 3,
+			}}>
+			<Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+				<Typography variant='h5' fontFamily={'Alegreya'}>
+					Generate AI recipe
+				</Typography>
+				<Bot color={theme.palette.primary.main} width={50} height={50} />
 			</Box>
 			<Typography variant='body1' mb={2}>
-				Ask the AI to generate a realistic recipe. The generated JSON will be
-				loaded into the recipe form so you can review and save it. Do you want
-				to continue?
+				Ask the AI to generate a new recipe and it will be loaded into the
+				recipe form so you can review and save it. Do you want to continue?
 			</Typography>
 
 			{mutation.isError && (
@@ -101,20 +103,17 @@ export const SuggestRecipeModal = () => {
 			)}
 
 			<Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 1 }}>
-				<Button variant='outlined' color='inherit' onClick={() => closeModal()}>
-					Cancel
-				</Button>
-				<Button
-					variant='contained'
-					onClick={handleConfirm}
+				<ButtonUsage
+					label='Cancel'
+					parentMethod={closeModal}
+					variant={ButtonVariants.CANCEL}
+				/>
+				<ButtonUsage
+					label={mutation.status === 'pending' ? 'Generating...' : 'Generate'}
 					disabled={mutation.status === 'pending'}
-					startIcon={
-						mutation.status === 'pending' ? (
-							<CircularProgress size={18} />
-						) : null
-					}>
-					{mutation.status === 'pending' ? 'Generating...' : 'Generate'}
-				</Button>
+					icon={Brain}
+					parentMethod={handleConfirm}
+				/>
 			</Box>
 		</Box>
 	);

@@ -29,11 +29,8 @@ export class ErrorBoundary extends React.Component<Props, State> {
 	}
 
 	componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-		// may use logerror service here
 		this.setState({ error, errorInfo });
-		// capture with logger
 		logger.error(error, { componentStack: errorInfo.componentStack });
-		console.error('Uncaught error:', error, errorInfo);
 	}
 
 	handleReload = () => {

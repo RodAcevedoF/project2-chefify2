@@ -1,6 +1,11 @@
 import './index.css';
 import { Navbar } from '@/features/common/components/layout/Navbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+// logged context used in redirected component (extracted)
+import Toast from '@/features/common/components/toasts/Toast';
+import RedirectOnLogin from '@/features/common/components/RedirectOnLogin';
 import { RecipeLayout } from '@/features/recipes/Recipe';
 import { NotFound } from '@/features/notFound/NotFound';
 import { Home } from '@/features/home/Home';
@@ -11,6 +16,7 @@ import EmptyRecipe from '@/features/recipes/components/cards/EmptyRecipe';
 import { ProfileLayout } from '@/features/profile/Profile';
 import { Box } from '@mui/material';
 import { ModalRoot } from '@/features/common/components/modals/ModalRoot';
+import ResetPasswordPage from '@/features/auth/pages/ResetPasswordPage';
 import { ScrollProvider } from './contexts/scrollContext/scroll.provider';
 
 function App() {
@@ -18,6 +24,36 @@ function App() {
 		<>
 			<Router>
 				<ScrollProvider>
+					{(() => {
+						const ToastFromLocation = () => {
+							const location = useLocation();
+							const navigate = useNavigate();
+							const [open, setOpen] = useState(false);
+							type ToastNavState = {
+								toast?: {
+									message: string;
+									severity?: 'error' | 'info' | 'success' | 'warning';
+								};
+							};
+							const toast = (location.state as ToastNavState)?.toast;
+							useEffect(() => {
+								if (toast) setOpen(true);
+							}, [toast]);
+							if (!toast) return null;
+							return (
+								<Toast
+									open={open}
+									message={toast.message}
+									severity={toast.severity}
+									onClose={() => {
+										setOpen(false);
+										navigate(location.pathname, { replace: true, state: {} });
+									}}
+								/>
+							);
+						};
+						return <ToastFromLocation />;
+					})()}
 					<Box
 						sx={{
 							display: 'flex',
@@ -30,11 +66,11 @@ function App() {
 						<Box component='header'>
 							<Navbar />
 						</Box>
-
-						{/* Main */}
+						<RedirectOnLogin />
 						<Box component='main'>
 							<Routes>
 								<Route path='/' element={<Home />} />
+								<Route path='/reset-password' element={<ResetPasswordPage />} />
 								<Route element={<ProtectedRoute />}>
 									<Route path='/recipes' element={<RecipeLayout />}>
 										<Route index element={<EmptyRecipe />} />

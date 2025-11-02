@@ -4,6 +4,12 @@ export interface AuthResponse {
 	message: string;
 	isLogged?: boolean;
 	isVerified?: boolean;
+	aiUsage?: AIUsage;
+}
+
+export interface AIUsage {
+	count: number;
+	lastReset: Date;
 }
 
 export const LoginSchema = z.object({

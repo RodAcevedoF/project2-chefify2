@@ -27,10 +27,12 @@ export const useGetIngredients = (
 	>,
 ) => {
 	return useQuery<CommonResponse<Ingredient[]>, AxiosError, Ingredient[]>({
-		queryKey: ingredientKeys.lists(params),
+		queryKey: [...ingredientKeys.all, 'list', JSON.stringify(params)],
 		queryFn: () => IngredientService.getIngredient(params),
 		staleTime: Infinity,
 		select: (resp) => resp.data,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
 		retry: false,
 		...options,
 	});
@@ -43,6 +45,8 @@ export const useGetIngredientByID = (id?: string) => {
 		enabled: Boolean(id),
 		staleTime: Infinity,
 		select: (resp) => resp.data,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
 		retry: false,
 	});
 };

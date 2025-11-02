@@ -28,7 +28,7 @@ export const homeStyles = (theme: Theme, scrolled: boolean = false) => ({
 	mainTypo: {
 		variant: 'h1',
 		fontWeight: 'bolder',
-		fontSize: { md: '22vw', xs: '18vw' },
+		fontSize: { md: '20vw', xs: '22vw' },
 		fontFamily: 'Alegreya',
 		textShadow: '5px 8px 12px rgba(0, 0, 0, 0.66)',
 		zIndex: 100,

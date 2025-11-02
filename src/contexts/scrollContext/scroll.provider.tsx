@@ -1,12 +1,12 @@
 import { type ReactNode, useState, useEffect } from 'react';
 import { ScrollContext, type BackgroundMode } from './scroll.context';
 import { useLocation } from 'react-router-dom';
+import GradientBackground from '../../features/common/GradientBackground';
 
 export const ScrollProvider = ({ children }: { children: ReactNode }) => {
 	const [scrolled, setScrolled] = useState(false);
 	const [mode, setMode] = useState<BackgroundMode>('default');
 	const location = useLocation();
-
 	useEffect(() => {
 		const onScroll = () => {
 			const isScrolled = window.scrollY > 75;
@@ -26,16 +26,15 @@ export const ScrollProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		if (location.pathname === '/') {
-			document.body.style.transition = 'background-color 0.6s ease';
-			document.body.style.backgroundColor =
-				mode === 'light' ? '#ffffeb' : '#5ea85e';
+			document.body.style.background = 'none';
 		} else {
-			document.body.style.backgroundColor = '';
+			document.body.style.background = '';
 		}
-	}, [mode, location.pathname]);
+	}, [location.pathname]);
 
 	return (
 		<ScrollContext.Provider value={{ scrolled, setScrolled, mode }}>
+			{location.pathname === '/' && <GradientBackground mode={mode} />}
 			{children}
 		</ScrollContext.Provider>
 	);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -17,8 +17,10 @@ import { useNavigate } from 'react-router-dom';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import SearchElement from './components/SearchElement';
 import MobileSearchBar from './components/MobileSearchBar';
+import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
 
 export default function PrimarySearchAppBar() {
+	const { aiUsage } = useLoggedContext();
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
 		useState<null | HTMLElement>(null);
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -27,6 +29,7 @@ export default function PrimarySearchAppBar() {
 	const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
 	const { openModal } = useModalContext();
 	const nav = useNavigate();
+	const LIMIT = 5;
 
 	const handleMobileMenuClose = () => {
 		setMobileMoreAnchorEl(null);
@@ -40,6 +43,11 @@ export default function PrimarySearchAppBar() {
 		if (!path) return () => {};
 		return () => nav(path);
 	};
+
+	const aiCounter = useMemo(
+		() => LIMIT - (aiUsage?.count ?? 0),
+		[LIMIT, aiUsage?.count],
+	);
 
 	const mobileMenuId = 'primary-search-account-menu-mobile';
 	const renderMobileMenu = (
@@ -83,7 +91,7 @@ export default function PrimarySearchAppBar() {
 							aria-label='show 4 new mails'
 							color='inherit'
 							onClick={() => openModal('recipeSuggest')}>
-							<Badge badgeContent={4} color='error'>
+							<Badge badgeContent={aiCounter} color='error'>
 								<Bot />
 							</Badge>
 						</IconButton>

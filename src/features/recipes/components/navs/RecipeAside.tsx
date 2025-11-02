@@ -161,7 +161,7 @@ const RecipeAside = memo(() => {
 					anchor='left'
 					open={drawerOpen}
 					onClose={() => setDrawerOpen(false)}
-					slotProps={{ paper: rs.recipeAside.drawerProps }}>
+					slotProps={{ paper: { sx: rs.recipeAside.drawerProps } }}>
 					{asideContent}
 				</Drawer>
 			</>

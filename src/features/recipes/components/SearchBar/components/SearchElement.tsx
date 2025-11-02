@@ -41,7 +41,7 @@ const SearchElement: React.FC = () => {
 
 	const anchorEl = inputProps.ref?.current ?? null;
 	const theme = useTheme();
-	const rs = recipeFormStyles(theme, { color: theme.palette.text.primary });
+	const rs = recipeFormStyles(theme, { color: theme.palette.primary.main });
 
 	return (
 		<ClickAwayListener onClickAway={() => closeTemporary()}>
@@ -56,7 +56,14 @@ const SearchElement: React.FC = () => {
 				}}>
 				<Box sx={{ display: 'flex', gap: 2 }}>
 					<FormControl size='small' sx={{ minWidth: 80 }}>
-						<InputLabel id='category-select-label'>Category</InputLabel>
+						<InputLabel
+							id='category-select-label'
+							sx={{
+								color: rs.categoriesInput.inputLabel.color || 'inherit',
+								fontWeight: 'bolder',
+							}}>
+							Category
+						</InputLabel>
 						<Select
 							labelId='category-select-label'
 							id='category-select'
@@ -64,7 +71,13 @@ const SearchElement: React.FC = () => {
 							label='Category'
 							variant='outlined'
 							MenuProps={{
-								PaperProps: { sx: { bgcolor: 'background.paper' } },
+								PaperProps: {
+									sx: {
+										bgcolor: 'background.paper',
+										color: 'primary.main',
+										fontWeight: 'bolder',
+									},
+								},
 								MenuListProps: { sx: { p: 0 } },
 							}}
 							sx={rs.searchElement.select}
@@ -81,14 +94,32 @@ const SearchElement: React.FC = () => {
 					</FormControl>
 
 					<FormControl size='small' sx={{ minWidth: 50 }}>
-						<InputLabel id='mode-select-label'>Mode</InputLabel>
+						<InputLabel
+							id='mode-select-label'
+							sx={{
+								color: rs.categoriesInput.inputLabel.color || 'inherit',
+								fontWeight: 'bolder',
+							}}>
+							Mode
+						</InputLabel>
 						<Select
 							labelId='mode-select-label'
 							id='mode-select'
 							value={mode}
 							label='Mode'
 							variant='outlined'
-							onChange={onModeChange}>
+							sx={rs.searchElement.select}
+							onChange={onModeChange}
+							MenuProps={{
+								PaperProps: {
+									sx: {
+										bgcolor: 'background.paper',
+										color: 'primary.main',
+										fontWeight: 'bolder',
+									},
+								},
+								MenuListProps: { sx: { p: 0 } },
+							}}>
 							<MenuItem value='latest'>Latest</MenuItem>
 							<MenuItem value='top'>Most voted</MenuItem>
 						</Select>

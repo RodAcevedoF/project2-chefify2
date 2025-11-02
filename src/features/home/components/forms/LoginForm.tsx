@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLogin } from '@/features/auth/hooks';
@@ -11,10 +12,15 @@ import {
 	Box,
 	TextField,
 	Typography,
-	CircularProgress,
 	CardMedia,
+	useTheme,
+	IconButton,
+	InputAdornment,
 } from '@mui/material';
 import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonTypes } from '@/types/common.types';
+import { Eye, EyeClosed } from 'lucide-react';
+import { useModalContext } from '@/contexts/modalContext/modal.context';
 
 export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 	const {
@@ -24,10 +30,14 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 	} = useForm({
 		resolver: zodResolver(LoginSchema),
 	});
+	const [showPassword, setShowPassword] = useState(false);
+	const theme = useTheme();
 
 	const loginMutation = useLogin({
 		onSuccess: () => onSuccess?.(),
 	});
+
+	const { openModal } = useModalContext();
 
 	const onSubmit = (data: LoginFormProps) => {
 		loginMutation.mutate(data);
@@ -45,7 +55,7 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 				borderRadius: 2,
 				boxShadow: 3,
 				p: 3,
-				bgcolor: 'background.default',
+				background: theme.palette.background.gradient,
 			}}
 			className={className}>
 			<Box
@@ -55,7 +65,7 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					alignItems: 'center',
 					mb: 2,
 				}}>
-				<Typography variant='h5' fontWeight={700}>
+				<Typography variant='h5' fontFamily={'Alegreya'} fontWeight={700}>
 					Login
 				</Typography>
 				<CardMedia
@@ -91,11 +101,27 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					size='small'
 					fullWidth
 					sx={{ mb: 2, width: 200 }}
-					type='password'
+					type={showPassword ? 'text' : 'password'}
 					placeholder='********'
 					{...register('password')}
 					error={!!errors.password}
 					helperText={errors.password ? 'Invalid password' : ''}
+					slotProps={{
+						input: {
+							endAdornment: (
+								<InputAdornment position='end'>
+									<IconButton
+										aria-label={
+											showPassword ? 'Hide password' : 'Show password'
+										}
+										onClick={() => setShowPassword((s) => !s)}
+										onMouseDown={(e) => e.preventDefault()}>
+										{showPassword ? <EyeClosed size={18} /> : <Eye size={18} />}
+									</IconButton>
+								</InputAdornment>
+							),
+						},
+					}}
 				/>
 				<Box
 					sx={{
@@ -107,16 +133,15 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 						width: '80%',
 					}}>
 					<ButtonUsage
-						label={
-							loginMutation.isPending ? (
-								<CircularProgress size={20} sx={{ color: 'whitesmoke' }} />
-							) : (
-								'Login'
-							)
-						}
+						label={'Login'}
 						disabled={loginMutation.isPending}
-						type='submit'
+						type={ButtonTypes.SUBMIT}
 						icon={ArrowBigRight}
+					/>
+					<ButtonUsage
+						label={'Forgot?'}
+						parentMethod={() => openModal('forgotPassword')}
+						variant={undefined}
 					/>
 				</Box>
 				{loginMutation.isError && (

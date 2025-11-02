@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRegister } from '@/features/auth/hooks';
@@ -12,9 +13,12 @@ import {
 	Typography,
 	CircularProgress,
 	CardMedia,
+	useTheme,
+	IconButton,
+	InputAdornment,
 } from '@mui/material';
 import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
-import { ArrowBigRight } from 'lucide-react';
+import { ArrowBigRight, Eye, EyeClosed } from 'lucide-react';
 
 export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 	const {
@@ -25,6 +29,9 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 		resolver: zodResolver(RegisterSchema),
 	});
 
+	const theme = useTheme();
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirm, setShowConfirm] = useState(false);
 	const registerMutation = useRegister({
 		onSuccess: () => onSuccess?.(),
 	});
@@ -45,7 +52,7 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 				borderRadius: 2,
 				boxShadow: 3,
 				p: 3,
-				bgcolor: 'background.default',
+				background: theme.palette.background.gradient,
 			}}
 			className={className}>
 			<Box
@@ -55,7 +62,7 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					alignItems: 'center',
 					mb: 2,
 				}}>
-				<Typography variant='h5' fontWeight={700}>
+				<Typography variant='h5' fontFamily={'Alegreya'} fontWeight={700}>
 					Register
 				</Typography>
 				<CardMedia
@@ -102,23 +109,54 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					size='small'
 					fullWidth
 					sx={{ mb: 2, width: 200 }}
-					type='password'
+					type={showPassword ? 'text' : 'password'}
 					placeholder='********'
 					{...register('password')}
 					error={!!errors.password}
 					helperText={errors.password?.message}
+					slotProps={{
+						input: {
+							endAdornment: (
+								<InputAdornment position='end'>
+									<IconButton
+										aria-label={
+											showPassword ? 'Hide password' : 'Show password'
+										}
+										onClick={() => setShowPassword((s) => !s)}
+										onMouseDown={(e) => e.preventDefault()}>
+										{showPassword ? <EyeClosed size={18} /> : <Eye size={18} />}
+									</IconButton>
+								</InputAdornment>
+							),
+						},
+					}}
 				/>
+
 				<TextField
 					label='Confirm Password'
 					variant='outlined'
 					size='small'
 					fullWidth
 					sx={{ mb: 2, width: 200 }}
-					type='password'
+					type={showConfirm ? 'text' : 'password'}
 					placeholder='********'
 					{...register('confirmPassword')}
 					error={!!errors.confirmPassword}
 					helperText={errors.confirmPassword?.message}
+					slotProps={{
+						input: {
+							endAdornment: (
+								<InputAdornment position='end'>
+									<IconButton
+										aria-label={showConfirm ? 'Hide password' : 'Show password'}
+										onClick={() => setShowConfirm((s) => !s)}
+										onMouseDown={(e) => e.preventDefault()}>
+										{showConfirm ? <EyeClosed size={18} /> : <Eye size={18} />}
+									</IconButton>
+								</InputAdornment>
+							),
+						},
+					}}
 				/>
 				<Box
 					sx={{

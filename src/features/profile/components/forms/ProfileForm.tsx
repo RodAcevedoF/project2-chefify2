@@ -1,17 +1,24 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { Box, TextField, Button, Typography, useTheme } from '@mui/material';
+import {
+	useForm,
+	type UseFormRegister,
+	type UseFormWatch,
+} from 'react-hook-form';
+import { Box, TextField, Typography, useTheme } from '@mui/material';
 import UserAvatar from '../avatar/UserAvatar';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProfileEditSchema, type UserDTO } from '@/types/user.types';
-import type { ChangeEvent } from 'react';
-import { useGetUser, useUpdateUser } from '../../hooks/useUser';
+import { useGetUser } from '../../hooks/useUser';
+import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import UploadIUmageInput from '@/features/common/components/input/UploadImgInput';
+import { useProfileImageUpload } from '../../hooks/useProfileImageUpload';
+import { useProfileFormInitialization } from '../../hooks/useProfileFormInitialization';
+import { useProfileSubmission } from '../../hooks/useProfileSubmission';
+import { ButtonTypes, ButtonVariants } from '@/types/common.types';
 
 export type ProfileFormData = UserDTO;
 
 export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 	const { data: me } = useGetUser();
-	const update = useUpdateUser();
 	const theme = useTheme();
 
 	const {
@@ -26,34 +33,32 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 		defaultValues: me ?? {},
 	});
 
-	useEffect(() => {
-		if (me) {
-			try {
-				const clean = ProfileEditSchema.parse(me);
-				reset(clean as Partial<ProfileFormData>);
-			} catch {
-				reset(me as Partial<ProfileFormData>);
-			}
-		}
-	}, [me, reset]);
+	const {
+		imgPreview,
+		selectedFile,
+		handleImageChange,
+		handleImageClear,
+		clearSelectedFile,
+		setImgPreview,
+	} = useProfileImageUpload({
+		setValue,
+		initialImageUrl: me?.imgUrl,
+	});
+
+	const { handleSubmit: handleProfileSubmit } = useProfileSubmission({
+		onSuccess: onCancel,
+	});
+
+	// init
+	useProfileFormInitialization({
+		userData: me,
+		reset,
+		setImgPreview,
+	});
 
 	const onSubmit = (data: ProfileFormData) => {
-		update.mutate(data, {
-			onSuccess: () => {
-				onCancel();
-			},
-			onError: () => {},
-		});
+		handleProfileSubmit(data, selectedFile, clearSelectedFile);
 	};
-
-	const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0];
-		if (!file) return;
-		const url = URL.createObjectURL(file);
-		setValue('imgUrl', url);
-	};
-
-	// UserAvatar handles color and initial logic
 
 	return (
 		<Box
@@ -61,10 +66,12 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 			onSubmit={handleSubmit(onSubmit)}
 			sx={{
 				width: 360,
-				p: 2,
+				p: 3,
 				display: 'flex',
 				flexDirection: 'column',
 				gap: 2,
+				background: theme.palette.background.gradient,
+				borderRadius: 3,
 			}}>
 			<Box sx={{ textAlign: 'center' }}>
 				<UserAvatar
@@ -76,13 +83,18 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 					imgUrl={watch('imgUrl') ?? undefined}
 					size={64}
 				/>
-				<Typography variant='subtitle1'>Edit your profile</Typography>
+				<Typography variant='h6' fontFamily={'Alegreya'}>
+					Edit your profile
+				</Typography>
 			</Box>
 
-			<Button variant='outlined' component='label'>
-				Upload avatar
-				<input hidden accept='image/*' type='file' onChange={handleFile} />
-			</Button>
+			<UploadIUmageInput
+				imgPreview={imgPreview}
+				parentMethod={handleImageChange}
+				register={register as UseFormRegister<{ imgUrl?: string }>}
+				watch={watch as UseFormWatch<{ imgUrl?: string }>}
+				onClear={handleImageClear}
+			/>
 
 			<TextField
 				label='Name'
@@ -132,12 +144,13 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 			/>
 
 			<Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-				<Button variant='text' onClick={onCancel}>
-					Cancel
-				</Button>
-				<Button variant='contained' type='submit'>
-					Save
-				</Button>
+				<ButtonUsage
+					label='Cancel'
+					parentMethod={onCancel}
+					variant={ButtonVariants.CANCEL}
+				/>
+
+				<ButtonUsage label='Save' type={ButtonTypes.SUBMIT} />
 			</Box>
 		</Box>
 	);

@@ -41,3 +41,33 @@ export interface AuthFormProps {
 	className?: string;
 	toggleForm?: () => void;
 }
+
+export const PasswordChangeSchema = z
+	.object({
+		currentPassword: z.string().min(1, 'Current password is required'),
+		newPassword: z
+			.string()
+			.min(6, 'New password must be at least 6 characters'),
+		repeatNewPassword: z.string().min(1, 'Please confirm your new password'),
+	})
+	.refine((data) => data.newPassword === data.repeatNewPassword, {
+		message: 'Passwords do not match',
+		path: ['repeatNewPassword'],
+	});
+
+export const ForgotSchema = z.object({
+	email: z.string().email('Invalid email'),
+});
+export type ForgotData = z.infer<typeof ForgotSchema>;
+
+export const ResetSchema = z
+	.object({
+		newPassword: z.string().min(6, 'Password must be at least 6 characters'),
+		repeatNewPassword: z.string().min(1, 'Please confirm your new password'),
+	})
+	.refine((d) => d.newPassword === d.repeatNewPassword, {
+		message: 'Passwords do not match',
+		path: ['repeatNewPassword'],
+	});
+
+export type ResetData = z.infer<typeof ResetSchema>;

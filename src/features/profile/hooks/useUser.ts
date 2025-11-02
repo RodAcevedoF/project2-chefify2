@@ -66,10 +66,10 @@ export const useGetSavedRecipes = (
 
 export const useUpdateUser = () => {
 	const qc = useQueryClient();
-	return useMutation<void, AxiosError, UserDTO>({
+	return useMutation<void, AxiosError, UserDTO | FormData>({
 		mutationFn: (payload) => UserService.updateUser(payload),
 		onSuccess: () => {
-			qc.invalidateQueries({ queryKey: ['user', 'me'] });
+			qc.invalidateQueries({ queryKey: ['me'] });
 		},
 	});
 };

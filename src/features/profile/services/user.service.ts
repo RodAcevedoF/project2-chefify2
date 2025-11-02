@@ -15,7 +15,15 @@ export const UserService = {
 		return user.data;
 	},
 
-	async updateUser(user: UserDTO): Promise<void> {
+	async updateUser(user: UserDTO | FormData): Promise<void> {
+		if (user instanceof FormData) {
+			await chefifyAPI.patch(
+				`${BASE}`,
+				user as unknown as Record<string, unknown>,
+			);
+			return;
+		}
+
 		await chefifyAPI.patch(`${BASE}`, user);
 	},
 

@@ -37,7 +37,12 @@ const RecipeButtons = ({ recipe }: Props) => {
 			) : (
 				<Tooltip title='Only the recipe author can edit' placement='top'>
 					<span>
-						<ButtonUsage label='Edit' parentMethod={handleEdit} disabled />
+						<ButtonUsage
+							label='Edit'
+							parentMethod={handleEdit}
+							disabled
+							loader={false}
+						/>
 					</span>
 				</Tooltip>
 			)}
@@ -47,7 +52,12 @@ const RecipeButtons = ({ recipe }: Props) => {
 			) : (
 				<Tooltip title='Only the recipe author can delete' placement='top'>
 					<span>
-						<ButtonUsage label='Delete' parentMethod={handleDelete} disabled />
+						<ButtonUsage
+							label='Delete'
+							parentMethod={handleDelete}
+							disabled
+							loader={false}
+						/>
 					</span>
 				</Tooltip>
 			)}

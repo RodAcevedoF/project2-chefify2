@@ -32,7 +32,7 @@ const RecipeTitle = ({ recipe, params }: RecipeTitleProps) => {
 		<Box border={1} sx={style.recipeDetail.title.container}>
 			<Box display={'flex'} gap={2}>
 				<CardActionArea
-					onClick={() => openModal('recipeImg', recipe)}
+					onClick={() => openModal('generalImg', { imgUrl: recipe.imgUrl })}
 					sx={{ width: 'fit-content', height: 'fit-content', zIndex: 0 }}
 					aria-label={`Open ${recipe.title ?? 'recipe'} modal`}>
 					<CardMedia

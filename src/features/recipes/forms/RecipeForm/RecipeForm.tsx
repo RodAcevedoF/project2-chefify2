@@ -1,26 +1,24 @@
 import { useForm, type Resolver } from 'react-hook-form';
 import { Box, TextField, Typography, CardMedia, useTheme } from '@mui/material';
-import { useEffect } from 'react';
 import {
 	RECIPE_CATEGORY_OPTIONS,
 	RecipeSchema,
 	type RecipeDTO,
-	type UpdateRecipeDTO,
 	type RecipeFormProps,
 } from '@/types/recipe.types';
-import type { Recipe } from '@/types/recipe.types';
-import { useCreateRecipe, useUpdateRecipe } from '@/features/recipes/hooks';
 import { useState } from 'react';
-import CategoriesInput from './components/categories-input';
-import InstructionsInput from './components/instructions-input';
+import CategoriesInput from './components/CategoriesInput';
+import InstructionsInput from './components/InstructionsInput';
 import { recipeFormStyles } from './recipe-form.theme';
-import ServingInput from './components/serving-input';
-import PrepTimeInput from './components/prep-input';
-import UploadIUmageInput from './components/upload-image-input';
-import CreateBtn from './components/create-recipe';
-import IngredientsInput from './components/ingredients-input';
+import ServingInput from './components/ServingInput';
+import PrepTimeInput from './components/PrepInput';
+import CreateBtn from './components/CreateRecipe';
+import IngredientsInput from './components/IngredientsInput';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { IngredientRefDTO } from '@/types/ingredient.type';
+import UploadIUmageInput from '@/features/common/components/input/UploadImgInput';
+import { useImageUpload } from './hooks/useImageUpload';
+import { useRecipeFormInitialization } from './hooks/useRecipeFormInitialization';
+import { useRecipeSubmission } from './hooks/useRecipeSubmission';
 
 export const RecipeForm = ({
 	onSuccess,
@@ -39,129 +37,43 @@ export const RecipeForm = ({
 			RecipeSchema.partial(),
 		) as unknown as Resolver<RecipeDTO>,
 	});
+
 	const theme = useTheme();
 	const [inputValue, setInputValue] = useState('');
 	const [IngredientInput, setIngredientInput] = useState('');
 	const rs = recipeFormStyles(theme, {});
-	const [imgPreview, setImgPreview] = useState<string | null>(null);
-
-	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0];
-		if (!file) return;
-		const url = URL.createObjectURL(file);
-		setImgPreview(url);
-		setValue('imgUrl', url);
-		setValue('imgPublicId', `local-${Date.now()}`);
-	};
-
-	useEffect(() => {
-		if (!initialData) return;
-		if (initialData.title) setValue('title', initialData.title);
-		if (initialData.imgUrl) {
-			setImgPreview(initialData.imgUrl as string);
-			setValue('imgUrl', initialData.imgUrl as string);
-		}
-		if (initialData.imgPublicId)
-			setValue('imgPublicId', initialData.imgPublicId as string);
-		if (initialData.servings !== undefined)
-			setValue('servings', initialData.servings as number);
-		if (initialData.prepTime !== undefined)
-			setValue('prepTime', initialData.prepTime as number);
-		if (initialData.categories)
-			setValue(
-				'categories',
-				initialData.categories as unknown as Recipe['categories'],
-			);
-		if (initialData.utensils)
-			setValue('utensils', initialData.utensils as string[]);
-
-		if (initialData.instructions)
-			setValue('instructions', initialData.instructions as string[]);
-		if (initialData.ingredients)
-			setValue(
-				'ingredients',
-				initialData.ingredients as unknown as Recipe['ingredients'],
-			);
-	}, [initialData, setValue]);
-
-	const handleImageClear = () => {
-		if (imgPreview?.startsWith('blob:')) URL.revokeObjectURL(imgPreview);
-		setValue('imgUrl', '');
-		setValue('imgPublicId', '');
-		setImgPreview(null);
-		const input = document.getElementById(
-			'recipe-image-input',
-		) as HTMLInputElement | null;
-		if (input) input.value = '';
-	};
-
-	const createRecipeMutation = useCreateRecipe({
-		onSuccess: () => {
-			onSuccess?.();
-		},
-		onError: (error) => {
-			console.error('Error creating recipe:', error);
-		},
-	});
-
-	const updateRecipeMutation = useUpdateRecipe({
-		onSuccess: () => {
-			onSuccess?.();
-		},
-		onError: (error) => {
-			console.error('Error updating recipe:', error);
-		},
-	});
 	const editId = initialData?._id;
 
-	const onSubmit = (data: RecipeDTO) => {
-		const payload = {
-			...data,
-			ingredients: (data.ingredients || []).map((ing: IngredientRefDTO) => ({
-				ingredient:
-					typeof ing.ingredient === 'string'
-						? ing.ingredient
-						: ing.ingredient?._id || String(ing.ingredient),
-				quantity: Number(ing.quantity),
-			})),
-		};
+	const {
+		imgPreview,
+		selectedFile,
+		handleImageChange,
+		handleImageClear,
+		clearSelectedFile,
+		setImgPreview,
+	} = useImageUpload({
+		setValue,
+		initialImageUrl: initialData?.imgUrl,
+	});
 
-		if (editId) {
-			const updatePayload: UpdateRecipeDTO = {
-				_id: editId,
-				...payload,
-			} as UpdateRecipeDTO;
-			updateRecipeMutation.mutate(updatePayload, {
-				onSuccess: () => {
-					onSuccess?.(editId);
-				},
-			});
-		} else {
-			createRecipeMutation.mutate(payload, {
-				onSuccess: () => onSuccess?.(),
-			});
-		}
+	const {
+		handleSubmit: handleRecipeSubmit,
+		createRecipeMutation,
+		updateRecipeMutation,
+	} = useRecipeSubmission({
+		onSuccess,
+		editId,
+	});
+
+	useRecipeFormInitialization({
+		initialData,
+		setValue,
+		setImgPreview,
+	});
+
+	const onSubmit = async (data: RecipeDTO) => {
+		handleRecipeSubmit(data, selectedFile, clearSelectedFile);
 	};
-
-	handleSubmit(
-		(data) => {
-			onSubmit(data);
-		},
-		(errors) => {
-			if (errors.ingredients) {
-				if (Array.isArray(errors.ingredients)) {
-					errors.ingredients.forEach((err, idx) => {
-						if (err) {
-							console.log(`Ingrediente #${idx + 1} inválido:`, err);
-						}
-					});
-				} else {
-					console.log('Error en ingredientes:', errors.ingredients);
-				}
-			}
-		},
-	);
-
 	return (
 		<Box sx={rs.recipeFormBox} className={className}>
 			<Box sx={rs.recipeFormBox.box}>

@@ -1,52 +1,53 @@
 import chefifyAPI from '@/lib/api';
-import type { LoginParams, RegisterParams } from '@/types/auth.types';
+import type {
+	LoginParams,
+	RegisterParams,
+	AuthResponse,
+} from '@/types/auth.types';
 
 const BASE = '/auth';
 
 export const AuthService = {
-	async login({ email, password }: LoginParams) {
-		const res = await chefifyAPI.post(`${BASE}/login`, {
-			email,
-			password,
-		});
-		return res;
+	async login({ email, password }: LoginParams): Promise<AuthResponse> {
+		return chefifyAPI.post<AuthResponse>(`${BASE}/login`, { email, password });
 	},
 
-	async register({ name, email, password }: RegisterParams) {
-		const res = await chefifyAPI.post(`${BASE}/register`, {
+	async register({
+		name,
+		email,
+		password,
+	}: RegisterParams): Promise<AuthResponse> {
+		return chefifyAPI.post<AuthResponse>(`${BASE}/register`, {
 			name,
 			email,
 			password,
 		});
-		return res;
 	},
 
-	async getMe() {
-		const res = await chefifyAPI.get(`${BASE}/me`);
-		return res;
+	async getMe(): Promise<AuthResponse> {
+		return chefifyAPI.get<AuthResponse>(`${BASE}/me`);
 	},
 
-	async logout() {
-		const res = await chefifyAPI.post(`${BASE}/logout`);
-		return res;
+	async logout(): Promise<AuthResponse> {
+		return chefifyAPI.post<AuthResponse>(`${BASE}/logout`);
 	},
 
 	async changePassword(payload: {
 		currentPassword?: string;
 		newPassword: string;
 		targetUserId?: string;
-	}) {
-		const res = await chefifyAPI.post(`${BASE}/change-password`, payload);
-		return res;
+	}): Promise<void> {
+		return chefifyAPI.post<void>(`${BASE}/change-password`, payload);
 	},
 
-	async forgotPassword(payload: { email: string }) {
-		const res = await chefifyAPI.post(`${BASE}/forgot-password`, payload);
-		return res;
+	async forgotPassword(payload: { email: string }): Promise<void> {
+		return chefifyAPI.post<void>(`${BASE}/forgot-password`, payload);
 	},
 
-	async resetPassword(payload: { token: string; newPassword: string }) {
-		const res = await chefifyAPI.post(`${BASE}/reset-password`, payload);
-		return res;
+	async resetPassword(payload: {
+		token: string;
+		newPassword: string;
+	}): Promise<void> {
+		return chefifyAPI.post<void>(`${BASE}/reset-password`, payload);
 	},
 };

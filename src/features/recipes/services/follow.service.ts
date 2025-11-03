@@ -1,36 +1,37 @@
 import chefifyAPI from '@/lib/api';
-import type { CommonResponse } from '@/types/common.types';
+import type { User } from '@/types/user.types';
 
 const BASE = '/follow';
 
+export type ToggleFollowResponse = {
+	followersCount: number;
+	isFollowing: boolean;
+};
+
 export const FollowService = {
-	async follow(
-		userId: string,
-	): Promise<CommonResponse<{ followersCount: number; isFollowing: boolean }>> {
-		const res = await chefifyAPI.post(`${BASE}/${userId}/follow`);
-		return res.data;
+	async follow(userId: string): Promise<ToggleFollowResponse> {
+		return chefifyAPI.post<ToggleFollowResponse>(`${BASE}/${userId}/follow`);
 	},
 
-	async unfollow(
-		userId: string,
-	): Promise<CommonResponse<{ followersCount: number; isFollowing: boolean }>> {
-		const res = await chefifyAPI.delete(`${BASE}/${userId}/unfollow`);
-		return res.data;
+	async unfollow(userId: string): Promise<ToggleFollowResponse> {
+		return chefifyAPI.delete<ToggleFollowResponse>(
+			`${BASE}/${userId}/unfollow`,
+		);
 	},
 
-	async getFollowers(userId: string) {
-		const res = await chefifyAPI.get(`${BASE}/${userId}/followers`);
-		return res.data;
+	async getFollowers(userId: string): Promise<User[]> {
+		return chefifyAPI.get<User[]>(`${BASE}/${userId}/followers`);
 	},
 
-	async getFollowing(userId: string) {
-		const res = await chefifyAPI.get(`${BASE}/${userId}/following`);
-		return res.data;
+	async getFollowing(userId: string): Promise<User[]> {
+		return chefifyAPI.get<User[]>(`${BASE}/${userId}/following`);
 	},
 
-	async isFollowing(userId: string) {
-		const res = await chefifyAPI.get(`${BASE}/${userId}/is-following`);
-		return res.data;
+	async isFollowing(userId: string): Promise<boolean> {
+		const resp = await chefifyAPI.get<{ isFollowing: boolean }>(
+			`${BASE}/${userId}/is-following`,
+		);
+		return resp.isFollowing;
 	},
 };
 

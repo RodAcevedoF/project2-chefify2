@@ -1,18 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { RecipeService } from '@/features/recipes/services/recipe.service';
 import type { AxiosError } from 'axios';
 import type { Recipe, UpdateRecipeDTO, RecipeDTO } from '@/types/recipe.types';
 import type { UseCommonOptions } from '@/types/common.types';
-import type { QueryParams, CommonResponse } from '@/types/common.types';
+import type { QueryParams } from '@/types/common.types';
 
 const recipesKeys = ['recipes', 'all', 'recipe'];
 
 export const useGetRecipes = (params: QueryParams = {}) => {
-	return useQuery<CommonResponse<Recipe[]>, AxiosError, Recipe[]>({
+	return useQuery<Recipe[], AxiosError, Recipe[]>({
 		queryKey: [...recipesKeys, JSON.stringify(params)],
 		queryFn: () => RecipeService.getRecipes(params),
 		staleTime: Infinity,
-		select: (resp) => resp.data,
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
 		retry: false,
@@ -20,12 +20,11 @@ export const useGetRecipes = (params: QueryParams = {}) => {
 };
 
 export const useGetRecipeByID = (id?: string) => {
-	return useQuery<CommonResponse<Recipe>, AxiosError, Recipe>({
+	return useQuery<Recipe, AxiosError, Recipe>({
 		queryKey: [...recipesKeys, id],
 		queryFn: () => RecipeService.getRecipeById(id as string),
 		enabled: Boolean(id),
 		staleTime: Infinity,
-		select: (resp) => resp.data,
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
 		retry: false,
@@ -97,13 +96,19 @@ export const useDeleteRecipe = (options?: UseCommonOptions<void>) => {
 	});
 };
 
-export const useSuggestRecipe = () => {
-	return useQuery<RecipeDTO, AxiosError>({
+export const useSuggestRecipe = (
+	options?: Omit<
+		UseQueryOptions<RecipeDTO, AxiosError, RecipeDTO>,
+		'queryKey' | 'queryFn'
+	>,
+) => {
+	return useQuery<RecipeDTO, AxiosError, RecipeDTO>({
 		queryKey: [...recipesKeys, 'suggestion'],
 		queryFn: () => RecipeService.getSuggestedRecipe(),
 		staleTime: Infinity,
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
 		retry: false,
+		...(options ?? {}),
 	});
 };

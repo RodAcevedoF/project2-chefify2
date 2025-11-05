@@ -1,5 +1,5 @@
 import { Box, Typography, Divider } from '@mui/material';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonVariants } from '@/types/common.types';
 import { ShieldUser } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';

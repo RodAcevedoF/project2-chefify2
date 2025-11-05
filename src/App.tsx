@@ -17,6 +17,9 @@ import { ProfileLayout } from '@/features/profile/Profile';
 import { Box } from '@mui/material';
 import { ModalRoot } from '@/features/common/components/modals/ModalRoot';
 import ResetPasswordPage from '@/features/auth/pages/ResetPasswordPage';
+import AdminPage from '@/features/admin/AdminPage';
+import AdminRoute from '@/features/admin/AdminRoute';
+import AdminUsersPage from '@/features/admin/pages/AdminUsersPage';
 import { ScrollProvider } from './contexts/scrollContext/scroll.provider';
 
 function App() {
@@ -71,6 +74,12 @@ function App() {
 							<Routes>
 								<Route path='/' element={<Home />} />
 								<Route path='/reset-password' element={<ResetPasswordPage />} />
+
+								<Route path='/admin' element={<AdminRoute />}>
+									<Route index element={<AdminPage />} />
+
+									<Route path='users' element={<AdminUsersPage />} />
+								</Route>
 								<Route element={<ProtectedRoute />}>
 									<Route path='/recipes' element={<RecipeLayout />}>
 										<Route index element={<EmptyRecipe />} />

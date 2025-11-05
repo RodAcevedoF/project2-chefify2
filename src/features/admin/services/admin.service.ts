@@ -27,6 +27,27 @@ export const AdminService = {
 		return chefifyAPI.get<User[]>(`${BASE}/users`);
 	},
 
+	async getUsersPaginated(params?: {
+		page?: number;
+		limit?: number;
+		sort?: number;
+		search?: string;
+	}): Promise<{
+		items: User[];
+		meta: { total: number; page: number; limit: number };
+	}> {
+		const q = new URLSearchParams();
+		if (params?.page) q.set('page', String(params.page));
+		if (params?.limit) q.set('limit', String(params.limit));
+		if (params?.sort) q.set('sort', String(params.sort));
+		if (params?.search) q.set('search', String(params.search));
+
+		return chefifyAPI.get(`${BASE}/users?${q.toString()}`) as Promise<{
+			items: User[];
+			meta: { total: number; page: number; limit: number };
+		}>;
+	},
+
 	async getUserById(id: string): Promise<User> {
 		return chefifyAPI.get<User>(`${BASE}/${id}`);
 	},

@@ -6,18 +6,17 @@ import {
 	useTheme,
 	CardActionArea,
 } from '@mui/material';
-import UserAvatar from '@/features/profile/components/avatar/UserAvatar';
+import UserAvatar from '@/features/common/components/avatar/UserAvatar';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useGetUser } from '../../hooks/useUser';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
-import { useNavigate } from 'react-router-dom';
-import { handleNavigate } from '@/utils/handleNavigate';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
+import useHandleNavigate from '@/utils/useHandleNavigate';
 
 const ProfileCard: React.FC = () => {
 	const { openModal } = useModalContext();
 	const { data: me } = useGetUser();
 	const theme = useTheme();
-	const nav = handleNavigate('/recipes', useNavigate());
+	const nav = useHandleNavigate('/recipes');
 
 	return (
 		<Paper

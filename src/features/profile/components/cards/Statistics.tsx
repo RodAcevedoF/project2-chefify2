@@ -7,7 +7,7 @@ import {
 	useGetSavedRecipes,
 	useGetUser,
 } from '../../hooks/useUser';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { Donut, DoorOpen } from 'lucide-react';
 import { ButtonVariants } from '@/types/common.types';
 import { useModalContext } from '@/contexts/modalContext/modal.context';

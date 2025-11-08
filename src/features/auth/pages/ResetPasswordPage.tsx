@@ -56,7 +56,6 @@ const ResetPasswordPage = () => {
 
 	useEffect(() => {
 		if (tokenParam) {
-			// remove token from URL to avoid leakage
 			navigate(location.pathname, { replace: true });
 		}
 	}, [tokenParam, navigate, location.pathname]);

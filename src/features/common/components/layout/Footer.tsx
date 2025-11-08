@@ -1,5 +1,5 @@
 import { Card, CardMedia, Container, Typography, Box } from '@mui/material';
-import { ButtonUsage } from '../ui/buttons/MainButton';
+import { ButtonUsage } from '../buttons/MainButton';
 
 export const Footer = () => {
 	return (

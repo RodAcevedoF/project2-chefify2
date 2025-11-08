@@ -1,4 +1,4 @@
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import type { RecipeDTO } from '@/types/recipe.types';
 import { Box, CardMedia, IconButton, TextField, Tooltip } from '@mui/material';
 import { Camera, Trash2 } from 'lucide-react';

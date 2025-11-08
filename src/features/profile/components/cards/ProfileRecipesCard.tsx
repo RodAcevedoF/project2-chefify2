@@ -1,5 +1,4 @@
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
-import { handleNavigate } from '@/utils/handleNavigate';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import {
 	Card,
 	CardContent,
@@ -15,17 +14,17 @@ import {
 } from '@mui/material';
 import { alpha } from '@mui/material';
 import { CookingPot, ChevronRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useGetSavedRecipes } from '@/features/profile/hooks/useUser';
 import NoSavedRecipesCard from './NoSavedRecipesCard';
+import useHandleNavigate from '@/utils/useHandleNavigate';
 
 const DEFAULT_THUMB = '/default-recipe.png';
 
 const ProfileRecipesCard = () => {
 	const theme = useTheme();
-	const navigate = useNavigate();
-	const nav = handleNavigate((id?: string) => `/recipes/${id ?? ''}`, navigate);
-	const navAll = handleNavigate('/recipes', navigate);
+	const nav = useHandleNavigate((id?: string) =>
+		id ? `/recipes/${id}` : '/recipes',
+	);
 
 	const { data: recipes, isLoading } = useGetSavedRecipes();
 
@@ -153,7 +152,7 @@ const ProfileRecipesCard = () => {
 				<Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
 					<ButtonUsage
 						label='See all recipes'
-						parentMethod={navAll}
+						parentMethod={nav}
 						icon={CookingPot}
 					/>
 				</Box>

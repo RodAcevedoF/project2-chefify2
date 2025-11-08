@@ -1,4 +1,4 @@
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { useLogout } from '@/features/auth/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
@@ -34,11 +34,12 @@ export const Navbar = memo(() => {
 	const handleLogout = () => {
 		logoutMutation.mutate();
 	};
-
 	return (
 		<AppBar position='static' component='nav' sx={{ width: '100%', pr: 4 }}>
 			<Toolbar>
-				<Box sx={{ display: 'flex', alignItems: 'center', p: 0.5 }}>
+				<Box
+					sx={{ display: 'flex', alignItems: 'center', p: 0.5 }}
+					onClick={() => nav(logged ? '/recipes' : '/')}>
 					<CardMedia
 						component='img'
 						image='/logo.png'
@@ -60,7 +61,6 @@ export const Navbar = memo(() => {
 				</Box>
 				{isLoading && <CircularProgress color='inherit' />}
 
-				{/* Botones alineados a la derecha */}
 				<Box
 					sx={{
 						display: 'flex',

@@ -1,6 +1,6 @@
 import { Card, CardMedia, Box, Typography, useTheme } from '@mui/material';
 import { homeStyles } from '../../home.theme';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ArrowRight } from 'lucide-react';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 

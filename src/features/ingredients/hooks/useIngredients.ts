@@ -1,11 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { IngredientService } from '@/features/ingredients/services/ingredient.service';
 import type { AxiosError } from 'axios';
-import type {
-	QueryParams,
-	CommonResponse,
-	UseCommonOptions,
-} from '@/types/common.types';
+import type { QueryParams, UseCommonOptions } from '@/types/common.types';
 import type { Ingredient, IngredientDTO } from '@/types/ingredient.type';
 
 export const ingredientKeys = {
@@ -20,17 +16,12 @@ import type { UseQueryOptions } from '@tanstack/react-query';
 
 export const useGetIngredients = (
 	params: QueryParams = {},
-	options?: UseQueryOptions<
-		CommonResponse<Ingredient[]>,
-		AxiosError,
-		Ingredient[]
-	>,
+	options?: UseQueryOptions<Ingredient[], AxiosError, Ingredient[]>,
 ) => {
-	return useQuery<CommonResponse<Ingredient[]>, AxiosError, Ingredient[]>({
+	return useQuery<Ingredient[], AxiosError, Ingredient[]>({
 		queryKey: [...ingredientKeys.all, 'list', JSON.stringify(params)],
 		queryFn: () => IngredientService.getIngredient(params),
 		staleTime: Infinity,
-		select: (resp) => resp.data,
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
 		retry: false,
@@ -39,12 +30,11 @@ export const useGetIngredients = (
 };
 
 export const useGetIngredientByID = (id?: string) => {
-	return useQuery<CommonResponse<Ingredient>, AxiosError, Ingredient>({
+	return useQuery<Ingredient, AxiosError, Ingredient>({
 		queryKey: ingredientKeys.detail(id ?? ''),
 		queryFn: () => IngredientService.getIngredientById(id as string),
 		enabled: Boolean(id),
 		staleTime: Infinity,
-		select: (resp) => resp.data,
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
 		retry: false,

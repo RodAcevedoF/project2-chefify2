@@ -28,7 +28,7 @@ export const useProfileSubmission = ({
 		fd.append('payload', JSON.stringify(data));
 		fd.append('mediafile', selectedFile);
 
-		updateMutation.mutate(fd as unknown as UserDTO, {
+		updateMutation.mutate(fd, {
 			onSuccess: () => onSuccess?.(),
 		});
 	};

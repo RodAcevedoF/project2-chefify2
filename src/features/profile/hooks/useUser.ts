@@ -8,16 +8,14 @@ import { UserService } from '@/features/profile/services/user.service';
 import type { AxiosError } from 'axios';
 import type { User, UserDTO } from '@/types/user.types';
 import type { Recipe } from '@/types/recipe.types';
-import type { CommonResponse } from '@/types/common.types';
 
 export const useGetUser = (
-	options?: UseQueryOptions<CommonResponse<User>, AxiosError, User>,
+	options?: UseQueryOptions<User, AxiosError, User>,
 ) => {
-	return useQuery<CommonResponse<User>, AxiosError, User>({
+	return useQuery<User, AxiosError, User>({
 		queryKey: ['me'],
 		queryFn: () => UserService.getUsers(),
 		staleTime: Infinity,
-		select: (resp) => resp.data,
 		retry: false,
 		...options,
 	});
@@ -25,40 +23,37 @@ export const useGetUser = (
 
 export const useGetUserByEmail = (
 	email: string | undefined,
-	options?: UseQueryOptions<CommonResponse<User>, AxiosError, User>,
+	options?: UseQueryOptions<User, AxiosError, User>,
 ) => {
-	return useQuery<CommonResponse<User>, AxiosError, User>({
+	return useQuery<User, AxiosError, User>({
 		queryKey: ['user', 'email', email],
 		queryFn: () => UserService.getUserByEmail(email as string),
 		enabled: Boolean(email),
 		staleTime: Infinity,
-		select: (resp) => resp.data,
 		retry: false,
 		...options,
 	});
 };
 
 export const useGetOwnRecipes = (
-	options?: UseQueryOptions<CommonResponse<Recipe[]>, AxiosError, Recipe[]>,
+	options?: UseQueryOptions<Recipe[], AxiosError, Recipe[]>,
 ) => {
-	return useQuery<CommonResponse<Recipe[]>, AxiosError, Recipe[]>({
+	return useQuery<Recipe[], AxiosError, Recipe[]>({
 		queryKey: ['user', 'my-recipes'],
 		queryFn: () => UserService.getOwnRecipes(),
 		staleTime: Infinity,
-		select: (resp) => resp.data,
 		retry: false,
 		...options,
 	});
 };
 
 export const useGetSavedRecipes = (
-	options?: UseQueryOptions<CommonResponse<Recipe[]>, AxiosError, Recipe[]>,
+	options?: UseQueryOptions<Recipe[], AxiosError, Recipe[]>,
 ) => {
-	return useQuery<CommonResponse<Recipe[]>, AxiosError, Recipe[]>({
+	return useQuery<Recipe[], AxiosError, Recipe[]>({
 		queryKey: ['user', 'saved-recipes'],
 		queryFn: () => UserService.getSavedRecipes(),
 		staleTime: Infinity,
-		select: (resp) => resp.data,
 		retry: false,
 		...options,
 	});
@@ -107,13 +102,12 @@ export const useDeleteSavedRecipe = () => {
 };
 
 export const useGetRecentOperations = (
-	options?: UseQueryOptions<CommonResponse<unknown[]>, AxiosError, unknown[]>,
+	options?: UseQueryOptions<unknown[], AxiosError, unknown[]>,
 ) => {
-	return useQuery<CommonResponse<unknown[]>, AxiosError, unknown[]>({
+	return useQuery<unknown[], AxiosError, unknown[]>({
 		queryKey: ['user', 'operations'],
 		queryFn: () => UserService.getRecentOperations(),
 		staleTime: Infinity,
-		select: (resp) => resp.data,
 		retry: false,
 		...options,
 	});

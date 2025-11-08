@@ -1,60 +1,68 @@
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { FollowService } from '@/features/recipes/services/follow.service';
-import type { CommonResponse } from '@/types/common.types';
+import type { ToggleFollowResponse } from '@/features/recipes/services/follow.service';
 import type { User } from '@/types/user.types';
-
-type ToggleFollowResponse = { followersCount: number; isFollowing: boolean };
 
 export const useFollow = (userId: string) => {
 	const qc = useQueryClient();
 
-	return useMutation<
-		{ success: boolean; data: ToggleFollowResponse },
-		Error,
-		void
-	>({
-		mutationFn: async () => {
-			const resp = await FollowService.follow(userId);
-			return resp as { success: boolean; data: ToggleFollowResponse };
+	return useMutation<ToggleFollowResponse, Error, void, { previous?: boolean }>(
+		{
+			mutationFn: async () => {
+				return FollowService.follow(userId);
+			},
+			onMutate: async () => {
+				const key = ['follow', 'isFollowing', userId] as const;
+				const previous = qc.getQueryData<boolean>(key);
+				qc.setQueryData<boolean>(key, true);
+				return { previous };
+			},
+			onError: (_err, _vars, context) => {
+				console.error('Follow failed', _err);
+				// rollback
+				const key = ['follow', 'isFollowing', userId] as const;
+				qc.setQueryData<boolean>(key, context?.previous ?? false);
+			},
+			onSettled: () => {
+				qc.invalidateQueries({ queryKey: ['follow', 'isFollowing', userId] });
+				qc.invalidateQueries({ queryKey: ['user', 'operations'] });
+			},
 		},
-		onSuccess: () => {
-			qc.invalidateQueries({
-				queryKey: ['follow', 'isFollowing'],
-			});
-			// refresh recent activity
-			qc.invalidateQueries({ queryKey: ['user', 'operations'] });
-		},
-	});
+	);
 };
 
 export const useUnfollow = (userId: string) => {
 	const qc = useQueryClient();
 
-	return useMutation<
-		{ success: boolean; data: ToggleFollowResponse },
-		Error,
-		void
-	>({
-		mutationFn: async () => {
-			const resp = await FollowService.unfollow(userId);
-			return resp as { success: boolean; data: ToggleFollowResponse };
+	return useMutation<ToggleFollowResponse, Error, void, { previous?: boolean }>(
+		{
+			mutationFn: async () => {
+				return FollowService.unfollow(userId);
+			},
+			onMutate: async () => {
+				const key = ['follow', 'isFollowing', userId] as const;
+				const previous = qc.getQueryData<boolean>(key);
+				qc.setQueryData<boolean>(key, false);
+				return { previous };
+			},
+			onError: (_err, _vars, context) => {
+				console.error('Unfollow failed', _err);
+				const key = ['follow', 'isFollowing', userId] as const;
+				qc.setQueryData<boolean>(key, context?.previous ?? false);
+			},
+			onSettled: () => {
+				qc.invalidateQueries({ queryKey: ['follow', 'isFollowing', userId] });
+				qc.invalidateQueries({ queryKey: ['user', 'operations'] });
+			},
 		},
-		onSuccess: () => {
-			qc.invalidateQueries({
-				queryKey: ['follow', 'isFollowing'],
-			});
-			// refresh recent activity
-			qc.invalidateQueries({ queryKey: ['user', 'operations'] });
-		},
-	});
+	);
 };
 
 export const useIsFollowing = (userId?: string) => {
-	return useQuery<{ isFollowing?: boolean }, Error>({
-		queryKey: ['follow', 'isFollowing'],
+	return useQuery<boolean, Error>({
+		queryKey: ['follow', 'isFollowing', userId ?? ''],
 		queryFn: async () => {
-			const resp = await FollowService.isFollowing(userId as string);
-			return (resp.data ?? {}) as { isFollowing?: boolean };
+			return FollowService.isFollowing(userId as string);
 		},
 		enabled: Boolean(userId),
 		staleTime: 1000 * 30,
@@ -65,11 +73,10 @@ export const useIsFollowing = (userId?: string) => {
 };
 
 export const useFollowers = (userId?: string) => {
-	return useQuery<CommonResponse<User[]>, Error>({
+	return useQuery<User[], Error>({
 		queryKey: ['follow', 'followers', userId ?? ''],
 		queryFn: async () => {
-			const resp = await FollowService.getFollowers(userId as string);
-			return resp as CommonResponse<User[]>;
+			return FollowService.getFollowers(userId as string);
 		},
 		enabled: Boolean(userId),
 		staleTime: 1000 * 60,
@@ -80,11 +87,10 @@ export const useFollowers = (userId?: string) => {
 };
 
 export const useFollowing = (userId?: string) => {
-	return useQuery<CommonResponse<User[]>, Error>({
+	return useQuery<User[], Error>({
 		queryKey: ['follow', 'following', userId ?? ''],
 		queryFn: async () => {
-			const resp = await FollowService.getFollowing(userId as string);
-			return resp as CommonResponse<User[]>;
+			return FollowService.getFollowing(userId as string);
 		},
 		enabled: Boolean(userId),
 		staleTime: 1000 * 60,
@@ -93,5 +99,3 @@ export const useFollowing = (userId?: string) => {
 		retry: false,
 	});
 };
-
-export default null as unknown as never;

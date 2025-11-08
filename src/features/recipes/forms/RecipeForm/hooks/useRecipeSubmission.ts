@@ -50,13 +50,12 @@ export const useRecipeSubmission = ({
 		fd.append('mediafile', selectedFile);
 
 		if (editId) {
-			// Include _id in payload for update route convenience
 			fd.append('_id', editId);
-			updateRecipeMutation.mutate(fd as unknown as UpdateRecipeDTO, {
+			updateRecipeMutation.mutate(fd, {
 				onSuccess: () => onSuccess?.(editId),
 			});
 		} else {
-			createRecipeMutation.mutate(fd as unknown as RecipeDTO, {
+			createRecipeMutation.mutate(fd, {
 				onSuccess: () => onSuccess?.(),
 			});
 		}

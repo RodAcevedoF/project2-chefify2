@@ -13,16 +13,16 @@ export const useToggleFollow = (userId?: string): UseToggleFollowReturn => {
 	const unfollow = useUnfollow(userId as string);
 
 	const loading = follow.status === 'pending' || unfollow.status === 'pending';
-	const isFollowing = isFollowingQuery.data?.isFollowing ?? false;
+	const isFollowing = isFollowingQuery.data ?? false;
 
 	const toggle = useCallback(() => {
 		if (!userId) return;
-		if (isFollowingQuery.data?.isFollowing) {
+		if (isFollowingQuery.data) {
 			unfollow.mutate();
 		} else {
 			follow.mutate();
 		}
-	}, [userId, isFollowingQuery.data?.isFollowing, follow, unfollow]);
+	}, [userId, isFollowingQuery.data, follow, unfollow]);
 
 	return { isFollowing, loading, toggle };
 };

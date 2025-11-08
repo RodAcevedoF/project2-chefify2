@@ -67,3 +67,8 @@ export type AuthorObject = {
 	_id?: string;
 	name?: string;
 };
+
+export enum CreateRecipeModes {
+	CREATE = 'create',
+	EDIT = 'edit',
+}

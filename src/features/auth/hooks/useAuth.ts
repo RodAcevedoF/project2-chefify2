@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AuthService } from '@/features/auth/services/auth.service';
-import { clearRefreshQueue } from '@/lib/api';
 import type { AxiosError } from 'axios';
 import type {
 	AuthResponse,
@@ -15,7 +14,7 @@ export const useLogin = (options?: UseCommonOptions<AuthResponse>) => {
 		mutationKey: ['auth', 'login'],
 		mutationFn: async (credentials: LoginParams) => {
 			const response = await AuthService.login(credentials);
-			return response.data;
+			return response;
 		},
 		onSuccess: (data) => {
 			qc.invalidateQueries({ queryKey: ['auth'] });
@@ -43,11 +42,11 @@ export const useLogout = (options?: UseCommonOptions<AuthResponse>) => {
 		mutationKey: ['auth', 'logout'],
 		mutationFn: async () => {
 			const response = await AuthService.logout();
-			return response?.data ?? { message: 'logout successful' };
+			return response ?? { message: 'logout successful' };
 		},
 		onSuccess: (data) => {
 			qc.invalidateQueries({ queryKey: ['auth', 'me'] });
-			clearRefreshQueue();
+
 			options?.onSuccess?.(data);
 			options?.redirectTo?.();
 		},
@@ -66,7 +65,7 @@ export const useRegister = (options?: UseCommonOptions<AuthResponse>) => {
 		mutationKey: ['auth', 'register'],
 		mutationFn: async (registerData: RegisterParams) => {
 			const response = await AuthService.register(registerData);
-			return response.data;
+			return response;
 		},
 		onSuccess: (data) => {
 			qc.invalidateQueries({ queryKey: ['auth'] });
@@ -97,13 +96,12 @@ export const useChangePassword = (options?: UseCommonOptions<void>) => {
 	>({
 		mutationKey: ['auth', 'change-password'],
 		mutationFn: async (payload) => {
-			const response = await AuthService.changePassword(payload);
-			return response.data;
+			await AuthService.changePassword(payload);
 		},
-		onSuccess: (data) => {
+		onSuccess: () => {
 			// invalidate user/me queries so UI reflects any session/state changes
 			qc.invalidateQueries({ queryKey: ['me'] });
-			options?.onSuccess?.(data as unknown as void);
+			options?.onSuccess?.();
 			options?.redirectTo?.();
 		},
 		onError: (axiosError) => {
@@ -117,11 +115,10 @@ export const useForgotPassword = (options?: UseCommonOptions<void>) => {
 	return useMutation<void, AxiosError, { email: string }>({
 		mutationKey: ['auth', 'forgot-password'],
 		mutationFn: async (payload) => {
-			const response = await AuthService.forgotPassword(payload);
-			return response.data;
+			await AuthService.forgotPassword(payload);
 		},
-		onSuccess: (data) => {
-			options?.onSuccess?.(data as unknown as void);
+		onSuccess: () => {
+			options?.onSuccess?.();
 			options?.redirectTo?.();
 		},
 		onError: (axiosError) => {
@@ -135,11 +132,10 @@ export const useResetPassword = (options?: UseCommonOptions<void>) => {
 	return useMutation<void, AxiosError, { token: string; newPassword: string }>({
 		mutationKey: ['auth', 'reset-password'],
 		mutationFn: async (payload) => {
-			const response = await AuthService.resetPassword(payload);
-			return response.data;
+			await AuthService.resetPassword(payload);
 		},
-		onSuccess: (data) => {
-			options?.onSuccess?.(data as unknown as void);
+		onSuccess: () => {
+			options?.onSuccess?.();
 			options?.redirectTo?.();
 		},
 		onError: (axiosError) => {
@@ -154,7 +150,7 @@ export const useVerified = () => {
 		queryKey: ['auth', 'me'],
 		queryFn: async () => {
 			const response = await AuthService.getMe();
-			return response.data.data;
+			return response;
 		},
 		staleTime: 5 * 60 * 1000,
 		refetchOnWindowFocus: false,

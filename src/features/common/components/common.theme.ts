@@ -54,6 +54,7 @@ export const commonStyles = (
 		alignItems: 'center',
 		justifyContent: 'center',
 		gap: 1,
+		borderRadius: 5,
 	},
 	outlinedVariant: {
 		fontFamily: 'Alegreya',
@@ -64,5 +65,6 @@ export const commonStyles = (
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+		borderRadius: 5,
 	},
 });

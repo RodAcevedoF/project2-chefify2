@@ -17,7 +17,7 @@ import {
 	IconButton,
 	InputAdornment,
 } from '@mui/material';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ArrowBigRight, Eye, EyeClosed } from 'lucide-react';
 
 export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {

@@ -17,7 +17,7 @@ import {
 	IconButton,
 	InputAdornment,
 } from '@mui/material';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonTypes } from '@/types/common.types';
 import { Eye, EyeClosed } from 'lucide-react';
 import { useModalContext } from '@/contexts/modalContext/modal.context';

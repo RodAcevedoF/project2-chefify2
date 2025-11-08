@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, TextField, Typography, useTheme } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonTypes, ButtonVariants } from '@/types/common.types';
 import { useForgotPassword } from '@/features/auth/hooks/useAuth';
 import { useModalContext } from '@/contexts/modalContext/modal.context';

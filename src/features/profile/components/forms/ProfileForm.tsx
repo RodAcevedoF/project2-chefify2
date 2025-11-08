@@ -4,11 +4,11 @@ import {
 	type UseFormWatch,
 } from 'react-hook-form';
 import { Box, TextField, Typography, useTheme } from '@mui/material';
-import UserAvatar from '../avatar/UserAvatar';
+import UserAvatar from '../../../common/components/avatar/UserAvatar';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProfileEditSchema, type UserDTO } from '@/types/user.types';
 import { useGetUser } from '../../hooks/useUser';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import UploadIUmageInput from '@/features/common/components/input/UploadImgInput';
 import { useProfileImageUpload } from '../../hooks/useProfileImageUpload';
 import { useProfileFormInitialization } from '../../hooks/useProfileFormInitialization';

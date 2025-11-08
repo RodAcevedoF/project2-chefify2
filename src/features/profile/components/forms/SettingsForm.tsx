@@ -9,7 +9,7 @@ import {
 	InputAdornment,
 } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonVariants, ButtonTypes } from '@/types/common.types';
 import { z } from 'zod';
 import { useChangePassword } from '@/features/auth/hooks/useAuth';

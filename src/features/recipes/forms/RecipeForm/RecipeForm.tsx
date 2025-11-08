@@ -1,6 +1,7 @@
 import { useForm, type Resolver } from 'react-hook-form';
 import { Box, TextField, Typography, CardMedia, useTheme } from '@mui/material';
 import {
+	CreateRecipeModes,
 	RECIPE_CATEGORY_OPTIONS,
 	RecipeSchema,
 	type RecipeDTO,
@@ -142,7 +143,7 @@ export const RecipeForm = ({
 					createRecipeMutation={
 						editId ? updateRecipeMutation : createRecipeMutation
 					}
-					mode={editId ? 'edit' : 'create'}
+					mode={editId ? CreateRecipeModes.EDIT : CreateRecipeModes.CREATE}
 				/>
 			</Box>
 		</Box>

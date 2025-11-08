@@ -1,4 +1,4 @@
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { UserRoundMinus, UserRoundPlus } from 'lucide-react';
 import { memo } from 'react';
 

@@ -1,4 +1,4 @@
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { Box, Tooltip } from '@mui/material';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';

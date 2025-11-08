@@ -1,29 +1,34 @@
 import { Box, Typography, Alert, useTheme } from '@mui/material';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
-import { useMutation } from '@tanstack/react-query';
-import { RecipeService } from '@/features/recipes/services/recipe.service';
+import { useState } from 'react';
 import { IngredientService } from '@/features/ingredients/services/ingredient.service';
-import normalizeSuggestedRecipeResponse from '@/features/recipes/utils/normalizeSuggestedResponse';
+import { useSuggestRecipe } from '@/features/recipes/hooks/useRecipes';
 import type { AxiosError } from 'axios';
 import { Bot, Brain } from 'lucide-react';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonVariants } from '@/types/common.types';
 
 export const SuggestRecipeModal = () => {
 	const { closeModal, openModal } = useModalContext();
 	const theme = useTheme();
-	const mutation = useMutation({
-		mutationFn: async () => {
-			const res = await RecipeService.getSuggestedRecipe();
-			return normalizeSuggestedRecipeResponse(res);
-		},
-
-		retry: false,
-	});
+	const [lastFetched, setLastFetched] = useState<unknown | null>(null);
+	const {
+		data: suggestedData,
+		refetch,
+		isFetching,
+		isError,
+		error,
+	} = useSuggestRecipe({ enabled: false });
 
 	const handleConfirm = async () => {
 		try {
-			const data: unknown = await mutation.mutateAsync();
+			const resp = await refetch();
+			const data: unknown = resp?.data ?? suggestedData;
+			setLastFetched(data ?? null);
+			console.debug('[SuggestRecipeModal] suggestion via hook:', {
+				resp,
+				data,
+			});
 			if (!data) return;
 			const dataObj = data as { ingredients?: unknown[] };
 			const ingredients = Array.isArray(dataObj.ingredients)
@@ -43,7 +48,7 @@ export const SuggestRecipeModal = () => {
 					if (!id) return ingredientRef;
 					try {
 						const resp = await IngredientService.getIngredientById(id);
-						const ingredientObj = resp.data;
+						const ingredientObj = resp;
 						return {
 							ingredient: {
 								_id: ingredientObj._id,
@@ -67,7 +72,7 @@ export const SuggestRecipeModal = () => {
 	};
 
 	const errorMessage = (() => {
-		const err = mutation.error as unknown;
+		const err = (error ?? null) as unknown;
 		const axiosErr = err as AxiosError<{ message?: string; error?: string }>;
 		return (
 			axiosErr?.response?.data?.message ??
@@ -91,12 +96,31 @@ export const SuggestRecipeModal = () => {
 				</Typography>
 				<Bot color={theme.palette.primary.main} width={50} height={50} />
 			</Box>
+
+			{Boolean(lastFetched) && (
+				<Box sx={{ mt: 2 }}>
+					<Typography variant='subtitle2'>Response preview</Typography>
+					<pre
+						style={{
+							marginTop: 8,
+							maxHeight: 240,
+							overflow: 'auto',
+							background: String(theme.palette.background.paper),
+							padding: 16,
+							borderRadius: 4,
+							whiteSpace: 'pre-wrap',
+							wordBreak: 'break-word',
+						}}>
+						{JSON.stringify(lastFetched, null, 2)}
+					</pre>
+				</Box>
+			)}
 			<Typography variant='body1' mb={2}>
 				Ask the AI to generate a new recipe and it will be loaded into the
 				recipe form so you can review and save it. Do you want to continue?
 			</Typography>
 
-			{mutation.isError && (
+			{isError && (
 				<Alert severity='error' sx={{ mb: 2 }}>
 					{errorMessage}
 				</Alert>
@@ -109,8 +133,8 @@ export const SuggestRecipeModal = () => {
 					variant={ButtonVariants.CANCEL}
 				/>
 				<ButtonUsage
-					label={mutation.status === 'pending' ? 'Generating...' : 'Generate'}
-					disabled={mutation.status === 'pending'}
+					label={isFetching ? 'Generating...' : 'Generate'}
+					disabled={isFetching}
 					icon={Brain}
 					parentMethod={handleConfirm}
 				/>

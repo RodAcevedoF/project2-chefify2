@@ -1,8 +1,9 @@
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
-import { Box, CircularProgress, Typography, useTheme } from '@mui/material';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
+import { Box, Typography, useTheme } from '@mui/material';
 import { CirclePlus } from 'lucide-react';
 import { recipeFormStyles } from '../recipe-form.theme';
 import { ButtonTypes } from '@/types/common.types';
+import { CreateRecipeModes } from '@/types/recipe.types';
 
 export interface CreateBtnProps {
 	createRecipeMutation: {
@@ -10,12 +11,12 @@ export interface CreateBtnProps {
 		isLoading?: boolean;
 		isError?: boolean;
 	};
-	mode?: 'create' | 'edit';
+	mode?: CreateRecipeModes;
 }
 
 const CreateBtn = ({
 	createRecipeMutation,
-	mode = 'create',
+	mode = CreateRecipeModes.CREATE,
 }: CreateBtnProps) => {
 	const theme = useTheme();
 	const rs = recipeFormStyles(theme, {});
@@ -27,21 +28,11 @@ const CreateBtn = ({
 		<>
 			<Box sx={rs.createBtnBox}>
 				<ButtonUsage
-					label={
-						isPending ? (
-							<CircularProgress
-								size={20}
-								sx={{ color: theme.palette.primary.main }}
-							/>
-						) : mode === 'edit' ? (
-							'SAVE'
-						) : (
-							'CREATE'
-						)
-					}
+					label={mode === CreateRecipeModes.CREATE ? 'CREATE' : 'SAVE'}
 					disabled={isPending}
 					type={ButtonTypes.SUBMIT}
 					icon={CirclePlus}
+					loader={isPending}
 				/>
 			</Box>
 			{isError && (

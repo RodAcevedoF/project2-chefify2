@@ -50,3 +50,19 @@ export const ProfileEditSchema = UserSchema.pick({
 	.strip();
 
 export type UserDTO = z.infer<typeof ProfileEditSchema>;
+
+export type UserTableProps = {
+	users: User[];
+	cellSx: Record<string, unknown>;
+	handleDelete: (id: string, name?: string) => void;
+	data?: {
+		items: User[];
+		meta: { total: number; page: number; limit: number };
+	} | null;
+	page: number;
+	rowsPerPage: number;
+	setPage: (p: number) => void;
+	setRowsPerPage: (n: number) => void;
+	isLoading?: boolean;
+	isError?: boolean;
+};

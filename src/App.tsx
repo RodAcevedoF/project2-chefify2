@@ -19,7 +19,7 @@ import { ModalRoot } from '@/features/common/components/modals/ModalRoot';
 import ResetPasswordPage from '@/features/auth/pages/ResetPasswordPage';
 import AdminPage from '@/features/admin/AdminPage';
 import AdminRoute from '@/features/admin/AdminRoute';
-import AdminUsersPage from '@/features/admin/pages/AdminUsersPage';
+import AdminUsersPage from '@/features/admin/components/AdminUsersTable';
 import { ScrollProvider } from './contexts/scrollContext/scroll.provider';
 
 function App() {

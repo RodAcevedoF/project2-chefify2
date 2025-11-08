@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
-import { ButtonUsage } from '@/features/common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonTypes, ButtonVariants } from '@/types/common.types';
 import { useResetPassword } from '@/features/auth/hooks/useAuth';
 import { Eye, EyeClosed } from 'lucide-react';

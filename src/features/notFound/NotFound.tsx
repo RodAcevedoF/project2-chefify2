@@ -1,7 +1,7 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import { ChefHat, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { ButtonUsage } from '../common/components/ui/buttons/MainButton';
+import { ButtonUsage } from '../common/components/buttons/MainButton';
 import { ButtonIconPositions, ButtonVariants } from '@/types/common.types';
 
 export const NotFound = () => {
@@ -52,8 +52,6 @@ export const NotFound = () => {
 					}}>
 					404
 				</Typography>
-
-				{/* Main Message */}
 				<Typography
 					variant='h4'
 					sx={{

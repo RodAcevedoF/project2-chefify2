@@ -1,15 +1,17 @@
-import { Box, Typography, Button } from '@mui/material';
+import ConfirmLayout from '@/features/common/components/modals/ConfirmLayout';
 import type { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useDeleteRecipe } from '@/features/recipes/hooks';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
+import { ButtonVariants } from '@/types/common.types';
 
-type Props = {
+type DeleteModalProps = {
 	id?: string;
 	title?: string;
 };
 
-export const DeleteModal = ({ id, title }: Props = {}) => {
+export const DeleteModal = ({ id, title }: DeleteModalProps = {}) => {
 	const { closeModal } = useModalContext();
 	const navigate = useNavigate();
 
@@ -26,35 +28,40 @@ export const DeleteModal = ({ id, title }: Props = {}) => {
 	};
 
 	return (
-		<Box sx={{ p: 2, minWidth: 320 }}>
-			<Typography variant='h6' mb={1}>
-				Delete recipe
-			</Typography>
-			<Typography variant='body2' mb={2}>
-				Are you sure you want to delete "{title ?? 'this recipe'}"? This action
-				cannot be undone.
-			</Typography>
-			{deleteMutation.isError && (
-				<Typography variant='body2' color='error' mb={2}>
-					{(deleteMutation.error as unknown as AxiosError<{ message?: string }>)
-						?.response?.data?.message ||
-						(deleteMutation.error as unknown as Error)?.message ||
-						'An error occurred while deleting the recipe.'}
-				</Typography>
-			)}
-			<Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-				<Button variant='outlined' color='inherit' onClick={() => closeModal()}>
-					Cancel
-				</Button>
-				<Button
-					variant='contained'
-					color='error'
-					onClick={handleConfirm}
-					disabled={deleteMutation.status === 'pending'}>
-					Delete
-				</Button>
-			</Box>
-		</Box>
+		<ConfirmLayout
+			title='Delete recipe'
+			message={
+				<>
+					Are you sure you want to delete "{title ?? 'this recipe'}"? This
+					action cannot be undone.
+				</>
+			}
+			error={
+				deleteMutation.isError
+					? (
+							deleteMutation.error as unknown as AxiosError<{
+								message?: string;
+							}>
+					  )?.response?.data?.message ||
+					  (deleteMutation.error as unknown as Error)?.message ||
+					  'An error occurred while deleting the recipe.'
+					: undefined
+			}>
+			<>
+				<ButtonUsage
+					label='Cancel'
+					variant={ButtonVariants.OUTLINED}
+					parentMethod={closeModal}
+				/>
+
+				<ButtonUsage
+					label='Delete'
+					variant={ButtonVariants.CANCEL}
+					disabled={deleteMutation.status === 'pending'}
+					parentMethod={handleConfirm}
+				/>
+			</>
+		</ConfirmLayout>
 	);
 };
 

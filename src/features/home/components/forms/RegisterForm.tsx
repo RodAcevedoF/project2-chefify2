@@ -67,7 +67,7 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 				</Typography>
 				<CardMedia
 					component={'img'}
-					image='/logo.png'
+					image='/logo.webp'
 					alt='Chef Hat'
 					sx={{ width: 50, filter: 'invert(1)' }}
 				/>

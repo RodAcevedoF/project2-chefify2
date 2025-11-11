@@ -73,7 +73,14 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 				background: theme.palette.background.gradient,
 				borderRadius: 3,
 			}}>
-			<Box sx={{ textAlign: 'center' }}>
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					textAlign: 'center',
+					justifyContent: 'center',
+					alignItems: 'center',
+				}}>
 				<UserAvatar
 					name={(
 						watch('name') ??
@@ -81,7 +88,7 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 						''
 					).toString()}
 					imgUrl={watch('imgUrl') ?? undefined}
-					size={64}
+					size={100}
 				/>
 				<Typography variant='h6' fontFamily={'Alegreya'}>
 					Edit your profile

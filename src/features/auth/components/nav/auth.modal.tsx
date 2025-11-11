@@ -1,6 +1,6 @@
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import useHandleNavigate from '@/utils/useHandleNavigate';
 import { RegisterForm } from '@/features/home/components/forms/RegisterForm';
 import { LoginForm } from '@/features/home/components/forms/LoginForm';
 import { Button, useTheme } from '@mui/material';
@@ -10,7 +10,7 @@ export const AuthModal = () => {
 	const [showRegister, setShowRegister] = useState(false);
 	const { setLogged } = useLoggedContext();
 	const { closeModal } = useModalContext();
-	const nav = useNavigate();
+	const nav = useHandleNavigate((p?: string) => (p ? p : '/'));
 	const theme = useTheme();
 
 	const handleLoginSuccess = () => {

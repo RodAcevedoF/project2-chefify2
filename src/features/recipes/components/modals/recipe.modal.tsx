@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import useHandleNavigate from '@/utils/useHandleNavigate';
 import { Button, Box } from '@mui/material';
 import type { Recipe } from '@/types/recipe.types';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
@@ -6,15 +6,16 @@ import { RecipeForm } from '@/features/recipes/forms/RecipeForm/RecipeForm';
 
 export const RecipeModal = (props: Record<string, unknown> = {}) => {
 	const { closeModal } = useModalContext();
-	const nav = useNavigate();
+	const nav = useHandleNavigate((id?: string) =>
+		id ? `/recipes/${id}` : '/recipes',
+	);
 	const initialData = props.initialData as unknown as
 		| Partial<Recipe>
 		| undefined;
 
 	const handleRecipeMutationSuccess = (id?: string) => {
 		closeModal();
-		if (id) nav(`/recipes/${id}`);
-		else nav('/recipes');
+		nav(id);
 	};
 
 	return (

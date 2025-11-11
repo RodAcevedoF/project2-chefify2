@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useReducer } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import useHandleNavigate from '@/utils/useHandleNavigate';
 import type { SelectChangeEvent } from '@mui/material';
 import { useGetRecipes } from '@/features/recipes/hooks';
 import type { Recipe } from '@/types/recipe.types';
@@ -9,7 +10,7 @@ const SUGGEST_DEBOUNCE_MS = 250;
 
 export function useSearchAutocomplete() {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const navigate = useNavigate();
+	const navigate = useHandleNavigate((id?: string) => `/recipes/${id}`);
 
 	const initial = searchParams.get('title') ?? '';
 	const initialCategory = searchParams.get('category') ?? '';
@@ -223,7 +224,7 @@ export function useSearchAutocomplete() {
 	const selectById = (id?: string) => {
 		if (!id) return;
 		close();
-		navigate(`/recipes/${id}`);
+		navigate(id);
 	};
 
 	const moveHighlight = (delta: number) => {

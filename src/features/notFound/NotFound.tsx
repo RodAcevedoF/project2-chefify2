@@ -27,6 +27,7 @@ export const NotFound = () => {
 				background: theme.palette.background.gradient,
 				textAlign: 'center',
 				px: 3,
+				width: '100%',
 			}}>
 			<Box
 				sx={{

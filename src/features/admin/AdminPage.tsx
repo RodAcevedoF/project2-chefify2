@@ -1,16 +1,17 @@
 import { Box, Typography, Divider } from '@mui/material';
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonVariants } from '@/types/common.types';
-import { ShieldUser } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { ChefHat, CloudUpload, House, ShieldUser } from 'lucide-react';
 import { memo } from 'react';
+import useHandleNavigate from '@/utils/useHandleNavigate';
 
 const AdminPage = () => {
-	const nav = useNavigate();
+	const useAdminNav = (arg?: string) =>
+		useHandleNavigate(!arg ? '/profile' : `/admin/${arg}`);
 
 	return (
-		<Box sx={{ p: 4 }}>
-			<Typography variant='h4' sx={{ mb: 2 }}>
+		<Box sx={{ p: 4, width: '100%' }}>
+			<Typography variant='h3' sx={{ mb: 2, fontFamily: 'Alegreya' }}>
 				Admin Panel (Draft)
 			</Typography>
 			<Divider sx={{ mb: 2 }} />
@@ -21,17 +22,38 @@ const AdminPage = () => {
 				tools.
 			</Typography>
 
-			<Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+			<Box
+				sx={{
+					display: 'flex',
+					gap: 2,
+					mt: 2,
+					flexWrap: 'wrap',
+					justifyContent: 'center',
+					alignItems: 'center',
+				}}>
 				<ButtonUsage
 					label='User Management'
-					parentMethod={() => nav('/admin/users')}
+					parentMethod={useAdminNav('users')}
 					variant={ButtonVariants.DEFAULT}
 					icon={ShieldUser}
 				/>
 				<ButtonUsage
-					label='Site Settings'
-					parentMethod={() => nav('/admin/settings')}
+					label='Recipe Management'
+					parentMethod={useAdminNav('recipes')}
+					variant={ButtonVariants.DEFAULT}
+					icon={ChefHat}
+				/>
+				<ButtonUsage
+					label='Files Upload'
+					parentMethod={useAdminNav('uploads')}
+					variant={ButtonVariants.DEFAULT}
+					icon={CloudUpload}
+				/>
+				<ButtonUsage
+					parentMethod={useAdminNav()}
 					variant={ButtonVariants.OUTLINED}
+					icon={House}
+					iconSx={{ width: '30px', height: '30px' }}
 				/>
 			</Box>
 		</Box>

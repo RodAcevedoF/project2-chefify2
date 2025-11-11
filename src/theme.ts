@@ -20,6 +20,7 @@ const themeOptions: ThemeOptions = {
 			gradient: CIRCLE_GRADIENT,
 			lightGradient: LIGHT_CIRCLE_GRADIENT,
 			paper: '#232524',
+			semitransparent: '#e7d2b0ba',
 		},
 		divider: '#5ea85e75',
 	},
@@ -82,3 +83,5 @@ const themeOptions: ThemeOptions = {
 };
 
 export const theme = createTheme(themeOptions);
+
+export default theme;

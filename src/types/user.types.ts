@@ -54,6 +54,7 @@ export type UserDTO = z.infer<typeof ProfileEditSchema>;
 export type UserTableProps = {
 	users: User[];
 	cellSx: Record<string, unknown>;
+	headerCellSx: Record<string, unknown>;
 	handleDelete: (id: string, name?: string) => void;
 	data?: {
 		items: User[];
@@ -65,4 +66,5 @@ export type UserTableProps = {
 	setRowsPerPage: (n: number) => void;
 	isLoading?: boolean;
 	isError?: boolean;
+	btnColor?: string;
 };

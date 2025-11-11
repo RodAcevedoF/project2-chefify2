@@ -1,8 +1,15 @@
 import './index.css';
 import { Navbar } from '@/features/common/components/layout/Navbar';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+	BrowserRouter as Router,
+	Route,
+	Routes,
+	useLocation,
+} from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import PageTransition from '@/features/common/components/PageTransition';
 // logged context used in redirected component (extracted)
 import Toast from '@/features/common/components/toasts/Toast';
 import RedirectOnLogin from '@/features/common/components/RedirectOnLogin';
@@ -19,7 +26,9 @@ import { ModalRoot } from '@/features/common/components/modals/ModalRoot';
 import ResetPasswordPage from '@/features/auth/pages/ResetPasswordPage';
 import AdminPage from '@/features/admin/AdminPage';
 import AdminRoute from '@/features/admin/AdminRoute';
-import AdminUsersPage from '@/features/admin/components/AdminUsersTable';
+import AdminUsersPage from '@/features/admin/components/tables/AdminUsersTable';
+import AdminRecipesPage from '@/features/admin/components/tables/AdminRecipesTable';
+import UploadsPage from '@/features/admin/UploadsPage';
 import { ScrollProvider } from './contexts/scrollContext/scroll.provider';
 
 function App() {
@@ -71,24 +80,109 @@ function App() {
 						</Box>
 						<RedirectOnLogin />
 						<Box component='main'>
-							<Routes>
-								<Route path='/' element={<Home />} />
-								<Route path='/reset-password' element={<ResetPasswordPage />} />
+							{/* Animated routes: AnimatePresence must live inside Router and use location */}
+							{(() => {
+								const AnimatedRoutes = () => {
+									const location = useLocation();
+									return (
+										<AnimatePresence mode='wait' initial={false}>
+											<Routes location={location}>
+												<Route
+													path='/'
+													element={
+														<PageTransition>
+															<Home />
+														</PageTransition>
+													}
+												/>
+												<Route
+													path='/reset-password'
+													element={
+														<PageTransition>
+															<ResetPasswordPage />
+														</PageTransition>
+													}
+												/>
 
-								<Route path='/admin' element={<AdminRoute />}>
-									<Route index element={<AdminPage />} />
+												<Route path='/admin' element={<AdminRoute />}>
+													<Route
+														index
+														element={
+															<PageTransition>
+																<AdminPage />
+															</PageTransition>
+														}
+													/>
+													<Route
+														path='users'
+														element={
+															<PageTransition>
+																<AdminUsersPage />
+															</PageTransition>
+														}
+													/>
+													<Route
+														path='recipes'
+														element={
+															<PageTransition>
+																<AdminRecipesPage />
+															</PageTransition>
+														}
+													/>
+													<Route
+														path='uploads'
+														element={
+															<PageTransition>
+																<UploadsPage />
+															</PageTransition>
+														}
+													/>
+												</Route>
 
-									<Route path='users' element={<AdminUsersPage />} />
-								</Route>
-								<Route element={<ProtectedRoute />}>
-									<Route path='/recipes' element={<RecipeLayout />}>
-										<Route index element={<EmptyRecipe />} />
-										<Route path=':id' element={<RecipeDetail />} />
-									</Route>
-									<Route path='/profile' element={<ProfileLayout />} />
-								</Route>
-								<Route path='*' element={<NotFound />} />
-							</Routes>
+												<Route element={<ProtectedRoute />}>
+													<Route path='/recipes' element={<RecipeLayout />}>
+														<Route
+															index
+															element={
+																<PageTransition>
+																	<EmptyRecipe />
+																</PageTransition>
+															}
+														/>
+														<Route
+															path=':id'
+															element={
+																<PageTransition>
+																	<RecipeDetail />
+																</PageTransition>
+															}
+														/>
+													</Route>
+													<Route
+														path='/profile'
+														element={
+															<PageTransition>
+																<ProfileLayout />
+															</PageTransition>
+														}
+													/>
+												</Route>
+
+												<Route
+													path='*'
+													element={
+														<PageTransition>
+															<NotFound />
+														</PageTransition>
+													}
+												/>
+											</Routes>
+										</AnimatePresence>
+									);
+								};
+
+								return <AnimatedRoutes />;
+							})()}
 						</Box>
 						<Box component='footer'>
 							<Footer />

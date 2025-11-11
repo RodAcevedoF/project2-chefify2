@@ -34,7 +34,6 @@ const UserAvatar: FC<UserAvatarProps> = ({ name, imgUrl, size = 64, sx }) => {
 			sx={{
 				width: size,
 				height: size,
-				mx: 'auto',
 				mb: 1,
 				bgcolor: bg,
 				color: 'white',

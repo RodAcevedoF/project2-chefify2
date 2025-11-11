@@ -1,7 +1,11 @@
 import { Box } from '@mui/material';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import PageTransition from '@/features/common/components/PageTransition';
 
 const RecipeDetailContainer = () => {
+	const location = useLocation();
+
 	return (
 		<Box
 			sx={{
@@ -13,7 +17,11 @@ const RecipeDetailContainer = () => {
 				width: '100%',
 				p: 2,
 			}}>
-			<Outlet />
+			<AnimatePresence mode='wait' initial={false}>
+				<PageTransition key={location.pathname}>
+					<Outlet />
+				</PageTransition>
+			</AnimatePresence>
 		</Box>
 	);
 };

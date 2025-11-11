@@ -1,7 +1,7 @@
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
 import { useLogout } from '@/features/auth/hooks';
 import { Paper, Typography, useTheme, Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import useHandleNavigate from '@/utils/useHandleNavigate';
 import {
 	useGetOwnRecipes,
 	useGetSavedRecipes,
@@ -15,6 +15,8 @@ import { useModalContext } from '@/contexts/modalContext/modal.context';
 const Statistics = () => {
 	const { setLogged } = useLoggedContext();
 	const { openModal } = useModalContext();
+	const theme = useTheme();
+	const nav = useHandleNavigate((p?: string) => (p ? p : '/'));
 	const logoutMutation = useLogout({
 		onSuccess: () => {
 			setLogged(false);
@@ -26,8 +28,6 @@ const Statistics = () => {
 			nav('/');
 		},
 	});
-	const theme = useTheme();
-	const nav = useNavigate();
 
 	const handleLogout = () => {
 		logoutMutation.mutate();

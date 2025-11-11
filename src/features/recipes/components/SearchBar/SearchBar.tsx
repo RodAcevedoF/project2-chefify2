@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useDrawerContext } from '../../drawer-context/drawer.context';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import useHandleNavigate from '@/utils/useHandleNavigate';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import SearchElement from './components/SearchElement';
 import MobileSearchBar from './components/MobileSearchBar';
@@ -28,7 +28,7 @@ export default function PrimarySearchAppBar() {
 	const theme = useTheme();
 	const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
 	const { openModal } = useModalContext();
-	const nav = useNavigate();
+	const nav = useHandleNavigate((p?: string) => (p ? p : '/'));
 	const LIMIT = 5;
 
 	const handleMobileMenuClose = () => {

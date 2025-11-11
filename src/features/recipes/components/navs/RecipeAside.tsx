@@ -13,20 +13,20 @@ import {
 	useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import useHandleNavigate from '@/utils/useHandleNavigate';
 import { recipeStyles } from '../../recipe.theme';
 import { capitalize } from '@/features/common/utils/capitalize.helper';
 import { useDrawerContext } from '../../drawer-context/drawer.context';
 
 const RecipeAside = memo(() => {
-	const navigate = useNavigate();
+	const navigate = useHandleNavigate((id?: string) => `/recipes/${id}`);
 	const theme = useTheme();
 	const rs = recipeStyles(theme);
 	const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
 	const { drawerOpen, setDrawerOpen } = useDrawerContext();
 
 	const handleGetDetails = (id: string) => {
-		navigate(`/recipes/${id}`);
+		navigate(id);
 		setDrawerOpen(false);
 	};
 

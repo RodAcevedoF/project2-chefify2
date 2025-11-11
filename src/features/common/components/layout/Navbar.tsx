@@ -3,6 +3,8 @@ import { useLogout } from '@/features/auth/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
 import { memo } from 'react';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import {
 	AppBar,
 	Toolbar,
@@ -18,6 +20,8 @@ export const Navbar = memo(() => {
 	const { logged, setLogged, isLoading, isAdmin } = useLoggedContext();
 	const nav = useNavigate();
 	const { openModal } = useModalContext();
+	const theme = useTheme();
+	const isBelow = useMediaQuery(theme.breakpoints.down('sm'));
 
 	const logoutMutation = useLogout({
 		onSuccess: () => {
@@ -42,9 +46,13 @@ export const Navbar = memo(() => {
 					onClick={() => nav(logged ? '/recipes' : '/')}>
 					<CardMedia
 						component='img'
-						image='/logo.png'
+						image='/logo.webp'
 						alt='Chefify Logo'
-						sx={{ width: { md: '80px', xs: '60px' }, height: 'auto' }}
+						sx={{
+							width: { md: '80px', xs: '60px' },
+							height: 'auto',
+							cursor: 'pointer',
+						}}
 					/>
 					<Typography
 						variant='h6'
@@ -70,7 +78,7 @@ export const Navbar = memo(() => {
 					}}>
 					{logged && isAdmin && (
 						<ButtonUsage
-							label='Admin Panel'
+							label={isBelow ? '' : 'Admin Panel'}
 							parentMethod={() => nav('/admin')}
 							icon={ShieldUser}
 						/>
@@ -78,7 +86,13 @@ export const Navbar = memo(() => {
 					{logged && !isLoading ? (
 						<>
 							<ButtonUsage
-								label={logoutMutation.isPending ? 'Logging out...' : 'Logout'}
+								label={
+									isBelow
+										? ''
+										: logoutMutation.isPending
+										? 'Logging out...'
+										: 'Logout'
+								}
 								parentMethod={handleLogout}
 								disabled={logoutMutation.isPending}
 								icon={DoorOpen}
@@ -86,7 +100,7 @@ export const Navbar = memo(() => {
 						</>
 					) : (
 						<ButtonUsage
-							label='Sign In'
+							label={'Sign In'}
 							parentMethod={() => openModal('auth')}
 							icon={KeyRound}
 						/>

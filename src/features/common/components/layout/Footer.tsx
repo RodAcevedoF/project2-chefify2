@@ -1,5 +1,6 @@
 import { Card, CardMedia, Container, Typography, Box } from '@mui/material';
 import { ButtonUsage } from '../buttons/MainButton';
+import { Send } from 'lucide-react';
 
 export const Footer = () => {
 	return (
@@ -45,9 +46,10 @@ export const Footer = () => {
 					/>
 					<Typography
 						sx={{
-							fontSize: { xs: '1.2rem', md: '1.4rem', lg: '1.6rem' },
+							fontSize: { xs: '1.1rem', md: '1.3rem', lg: '1.5rem' },
 							fontWeight: 'bold',
 							textAlign: 'center',
+							fontFamily: 'Alegreya',
 						}}>
 						Partner with a creative agency that's ambitious as you are.
 					</Typography>
@@ -55,11 +57,11 @@ export const Footer = () => {
 				<ButtonUsage
 					label='contact'
 					extraSx={{
-						width: '300px',
-						fontSize: '30px',
+						width: '250px',
+						fontSize: '25px',
 						justifyContent: 'center',
-						borderRadius: '10px',
 					}}
+					icon={Send}
 				/>
 			</Card>
 			<Typography

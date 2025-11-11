@@ -3,17 +3,27 @@ import { AdminService } from '@/features/admin/services/admin.service';
 import type { AxiosError } from 'axios';
 import type { UseCommonOptions } from '@/types/common.types';
 import type { User, UserDTO } from '@/types/user.types';
+import type { Recipe } from '@/types/recipe.types';
+import { RecipeService } from '@/features/recipes/services/recipe.service';
+import type {
+	LocalQueryOptions,
+	QueryData,
+	UsersQueryData,
+	UsersQueryOptions,
+} from '@/types/admin.types';
 
 export const useGetUsers = (options?: UseCommonOptions<User[]>) => {
-	return useQuery<User[]>({
-		queryKey: ['admin', 'users'],
-		queryFn: async () => {
-			return AdminService.getUsers();
-		},
+	const opts = {
+		queryKey: ['admin', 'users'] as const,
+		queryFn: async () => AdminService.getUsers(),
 		staleTime: 1000 * 60, // 1 minute
 		refetchOnWindowFocus: false,
-		...options,
-	});
+		onSuccess: options?.onSuccess,
+		onError: options?.onError as unknown as (err: Error) => void,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	} as unknown as any;
+
+	return useQuery<User[], Error>(opts);
 };
 
 export const useGetUsersPaginated = (
@@ -24,15 +34,26 @@ export const useGetUsersPaginated = (
 	}>,
 ) => {
 	const { page = 1, limit = 10, sort = -1, search } = args ?? {};
-	return useQuery({
-		queryKey: ['admin', 'users', 'paginated', page, limit, sort, search],
-		queryFn: async () => {
-			return AdminService.getUsersPaginated({ page, limit, sort, search });
-		},
+
+	const paginatedOpts: UsersQueryOptions = {
+		queryKey: [
+			'admin',
+			'users',
+			'paginated',
+			page,
+			limit,
+			sort,
+			search,
+		] as const,
+		queryFn: async () =>
+			AdminService.getUsersPaginated({ page, limit, sort, search }),
 		staleTime: 1000 * 60,
 		refetchOnWindowFocus: false,
-		...options,
-	});
+		onSuccess: options?.onSuccess,
+		onError: options?.onError as unknown as (err: Error) => void,
+	};
+
+	return useQuery<UsersQueryData, Error>(paginatedOpts);
 };
 
 export const useCreateUser = (options?: UseCommonOptions<User>) => {
@@ -44,7 +65,6 @@ export const useCreateUser = (options?: UseCommonOptions<User>) => {
 		},
 		onSuccess: (data) => {
 			qc.invalidateQueries({ queryKey: ['admin', 'users'] });
-			// Also invalidate paginated users queries so pages refresh
 			qc.invalidateQueries({ queryKey: ['admin', 'users', 'paginated'] });
 			options?.onSuccess?.(data);
 			options?.redirectTo?.();
@@ -69,7 +89,6 @@ export const useUpdateUser = (options?: UseCommonOptions<User>) => {
 		},
 		onSuccess: (data) => {
 			qc.invalidateQueries({ queryKey: ['admin', 'users'] });
-			// Also invalidate paginated users queries so pages refresh
 			qc.invalidateQueries({ queryKey: ['admin', 'users', 'paginated'] });
 			options?.onSuccess?.(data);
 			options?.redirectTo?.();
@@ -88,7 +107,6 @@ export const useDeleteUser = (
 			return AdminService.deleteUser(id);
 		},
 		onSuccess: (data) => {
-			// Invalidate both non-paginated and paginated users queries so UI refreshes
 			qc.invalidateQueries({ queryKey: ['admin', 'users'] });
 			qc.invalidateQueries({ queryKey: ['admin', 'users', 'paginated'] });
 			options?.onSuccess?.(data);
@@ -98,38 +116,52 @@ export const useDeleteUser = (
 	});
 };
 
-export const useImportRecipes = (
-	options?: UseCommonOptions<{ imported?: number }>,
+export const useGetRecipesPaginated = (
+	args?: { page?: number; limit?: number; sort?: number; search?: string },
+	options?: UseCommonOptions<{
+		items: Recipe[];
+		meta: { total: number; page: number; limit: number };
+	}>,
 ) => {
-	const qc = useQueryClient();
-	return useMutation<{ imported?: number }, AxiosError, FormData>({
-		mutationKey: ['admin', 'import-recipes'],
-		mutationFn: async (file) => {
-			return AdminService.importRecipes(file);
+	const { page = 1, limit = 10, sort = -1, search } = args ?? {};
+	const queryKey = [
+		'admin',
+		'recipes',
+		'paginated',
+		page,
+		limit,
+		sort,
+		search,
+	] as const;
+
+	const opts: LocalQueryOptions = {
+		queryKey: queryKey as readonly unknown[],
+		queryFn: async () => {
+			const params = { page, limit, sort, search };
+			return AdminService.getRecipesPaginated(params);
 		},
-		onSuccess: (data) => {
+		staleTime: 1000 * 60,
+		refetchOnWindowFocus: false,
+		onSuccess: options?.onSuccess,
+		onError: options?.onError as unknown as (err: Error) => void,
+	};
+
+	return useQuery<QueryData, Error>(opts);
+};
+
+export const useDeleteRecipeAdmin = (options?: UseCommonOptions<void>) => {
+	const qc = useQueryClient();
+	return useMutation<void, AxiosError, { id: string }>({
+		mutationKey: ['admin', 'delete-recipe'],
+		mutationFn: async ({ id }) => {
+			return RecipeService.deleteRecipe(id);
+		},
+		onSuccess: () => {
 			qc.invalidateQueries({ queryKey: ['recipes'] });
-			options?.onSuccess?.(data);
+			qc.invalidateQueries({ queryKey: ['admin', 'recipes', 'paginated'] });
+			options?.onSuccess?.();
 		},
 		onError: (err) => options?.onError?.(err as unknown as Error),
 	});
 };
-
-export const useImportIngredients = (
-	options?: UseCommonOptions<{ imported?: number }>,
-) => {
-	const qc = useQueryClient();
-	return useMutation<{ imported?: number }, AxiosError, FormData>({
-		mutationKey: ['admin', 'import-ingredients'],
-		mutationFn: async (file) => {
-			return AdminService.importIngredients(file);
-		},
-		onSuccess: (data) => {
-			qc.invalidateQueries({ queryKey: ['ingredients'] });
-			options?.onSuccess?.(data);
-		},
-		onError: (err) => options?.onError?.(err as unknown as Error),
-	});
-};
-
 export default {};

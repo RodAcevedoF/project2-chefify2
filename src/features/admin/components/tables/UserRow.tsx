@@ -1,4 +1,4 @@
-import { TableRow, TableCell, IconButton, Tooltip } from '@mui/material';
+import { TableRow, TableCell, IconButton, Tooltip, Box } from '@mui/material';
 import { Eye, Trash2 } from 'lucide-react';
 import UserAvatar from '@/features/common/components/avatar/UserAvatar';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
@@ -16,14 +16,16 @@ const UserRow = ({ user: u, cellSx, onDelete }: Props) => {
 	return (
 		<TableRow key={u._id ?? u.email} hover>
 			<TableCell sx={cellSx}>
-				<UserAvatar
-					name={u.name}
-					imgUrl={u.imgUrl}
-					size={40}
-					sx={{ mx: 0, mb: 0 }}
-				/>
+				<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+					<UserAvatar
+						name={u.name}
+						imgUrl={u.imgUrl}
+						size={40}
+						sx={{ mx: 0, mb: 0 }}
+					/>
+					{u.name}
+				</Box>
 			</TableCell>
-			<TableCell sx={cellSx}>{u.name}</TableCell>
 			<TableCell sx={{ ...cellSx, display: { xs: 'none', sm: 'table-cell' } }}>
 				{(u as unknown as { recipesCount?: number }).recipesCount ?? 0}
 			</TableCell>

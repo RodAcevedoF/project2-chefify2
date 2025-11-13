@@ -1,7 +1,15 @@
-import { TableRow, TableCell, IconButton, Tooltip } from '@mui/material';
+import {
+	TableRow,
+	TableCell,
+	IconButton,
+	Tooltip,
+	Box,
+	Typography,
+} from '@mui/material';
 import { Eye, Trash2 } from 'lucide-react';
 import type { Recipe } from '@/types/recipe.types';
 import { memo } from 'react';
+import UserAvatar from '@/features/common/components/avatar/UserAvatar';
 
 type RecipeRowProps = {
 	recipe: Recipe;
@@ -21,7 +29,19 @@ const RecipeRow = ({ recipe, cellSx, onDelete, onView }: RecipeRowProps) => {
 		: '—';
 	return (
 		<TableRow>
-			<TableCell sx={cellSx}>{recipe.title}</TableCell>
+			<TableCell sx={cellSx}>
+				<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+					<UserAvatar
+						name={recipe.title}
+						imgUrl={recipe.imgUrl ?? '/default-recipe.png'}
+						size={40}
+						sx={{ mx: 0, mb: 0 }}
+					/>
+					<Typography variant='body1' sx={{ fontWeight: 'bolder' }}>
+						{recipe.title}
+					</Typography>
+				</Box>
+			</TableCell>
 			<TableCell sx={cellSx}>{authorName}</TableCell>
 			<TableCell
 				sx={{

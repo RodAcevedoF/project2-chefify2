@@ -6,12 +6,17 @@ import RecipeRow from './RecipeRow';
 import { useGetRecipesPaginated } from '@/features/admin/hooks/useAdmin';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import type { Recipe } from '@/types/recipe.types';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
+import { ArrowBigLeft } from 'lucide-react';
+import useHandleNavigate from '@/utils/useHandleNavigate';
+import { ButtonIconPositions } from '@/types/common.types';
 
 const AdminRecipesPage = () => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [searchInput, setSearchInput] = useState('');
 	const [search, setSearch] = useState('');
+	const nav = useHandleNavigate('/admin');
 
 	useEffect(() => {
 		const t = setTimeout(() => {
@@ -33,6 +38,7 @@ const AdminRecipesPage = () => {
 			color: theme.palette.primary.main,
 			align: 'center',
 			fontFamily: undefined,
+			fontSize: '1rem',
 		}),
 		[theme.palette.primary.main],
 	);
@@ -41,6 +47,7 @@ const AdminRecipesPage = () => {
 			color: theme.palette.primary.main,
 			align: 'center',
 			fontFamily: 'Alegreya',
+			fontSize: '1.1rem',
 		}),
 		[theme.palette.primary.main],
 	);
@@ -106,6 +113,13 @@ const AdminRecipesPage = () => {
 				cellSx={cellSx}
 				headerCellSx={headerCellSx}
 				btnColor={theme.palette.primary.main}
+			/>
+			<ButtonUsage
+				label='Back'
+				icon={ArrowBigLeft}
+				parentMethod={nav}
+				extraSx={{ mt: 5 }}
+				iconPos={ButtonIconPositions.START}
 			/>
 		</Box>
 	);

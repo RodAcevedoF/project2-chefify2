@@ -6,13 +6,17 @@ import UserRow from './UserRow';
 import { useGetUsersPaginated } from '@/features/admin/hooks/useAdmin';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import type { User } from '@/types/user.types';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
+import { ArrowBigLeft } from 'lucide-react';
+import { ButtonIconPositions } from '@/types/common.types';
+import useHandleNavigate from '@/utils/useHandleNavigate';
 
 const AdminUsersPage = () => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [searchInput, setSearchInput] = useState('');
 	const [search, setSearch] = useState('');
-
+	const nav = useHandleNavigate('/admin');
 	useEffect(() => {
 		const t = setTimeout(() => {
 			setSearch(searchInput);
@@ -33,6 +37,7 @@ const AdminUsersPage = () => {
 			color: theme.palette.primary.main,
 			align: 'center',
 			fontFamily: undefined,
+			fontSize: '1rem',
 		}),
 		[theme.palette.primary.main],
 	);
@@ -41,6 +46,7 @@ const AdminUsersPage = () => {
 			color: theme.palette.primary.main,
 			align: 'center',
 			fontFamily: 'Alegreya',
+			fontSize: '1.1rem',
 		}),
 		[theme.palette.primary.main],
 	);
@@ -64,7 +70,6 @@ const AdminUsersPage = () => {
 			<GenericAdminTable
 				columns={useMemo(
 					() => [
-						{ key: 'avatar', label: 'Avatar' },
 						{ key: 'name', label: 'Name' },
 						{ key: 'recipes', label: 'Recipes', hideBelow: 'sm' },
 						{ key: 'email', label: 'Email', hideBelow: 'sm' },
@@ -101,6 +106,13 @@ const AdminUsersPage = () => {
 				cellSx={cellSx}
 				headerCellSx={headerCellSx}
 				btnColor={theme.palette.primary.main}
+			/>
+			<ButtonUsage
+				label='Back'
+				icon={ArrowBigLeft}
+				parentMethod={nav}
+				extraSx={{ mt: 5 }}
+				iconPos={ButtonIconPositions.START}
 			/>
 		</Box>
 	);

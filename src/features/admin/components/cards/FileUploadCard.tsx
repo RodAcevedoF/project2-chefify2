@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
 	Box,
 	Typography,
 	Paper,
 	Divider,
-	Input,
 	CircularProgress,
 	useTheme,
 } from '@mui/material';
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonVariants } from '@/types/common.types';
 import { MonitorUp } from 'lucide-react';
+import UploadAnimation from './UploadAnimation';
 
 interface Props {
 	title: string;
@@ -35,10 +35,17 @@ const FileUploadCard: React.FC<Props> = ({
 	loading,
 	extraActions,
 }) => {
+	const inputRef = useRef<HTMLInputElement>(null);
+
 	const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const f = e.target.files?.[0] ?? null;
 		setFile(f);
 	};
+
+	const handleAnimationClick = () => {
+		inputRef.current?.click();
+	};
+
 	const t = useTheme();
 
 	return (
@@ -52,7 +59,28 @@ const FileUploadCard: React.FC<Props> = ({
 				</Typography>
 			</Box>
 			<Divider sx={{ my: 1 }} />
-			<Input type='file' inputProps={{ accept }} onChange={onFileChange} />
+
+			<Box
+				onClick={handleAnimationClick}
+				sx={{
+					cursor: 'pointer',
+					display: 'flex',
+					justifyContent: 'center',
+					my: 2,
+					'&:hover': {
+						opacity: 0.8,
+					},
+				}}>
+				<UploadAnimation />
+			</Box>
+
+			<input
+				ref={inputRef}
+				type='file'
+				accept={accept}
+				onChange={onFileChange}
+				style={{ display: 'none' }}
+			/>
 
 			<Box
 				sx={{

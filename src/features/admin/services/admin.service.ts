@@ -12,6 +12,16 @@ export type ImportUsersResult = {
 	skipped?: { row: number; reason: string; data?: unknown }[];
 };
 
+export type Operation = {
+	type?: string;
+	resource?: string;
+	summary?: string;
+	createdAt?: string | number | Date;
+	userId?: string;
+	userName?: string;
+	[k: string]: unknown;
+};
+
 const BASE = '/admin';
 
 export const AdminService = {
@@ -58,6 +68,25 @@ export const AdminService = {
 
 	async getUsers(): Promise<User[]> {
 		return chefifyAPI.get<User[]>(`${BASE}/users`);
+	},
+
+	async getOperations(limit?: number): Promise<Operation[]> {
+		const q = new URLSearchParams();
+		if (typeof limit === 'number') q.set('limit', String(limit));
+		const resp = await chefifyAPI.get<unknown>(
+			`${BASE}/operations?${q.toString()}`,
+		);
+
+		if (Array.isArray(resp)) return resp as Operation[];
+		if (
+			resp &&
+			typeof resp === 'object' &&
+			'items' in (resp as Record<string, unknown>)
+		) {
+			const maybe = (resp as Record<string, unknown>)['items'];
+			if (Array.isArray(maybe)) return maybe as Operation[];
+		}
+		return [];
 	},
 
 	async getUsersPaginated(params?: {

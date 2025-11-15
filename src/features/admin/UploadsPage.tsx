@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import type {
 	ImportRecipesResult,
 	ImportUsersResult,
@@ -11,6 +11,7 @@ import {
 	useUploadRecipes,
 	useUploadUsers,
 } from '@/features/admin/hooks/useImports';
+import { FileUp } from 'lucide-react';
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB (match server)
 
@@ -22,6 +23,7 @@ const UploadsPage = () => {
 	const [report, setReport] = useState<
 		null | ImportRecipesResult | ImportUsersResult
 	>(null);
+	const t = useTheme();
 
 	const resetNotifications = () => {
 		setMessage(null);
@@ -76,9 +78,12 @@ const UploadsPage = () => {
 	return (
 		<Box p={{ md: 5, xs: 2 }}>
 			<Box p={3}>
-				<Typography variant='h2' sx={{ mb: 1, fontFamily: 'Alegreya' }}>
-					Uploads
-				</Typography>
+				<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+					<Typography variant='h2' sx={{ mb: 1, fontFamily: 'Alegreya' }}>
+						Uploads
+					</Typography>
+					<FileUp color={t.palette.primary.main} width={50} height={50} />
+				</Box>
 				<Typography
 					variant='body1'
 					color='text.secondary'

@@ -11,6 +11,12 @@ const themeOptions: ThemeOptions = {
 			dark: '#232524',
 			light: '#ffffeb7f',
 		},
+		success: {
+			main: '#784cafff',
+			light: '#d6d426ff',
+			dark: '#033018',
+			selected: '#0e5830ff',
+		},
 		secondary: {
 			main: '#f500149d',
 			light: '#E7D2B0',
@@ -21,6 +27,7 @@ const themeOptions: ThemeOptions = {
 			lightGradient: LIGHT_CIRCLE_GRADIENT,
 			paper: '#232524',
 			semitransparent: '#e7d2b0ba',
+			chartLikes: '#ff408199',
 		},
 		divider: '#5ea85e75',
 	},

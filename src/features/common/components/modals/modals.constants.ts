@@ -10,6 +10,7 @@ import ViewRecipeModal from '@/features/admin/components/modals/viewRecipe.modal
 import SuggestRecipeModal from '@/features/recipes/components/modals/suggest.modal';
 import SettingsForm from '@/features/profile/components/forms/SettingsForm';
 import ForgotPasswordForm from '@/features/auth/components/forgot/ForgotPasswordForm';
+import ContactModal from '@/features/common/components/modals/contact.modal';
 
 export const MODALS: Record<string, React.ComponentType<unknown>> = {
 	auth: AuthModal as React.ComponentType<unknown>,
@@ -23,5 +24,6 @@ export const MODALS: Record<string, React.ComponentType<unknown>> = {
 	recipeSuggest: SuggestRecipeModal as React.ComponentType<unknown>,
 	settings: SettingsForm as React.ComponentType<unknown>,
 	forgotPassword: ForgotPasswordForm as React.ComponentType<unknown>,
+	contact: ContactModal as React.ComponentType<unknown>,
 	/* resetPassword modal removed in favor of a canonical page */
 };

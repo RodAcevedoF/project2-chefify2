@@ -19,8 +19,21 @@ declare module '@mui/material/styles' {
 	interface SimplePaletteColorOptions {
 		selected?: string;
 	}
+
+	interface SimplePaletteColor {
+		selected: string;
+	}
+
+	interface PaletteColor {
+		selected: string;
+	}
+
+	interface PaletteColorOptions {
+		glass?: string;
+	}
 	interface Palette {
 		background: TypeBackground;
 		success: Success;
+		primary: PaletteColorOptions;
 	}
 }

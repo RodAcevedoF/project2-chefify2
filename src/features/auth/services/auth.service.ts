@@ -50,4 +50,7 @@ export const AuthService = {
 	}): Promise<void> {
 		return chefifyAPI.post<void>(`${BASE}/reset-password`, payload);
 	},
+	async verifyEmail(token: string): Promise<void> {
+		return chefifyAPI.get<void>(`${BASE}/verify-email`, { params: { token } });
+	},
 };

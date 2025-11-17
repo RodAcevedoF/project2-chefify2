@@ -76,7 +76,7 @@ export const useUploadRecipes = () => {
 		isLoading:
 			(mutation as unknown as { isPending?: boolean }).isPending ?? false,
 		data: mutation.data as ImportRecipesResult | undefined,
-		error: mutation.error as AxiosError | null,
+		error: mutation.error as AxiosError<{ message?: string }> | null,
 	};
 };
 
@@ -99,7 +99,7 @@ export const useUploadUsers = () => {
 		isLoading:
 			(mutation as unknown as { isPending?: boolean }).isPending ?? false,
 		data: mutation.data as ImportUsersResult | undefined,
-		error: mutation.error as AxiosError | null,
+		error: mutation.error as AxiosError<{ message?: string }> | null,
 	};
 };
 
@@ -122,7 +122,7 @@ export const useUploadIngredients = () => {
 		isLoading:
 			(mutation as unknown as { isPending?: boolean }).isPending ?? false,
 		data: mutation.data as { imported?: number } | undefined,
-		error: mutation.error as AxiosError | null,
+		error: mutation.error as AxiosError<{ message?: string }> | null,
 	};
 };
 

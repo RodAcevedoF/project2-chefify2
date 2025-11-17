@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useReducer } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useHandleNavigate from '@/utils/useHandleNavigate';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 import type { SelectChangeEvent } from '@mui/material';
 import { useGetRecipes } from '@/features/recipes/hooks';
 import type { Recipe } from '@/types/recipe.types';

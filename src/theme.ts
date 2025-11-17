@@ -8,12 +8,13 @@ const themeOptions: ThemeOptions = {
 	palette: {
 		primary: {
 			main: '#ffffeb',
+			contrastText: '#ffffeb1b',
 			dark: '#232524',
 			light: '#ffffeb7f',
 		},
 		success: {
-			main: '#784cafff',
-			light: '#d6d426ff',
+			main: '#4c4cafd7',
+			light: '#d6d326d5',
 			dark: '#033018',
 			selected: '#0e5830ff',
 		},
@@ -27,7 +28,7 @@ const themeOptions: ThemeOptions = {
 			lightGradient: LIGHT_CIRCLE_GRADIENT,
 			paper: '#232524',
 			semitransparent: '#e7d2b0ba',
-			chartLikes: '#ff408199',
+			chartLikes: '#c025b399',
 		},
 		divider: '#5ea85e75',
 	},

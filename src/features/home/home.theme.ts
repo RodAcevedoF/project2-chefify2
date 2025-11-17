@@ -8,6 +8,7 @@ export const homeStyles = (theme: Theme, scrolled: boolean = false) => ({
 		alignItems: 'center',
 		gap: 6,
 		borderRadius: 3,
+		mb: 4,
 		boxShadow: 'none',
 		flexWrap: 'wrap',
 		typography: {
@@ -22,7 +23,9 @@ export const homeStyles = (theme: Theme, scrolled: boolean = false) => ({
 			maxWidth: 500,
 			minWidth: 220,
 			height: 'auto',
-			borderRadius: 3,
+			borderRadius: 8,
+			maskImage: 'radial-gradient(circle, black 50%, transparent 100%)',
+			webkitMaskImage: 'radial-gradient(circle, black 50%, transparent 100%)',
 		},
 	},
 	mainTypo: {
@@ -48,8 +51,11 @@ export const homeStyles = (theme: Theme, scrolled: boolean = false) => ({
 		fontSize: '1rem',
 		borderRadius: 0,
 		borderBottom: 1,
+		transition: 'all 0.3s',
 		'&:hover': {
 			borderColor: theme.palette.background.default,
+			color: theme.palette.background.default,
+			fontWeight: 'bolder',
 		},
 		mt: 4,
 	},

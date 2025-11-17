@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AuthService } from '@/features/auth/services/auth.service';
 import type { AxiosError } from 'axios';
+type ApiErrorPayload = { error?: string };
 import type {
 	AuthResponse,
 	LoginParams,
@@ -10,7 +11,11 @@ import type { UseCommonOptions } from '@/types/common.types';
 
 export const useLogin = (options?: UseCommonOptions<AuthResponse>) => {
 	const qc = useQueryClient();
-	return useMutation<AuthResponse, AxiosError, LoginParams>({
+	return useMutation<
+		AuthResponse,
+		AxiosError<Partial<ApiErrorPayload>>,
+		LoginParams
+	>({
 		mutationKey: ['auth', 'login'],
 		mutationFn: async (credentials: LoginParams) => {
 			const response = await AuthService.login(credentials);

@@ -1,21 +1,28 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { To } from 'react-router-dom';
+import type { To, NavigateOptions } from 'react-router-dom';
 
-type PathFactory = (param?: string) => To;
+type Param = string | undefined;
 
-export const useHandleNavigate = (pathOrFactory: To | PathFactory) => {
+type PathFactory = (param?: Param) => To;
+
+type NavigateInput = To | PathFactory;
+
+export const useHandleNavigate = (
+	pathOrFactory: NavigateInput,
+	options?: NavigateOptions,
+) => {
 	const navigate = useNavigate();
 
 	return useCallback(
-		(param?: string) => {
-			if (typeof pathOrFactory === 'function') {
-				return navigate((pathOrFactory as PathFactory)(param));
-			}
-			return navigate(pathOrFactory as To);
+		(param?: Param) => {
+			const to =
+				typeof pathOrFactory === 'function'
+					? (pathOrFactory as PathFactory)(param)
+					: (pathOrFactory as To);
+
+			navigate(to, options);
 		},
-		[navigate, pathOrFactory],
+		[navigate, pathOrFactory, options],
 	);
 };
-
-export default useHandleNavigate;

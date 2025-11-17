@@ -24,7 +24,6 @@ export const GradientBackground: React.FC<Props> = ({ mode }) => {
 
 	return (
 		<>
-			{/* Default gradient layer */}
 			<div
 				aria-hidden
 				style={{
@@ -34,7 +33,6 @@ export const GradientBackground: React.FC<Props> = ({ mode }) => {
 				}}
 			/>
 
-			{/* Light/alternate gradient layer */}
 			<div
 				aria-hidden
 				style={{

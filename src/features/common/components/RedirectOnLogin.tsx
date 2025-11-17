@@ -5,13 +5,11 @@ import Toast from '@/features/common/components/toasts/Toast';
 import { PartyPopper } from 'lucide-react';
 
 type Props = {
-	/** pathname to redirect to when logged in (default: /recipes) */
 	to?: string;
-	/** delay in ms before redirect (default: 900) */
 	delay?: number;
 };
 
-const RedirectOnLogin = ({ to = '/recipes', delay = 900 }: Props) => {
+const RedirectOnLogin = ({ to = '/home', delay = 900 }: Props) => {
 	const { logged, isLoading } = useLoggedContext();
 	const location = useLocation();
 	const navigate = useNavigate();

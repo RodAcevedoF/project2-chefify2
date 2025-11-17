@@ -1,6 +1,6 @@
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { useLogout } from '@/features/auth/hooks';
-import { useNavigate } from 'react-router-dom';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
 import { memo } from 'react';
 import { useTheme } from '@mui/material/styles';
@@ -18,7 +18,10 @@ import { DoorOpen, KeyRound, ShieldUser } from 'lucide-react';
 
 export const Navbar = memo(() => {
 	const { logged, setLogged, isLoading, isAdmin } = useLoggedContext();
-	const nav = useNavigate();
+	const handleHome = useHandleNavigate((/* param? */) =>
+		logged ? '/home' : '/');
+	const handleAdmin = useHandleNavigate('/admin');
+	const handleRoot = useHandleNavigate('/');
 	const { openModal } = useModalContext();
 	const theme = useTheme();
 	const isBelow = useMediaQuery(theme.breakpoints.down('sm'));
@@ -26,12 +29,12 @@ export const Navbar = memo(() => {
 	const logoutMutation = useLogout({
 		onSuccess: () => {
 			setLogged(false);
-			nav('/');
+			handleRoot();
 		},
 		onError: (error) => {
 			setLogged(false);
 			console.error('Logout error:', error);
-			nav('/');
+			handleRoot();
 		},
 	});
 
@@ -43,7 +46,7 @@ export const Navbar = memo(() => {
 			<Toolbar>
 				<Box
 					sx={{ display: 'flex', alignItems: 'center', p: 0.5 }}
-					onClick={() => nav(logged ? '/recipes' : '/')}>
+					onClick={() => handleHome()}>
 					<CardMedia
 						component='img'
 						image='/logo.webp'
@@ -79,7 +82,7 @@ export const Navbar = memo(() => {
 					{logged && isAdmin && (
 						<ButtonUsage
 							label={isBelow ? '' : 'Admin Panel'}
-							parentMethod={() => nav('/admin')}
+							parentMethod={handleAdmin}
 							icon={ShieldUser}
 						/>
 					)}

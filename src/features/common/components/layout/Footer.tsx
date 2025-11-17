@@ -1,8 +1,10 @@
 import { Card, CardMedia, Container, Typography, Box } from '@mui/material';
 import { ButtonUsage } from '../buttons/MainButton';
 import { Send } from 'lucide-react';
+import { useModalContext } from '@/contexts/modalContext/modal.context';
 
 export const Footer = () => {
+	const { openModal } = useModalContext();
 	return (
 		<Container
 			component='footer'
@@ -51,7 +53,7 @@ export const Footer = () => {
 							textAlign: 'center',
 							fontFamily: 'Alegreya',
 						}}>
-						Partner with a creative agency that's ambitious as you are.
+						Follow flavors. Share creativity. Chefify it.
 					</Typography>
 				</Box>
 				<ButtonUsage
@@ -62,20 +64,46 @@ export const Footer = () => {
 						justifyContent: 'center',
 					}}
 					icon={Send}
+					parentMethod={() => openModal('contact')}
 				/>
 			</Card>
-			<Typography
+			<Box
 				sx={{
-					fontSize: '1rem',
-					fontWeight: 'bold',
-					textAlign: 'center',
-					width: '100%',
-					border: 1,
-					py: 1,
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					border: 3,
+					p: 1,
 					borderRadius: 2,
+					gap: 1,
+					borderColor: 'primary.contrastText',
+					width: '100%',
 				}}>
-				© 2025 Chefify. Made with ❤️ for passionate cooks.
-			</Typography>
+				<Typography
+					sx={{
+						fontSize: '1rem',
+						fontWeight: 'bold',
+						textAlign: 'center',
+						width: 'fit-content',
+					}}>
+					© 2025 Chefify. Made with
+				</Typography>
+				<CardMedia
+					component='img'
+					image='/footerheart.png'
+					alt='heart icon'
+					sx={{ width: '60px', mx: 1, mb: 0, mt: -0.5 }}
+				/>
+				<Typography
+					sx={{
+						fontSize: '1rem',
+						fontWeight: 'bold',
+						textAlign: 'center',
+						width: 'fit-content',
+					}}>
+					for passionate cooks.
+				</Typography>
+			</Box>
 		</Container>
 	);
 };

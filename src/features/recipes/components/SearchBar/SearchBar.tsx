@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useDrawerContext } from '../../drawer-context/drawer.context';
 import { useMediaQuery, useTheme } from '@mui/material';
-import useHandleNavigate from '@/utils/useHandleNavigate';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import SearchElement from './components/SearchElement';
 import MobileSearchBar from './components/MobileSearchBar';
@@ -59,6 +59,7 @@ export default function PrimarySearchAppBar() {
 			openModal={openModal}
 			theme={theme}
 			mobileMenuId={mobileMenuId}
+			aiCounter={aiCounter}
 		/>
 	);
 

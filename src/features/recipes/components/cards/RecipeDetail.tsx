@@ -14,7 +14,7 @@ const RecipeDetail = () => {
 	const { data: recipe, isLoading, error } = useGetRecipeByID(id);
 	const theme = useTheme();
 	const style = recipeStyles(theme);
-	if (!id) return <Navigate to='/recipes' replace />;
+	if (!id) return <Navigate to='/recipes' />;
 	if (isLoading) return <Typography>Loading recipe details...</Typography>;
 	if (error) return <Typography>Error loading recipe details.</Typography>;
 	if (!recipe) return <Typography>No recipe found.</Typography>;

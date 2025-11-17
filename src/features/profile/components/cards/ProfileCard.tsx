@@ -10,7 +10,7 @@ import UserAvatar from '@/features/common/components/avatar/UserAvatar';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useGetUser } from '../../hooks/useUser';
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
-import useHandleNavigate from '@/utils/useHandleNavigate';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 
 const ProfileCard: React.FC = () => {
 	const { openModal } = useModalContext();
@@ -27,6 +27,7 @@ const ProfileCard: React.FC = () => {
 				flexDirection: 'column',
 				justifyContent: 'center',
 				alignItems: 'center',
+				width: '100',
 			}}
 			elevation={10}>
 			<CardActionArea

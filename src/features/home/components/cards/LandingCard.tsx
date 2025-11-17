@@ -5,12 +5,16 @@ import { ArrowRight } from 'lucide-react';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 
 export type LandingCardProps = {
-	reverse?: boolean;
-	mediaContainer?: string;
-	imgUrl?: string;
+	props: {
+		reverse?: boolean;
+		mediaContainer?: string;
+		imgUrl?: string;
+		message?: string;
+		label?: string;
+	};
 };
 
-const LandingCard = (props: LandingCardProps) => {
+const LandingCard = ({ props }: LandingCardProps) => {
 	const theme = useTheme();
 	const styles = homeStyles(theme);
 	const { openModal } = useModalContext();
@@ -23,13 +27,13 @@ const LandingCard = (props: LandingCardProps) => {
 			}}>
 			<Box sx={{ maxWidth: 500, width: '40%', minWidth: 220 }}>
 				<Typography sx={{ ...styles.landingCard.typography }}>
-					Juice is where strategy, design, and technology come together to build
-					brands people believe in — and empower them to grow with purpose.
+					{props.message ??
+						'Juice is where strategy, design, and technology come together to build brands people believe in — and empower them to grow with purpose.'}
 				</Typography>
 				<ButtonUsage
 					extraSx={{ ...styles.landingBtn }}
 					icon={ArrowRight}
-					label='Get Started'
+					label={props.label || 'Get Started'}
 					iconSx={{ width: 20 }}
 					parentMethod={() => openModal('auth')}
 				/>

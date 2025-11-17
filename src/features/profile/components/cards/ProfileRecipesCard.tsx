@@ -16,15 +16,14 @@ import { alpha } from '@mui/material';
 import { CookingPot, ChevronRight } from 'lucide-react';
 import { useGetSavedRecipes } from '@/features/profile/hooks/useUser';
 import NoSavedRecipesCard from './NoSavedRecipesCard';
-import useHandleNavigate from '@/utils/useHandleNavigate';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 
 const DEFAULT_THUMB = '/default-recipe.png';
 
 const ProfileRecipesCard = () => {
 	const theme = useTheme();
-	const nav = useHandleNavigate((id?: string) =>
-		id ? `/recipes/${id}` : '/recipes',
-	);
+	const goRecipes = useHandleNavigate('/recipes');
+	const goRecipe = useHandleNavigate((id?: string) => `/recipes/${id}`);
 
 	const { data: recipes, isLoading } = useGetSavedRecipes();
 
@@ -78,7 +77,7 @@ const ProfileRecipesCard = () => {
 						uniqueRecipes.map((recipe) => (
 							<ListItem key={recipe._id} disablePadding>
 								<ListItemButton
-									onClick={() => nav(recipe._id)}
+									onClick={() => goRecipe(recipe._id)}
 									sx={{
 										alignItems: 'flex-start',
 										px: 2,
@@ -152,7 +151,7 @@ const ProfileRecipesCard = () => {
 				<Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
 					<ButtonUsage
 						label='See all recipes'
-						parentMethod={nav}
+						parentMethod={goRecipes}
 						icon={CookingPot}
 					/>
 				</Box>

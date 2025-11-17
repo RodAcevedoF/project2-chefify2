@@ -1,7 +1,7 @@
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
 import { useLogout } from '@/features/auth/hooks';
 import { Paper, Typography, useTheme, Box } from '@mui/material';
-import useHandleNavigate from '@/utils/useHandleNavigate';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 import {
 	useGetOwnRecipes,
 	useGetSavedRecipes,

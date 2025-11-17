@@ -17,6 +17,7 @@ import { useResetPassword } from '@/features/auth/hooks/useAuth';
 import { Eye, EyeClosed } from 'lucide-react';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { ResetSchema, type ResetData } from '@/types/auth.types';
+import { getApiErrorMessage } from '@/lib/getApiErrorMessage';
 
 const useQuery = (search: string) => {
 	return new URLSearchParams(search);
@@ -164,11 +165,7 @@ const ResetPasswordPage = () => {
 
 				{mutation.isError && (
 					<Typography color='error'>
-						{(
-							mutation.error as unknown as {
-								response?: { data?: { message?: string } };
-							}
-						)?.response?.data?.message || 'Could not reset password'}
+						{getApiErrorMessage(mutation.error, 'Could not reset password')}
 					</Typography>
 				)}
 

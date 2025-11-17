@@ -21,6 +21,7 @@ import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonTypes } from '@/types/common.types';
 import { Eye, EyeClosed } from 'lucide-react';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 
 export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 	const {
@@ -33,8 +34,11 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const theme = useTheme();
 
+	const handleNavigate = useHandleNavigate('/home');
+
 	const loginMutation = useLogin({
 		onSuccess: () => onSuccess?.(),
+		redirectTo: () => handleNavigate(),
 	});
 
 	const { openModal } = useModalContext();
@@ -145,8 +149,8 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					/>
 				</Box>
 				{loginMutation.isError && (
-					<Typography color='error' mt={2}>
-						Error al iniciar sesión
+					<Typography color='secondary.main' fontWeight={'bolder'} mt={2}>
+						{loginMutation.error.message}
 					</Typography>
 				)}
 			</Box>

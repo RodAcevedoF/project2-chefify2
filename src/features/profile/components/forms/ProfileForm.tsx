@@ -65,7 +65,7 @@ export const ProfileForm = ({ onCancel }: { onCancel: () => void }) => {
 			component='form'
 			onSubmit={handleSubmit(onSubmit)}
 			sx={{
-				width: 360,
+				width: { xs: 280, sm: 360 },
 				p: 3,
 				display: 'flex',
 				flexDirection: 'column',

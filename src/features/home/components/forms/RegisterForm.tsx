@@ -11,7 +11,6 @@ import {
 	Box,
 	TextField,
 	Typography,
-	CircularProgress,
 	CardMedia,
 	useTheme,
 	IconButton,
@@ -19,6 +18,7 @@ import {
 } from '@mui/material';
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ArrowBigRight, Eye, EyeClosed } from 'lucide-react';
+import { ButtonTypes } from '@/types/common.types';
 
 export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 	const {
@@ -168,13 +168,8 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 						width: '80%',
 					}}>
 					<ButtonUsage
-						label={
-							registerMutation.isPending ? (
-								<CircularProgress size={20} sx={{ color: 'whitesmoke' }} />
-							) : (
-								'Register'
-							)
-						}
+						type={ButtonTypes.SUBMIT}
+						label={'Register'}
 						disabled={registerMutation.isPending}
 						icon={ArrowBigRight}
 					/>

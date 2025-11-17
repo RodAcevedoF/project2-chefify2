@@ -7,9 +7,11 @@ import { ButtonTypes, ButtonVariants } from '@/types/common.types';
 import { useForgotPassword } from '@/features/auth/hooks/useAuth';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { ForgotSchema, type ForgotData } from '@/types/auth.types';
+import { getApiErrorMessage } from '@/lib/getApiErrorMessage';
+import { MailCheck } from 'lucide-react';
 
 export const ForgotPasswordForm = () => {
-	const theme = useTheme();
+	const t = useTheme();
 	const { closeModal } = useModalContext();
 	const {
 		register,
@@ -37,14 +39,17 @@ export const ForgotPasswordForm = () => {
 				display: 'flex',
 				flexDirection: 'column',
 				gap: 2,
-				background: theme.palette.background.gradient,
+				background: t.palette.background.gradient,
 				borderRadius: 3,
 			}}>
-			<Typography
-				variant='h6'
-				sx={{ textAlign: 'center', fontFamily: 'Alegreya' }}>
-				Reset password
-			</Typography>
+			<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+				<MailCheck color={t.palette.primary.main} />
+				<Typography
+					variant='h6'
+					sx={{ textAlign: 'center', fontFamily: 'Alegreya' }}>
+					Reset password
+				</Typography>
+			</Box>
 
 			{!done ? (
 				<>
@@ -58,11 +63,7 @@ export const ForgotPasswordForm = () => {
 
 					{mutation.isError && (
 						<Typography color='error'>
-							{(
-								mutation.error as unknown as {
-									response?: { data?: { message?: string } };
-								}
-							)?.response?.data?.message || 'Could not send reset email'}
+							{getApiErrorMessage(mutation.error, 'Could not send reset email')}
 						</Typography>
 					)}
 
@@ -81,7 +82,7 @@ export const ForgotPasswordForm = () => {
 				</>
 			) : (
 				<>
-					<Typography sx={{ color: 'text.secondary' }}>
+					<Typography sx={{ color: 'text.secondary', fontWeight: 'bolder' }}>
 						If the email exists, we've sent password reset instructions to it.
 					</Typography>
 					<Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>

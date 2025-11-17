@@ -15,6 +15,7 @@ import {
 	titleVariants,
 	viewportOptions,
 } from './animation.home';
+import { landingCards } from './components/cards/data/constants';
 
 export const Home = () => {
 	const { scrolled } = useScrollContext();
@@ -109,7 +110,7 @@ export const Home = () => {
 								sx={{
 									width: '100%',
 									textAlign: 'center',
-									fontSize: { md: '3rem', xs: '2rem' },
+									fontSize: { md: '3rem', xs: '26px' },
 									fontFamily: 'Alegreya',
 								}}>
 								Your culinary journey starts here.
@@ -117,15 +118,19 @@ export const Home = () => {
 
 							<Typography
 								variant='body1'
-								fontSize={30}
 								color={scrolled ? 'primary.dark' : 'primary.main'}
 								onClick={() => openModal('auth')}
 								sx={{
 									cursor: 'pointer',
 									width: '100%',
 									textAlign: 'center',
-									transition: 'transform 0.3s, font-weight 0.3s',
-									'&:hover': { transform: 'scale(1.05)', fontWeight: 'bolder' },
+									fontSize: { md: '3rem', xs: '22px' },
+									transition: 'transform 0.3s, font-weight 0.3s, color 0.3s',
+									'&:hover': {
+										transform: 'scale(1.05)',
+										fontWeight: 'bolder',
+										color: theme.palette.background.default,
+									},
 								}}>
 								Please log in or register to continue.
 							</Typography>
@@ -159,7 +164,7 @@ export const Home = () => {
 					flexDirection: 'column',
 					paddingY: 10,
 					paddingX: { xs: 2, md: 5 },
-					gap: 15,
+					gap: 20,
 					borderRadius: 3,
 					marginY: 5,
 					backgroundColor: theme.palette.secondary.light,
@@ -170,15 +175,11 @@ export const Home = () => {
 					whileInView='show'
 					variants={listContainer}
 					viewport={viewportOptions}>
-					<motion.div variants={listItem}>
-						<LandingCard imgUrl={'/default_1.png'} reverse />
-					</motion.div>
-					<motion.div variants={listItem}>
-						<LandingCard imgUrl={'/default_3.png'} />
-					</motion.div>
-					<motion.div variants={listItem}>
-						<LandingCard imgUrl={'/default_4.png'} reverse />
-					</motion.div>
+					{landingCards.map((card, index) => (
+						<motion.div key={`${card.label}-${index}`} variants={listItem}>
+							<LandingCard props={card} />
+						</motion.div>
+					))}
 				</motion.div>
 			</Box>
 		</Container>

@@ -30,7 +30,16 @@ const RecipeTitle = ({ recipe, params }: RecipeTitleProps) => {
 
 	return (
 		<Box border={1} sx={style.recipeDetail.title.container}>
-			<Box display={'flex'} gap={2}>
+			<Box
+				display={'flex'}
+				gap={2}
+				sx={{
+					my: { xs: 2, sm: 1 },
+					display: 'flex',
+					gap: 2,
+					flexWrap: { xs: 'wrap', sm: 'nowrap' },
+					justifyContent: { xs: 'center', sm: '' },
+				}}>
 				<CardActionArea
 					onClick={() => openModal('generalImg', { imgUrl: recipe.imgUrl })}
 					sx={{ width: 'fit-content', height: 'fit-content', zIndex: 0 }}
@@ -41,7 +50,7 @@ const RecipeTitle = ({ recipe, params }: RecipeTitleProps) => {
 						alt={recipe.title ?? 'default recipe image'}
 						sx={{
 							borderRadius: 2,
-							width: { xs: '80px', sm: '100px', zIndex: 0 },
+							width: { xs: '120px', sm: '100px', zIndex: 0 },
 							objectFit: 'cover',
 						}}
 					/>
@@ -51,11 +60,15 @@ const RecipeTitle = ({ recipe, params }: RecipeTitleProps) => {
 						variant='h4'
 						fontWeight='bold'
 						mb={1}
-						sx={{ fontFamily: 'Alegreya' }}>
-						{capitalize(recipe.title ?? '')}{' '}
-						<span style={{ fontSize: 12, color: 'gray' }}></span>
+						sx={{
+							fontFamily: 'Alegreya',
+							fontSize: { xs: '1.5rem', sm: '2rem' },
+						}}>
+						{capitalize(recipe.title ?? '')}
 					</Typography>
-					<Stack direction='row'>
+					<Stack
+						direction='row'
+						sx={{ flexWrap: { xs: 'wrap', sm: 'nowrap' }, gap: 1 }}>
 						{Array.isArray(recipe.categories) &&
 							recipe.categories.map((cat) => (
 								<Chip
@@ -78,8 +91,8 @@ const RecipeTitle = ({ recipe, params }: RecipeTitleProps) => {
 				<FollowAuthor
 					rawAuthor={
 						typeof recipe.userId === 'string'
-							? { _id: recipe.userId, name: '' }
-							: recipe.userId ?? { _id: '', name: '' }
+							? { _id: recipe.userId, name: 'unknown' }
+							: recipe.userId ?? { _id: '', name: 'unknown' }
 					}
 				/>
 			</Stack>

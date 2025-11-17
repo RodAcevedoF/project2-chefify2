@@ -13,7 +13,7 @@ const ViewRecipeModal = () => {
 
 	if (!r) {
 		return (
-			<Box sx={{ p: 2, minWidth: 320 }}>
+			<Box sx={{ p: 2, minWidth: 250 }}>
 				<Typography variant='h6'>Recipe not found</Typography>
 				<Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
 					<ButtonUsage label='Close' parentMethod={() => closeModal()} />
@@ -26,7 +26,7 @@ const ViewRecipeModal = () => {
 		<Box
 			sx={{
 				p: 2,
-				minWidth: 360,
+				minWidth: 250,
 				background: t.palette.background.gradient,
 				borderRadius: 3,
 			}}>

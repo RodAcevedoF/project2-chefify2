@@ -30,14 +30,22 @@ const RecipeRow = ({ recipe, cellSx, onDelete, onView }: RecipeRowProps) => {
 	return (
 		<TableRow>
 			<TableCell sx={cellSx}>
-				<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+				<Box
+					sx={{
+						display: 'flex',
+						alignItems: 'center',
+						gap: 1,
+						flexWrap: { xs: 'wrap', sm: 'nowrap' },
+					}}>
 					<UserAvatar
 						name={recipe.title}
 						imgUrl={recipe.imgUrl ?? '/default-recipe.png'}
 						size={40}
 						sx={{ mx: 0, mb: 0 }}
 					/>
-					<Typography variant='body1' sx={{ fontWeight: 'bolder' }}>
+					<Typography
+						variant='body1'
+						sx={{ fontWeight: 'bolder', fontSize: { xs: 13, sm: 16 } }}>
 						{recipe.title}
 					</Typography>
 				</Box>
@@ -80,7 +88,7 @@ const RecipeRow = ({ recipe, cellSx, onDelete, onView }: RecipeRowProps) => {
 						aria-label='view-recipe'
 						onClick={() => onView?.(recipe)}
 						sx={cellSx}>
-						<Eye size={16} />
+						<Eye size={20} />
 					</IconButton>
 				</Tooltip>
 				<Tooltip title='Delete'>
@@ -92,7 +100,7 @@ const RecipeRow = ({ recipe, cellSx, onDelete, onView }: RecipeRowProps) => {
 								onDelete?.((recipe._id as string) ?? '', recipe.title)
 							}
 							sx={cellSx}>
-							<Trash2 size={16} />
+							<Trash2 size={20} />
 						</IconButton>
 					</span>
 				</Tooltip>

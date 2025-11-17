@@ -13,7 +13,7 @@ import {
 	useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import useHandleNavigate from '@/utils/useHandleNavigate';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 import { recipeStyles } from '../../recipe.theme';
 import { capitalize } from '@/features/common/utils/capitalize.helper';
 import { useDrawerContext } from '../../drawer-context/drawer.context';

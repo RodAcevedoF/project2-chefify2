@@ -8,7 +8,7 @@ import { useModalContext } from '@/contexts/modalContext/modal.context';
 import type { Recipe } from '@/types/recipe.types';
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ArrowBigLeft } from 'lucide-react';
-import useHandleNavigate from '@/utils/useHandleNavigate';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 import { ButtonIconPositions } from '@/types/common.types';
 
 const AdminRecipesPage = () => {

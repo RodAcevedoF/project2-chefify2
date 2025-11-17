@@ -67,7 +67,7 @@ const UserRow = ({ user: u, cellSx, onDelete }: Props) => {
 						aria-label='view-user'
 						onClick={() => openModal('adminUserView', { user: u })}
 						sx={cellSx}>
-						<Eye size={16} />
+						<Eye size={20} />
 					</IconButton>
 				</Tooltip>
 				<Tooltip title='Delete'>
@@ -77,7 +77,7 @@ const UserRow = ({ user: u, cellSx, onDelete }: Props) => {
 							aria-label='delete-user'
 							onClick={() => onDelete(String(u._id), u.name)}
 							sx={cellSx}>
-							<Trash2 size={16} />
+							<Trash2 size={20} />
 						</IconButton>
 					</span>
 				</Tooltip>

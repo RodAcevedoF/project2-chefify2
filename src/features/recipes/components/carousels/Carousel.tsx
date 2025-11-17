@@ -2,7 +2,12 @@ import { Box, CardMedia } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 export const Carousel = () => {
-	const images = ['/carousel1.jpg', '/carousel2.jpg', '/carousel3.jpg'];
+	const images = [
+		'/carousel1.png',
+		'/carousel2.png',
+		'/carousel3.png',
+		'/carousel4.png',
+	];
 	const [selectedIndex, setSelectedIndex] = useState<number>(0);
 	const [visible, setVisible] = useState<boolean>(true);
 
@@ -25,7 +30,7 @@ export const Carousel = () => {
 				alt='carousel'
 				sx={{
 					minWidth: 250,
-					maxWidth: 600,
+					maxWidth: 520,
 					borderRadius: 10,
 					opacity: visible ? 1 : 0,
 					transition: 'opacity 0.4s ease',

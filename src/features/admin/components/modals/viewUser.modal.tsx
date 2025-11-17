@@ -13,7 +13,7 @@ const ViewUserModal = () => {
 
 	if (!u) {
 		return (
-			<Box sx={{ p: 2, minWidth: 320 }}>
+			<Box sx={{ p: 2, minWidth: 260 }}>
 				<Typography variant='h6'>User not found</Typography>
 				<Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
 					<Button onClick={() => closeModal()}>Close</Button>
@@ -26,7 +26,7 @@ const ViewUserModal = () => {
 		<Box
 			sx={{
 				p: 2,
-				minWidth: 360,
+				minWidth: 260,
 				background: t.palette.background.gradient,
 				borderRadius: 3,
 			}}>

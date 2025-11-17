@@ -1,15 +1,21 @@
-import { Box, Typography, Divider, CircularProgress } from '@mui/material';
+import {
+	Box,
+	Typography,
+	Divider,
+	CircularProgress,
+	CardMedia,
+} from '@mui/material';
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonVariants } from '@/types/common.types';
 import { ChefHat, CloudUpload, House, ShieldUser } from 'lucide-react';
 import { memo, Suspense } from 'react';
-import useHandleNavigate from '@/utils/useHandleNavigate';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 import RecentActivityChart from './components/charts/RecentActivityChart';
-import UploadAnimation from './components/cards/UploadAnimation';
 
 const AdminPage = () => {
 	const useAdminNav = (arg?: string) =>
 		useHandleNavigate(!arg ? '/profile' : `/admin/${arg}`);
+	const homeNav = useHandleNavigate('/home');
 
 	return (
 		<>
@@ -21,15 +27,42 @@ const AdminPage = () => {
 					flexDirection: 'column',
 					alignItems: 'center',
 				}}>
-				<Typography variant='h3' sx={{ mb: 2, fontFamily: 'Alegreya' }}>
-					Admin Panel (Draft)
-				</Typography>
+				<Box
+					sx={{
+						display: 'flex',
+						alignItems: 'center',
+						gap: 2,
+					}}>
+					<Typography variant='h3' sx={{ mb: 2, fontFamily: 'Alegreya' }}>
+						Admin Panel
+					</Typography>
+					<CardMedia
+						component='img'
+						image='/server.png'
+						alt='Admin Dashboard'
+						sx={{
+							width: '120px',
+							height: '120px',
+							mb: 2,
+							maskImage: 'radial-gradient(circle, black 80%, transparent 100%)',
+							webkitMaskImage:
+								'radial-gradient(circle, black 80%, transparent 100%)',
+							borderRadius: '50%',
+						}}
+					/>
+				</Box>
 				<Divider sx={{ mb: 2 }} />
 
-				<Typography variant='body1' sx={{ mb: 2 }}>
-					This is a lightweight admin dashboard placeholder. Add sections here
-					for user management, content moderation, system stats, and other admin
-					tools.
+				<Typography
+					sx={{
+						mb: 5,
+						fontWeight: 'bolder',
+						fontSize: '18px',
+						color: 'background.paper',
+					}}>
+					This is a lightweight admin dashboard. Check the activity chart and
+					sections for user management, recipe management and other admin
+					features and tools.
 				</Typography>
 
 				<Suspense fallback={<CircularProgress />}>
@@ -39,7 +72,7 @@ const AdminPage = () => {
 					sx={{
 						display: 'flex',
 						gap: 2,
-						mt: 2,
+						mt: 5,
 						flexWrap: 'wrap',
 						justifyContent: 'center',
 						alignItems: 'center',
@@ -63,13 +96,12 @@ const AdminPage = () => {
 						icon={CloudUpload}
 					/>
 					<ButtonUsage
-						parentMethod={useAdminNav()}
+						parentMethod={homeNav}
 						variant={ButtonVariants.OUTLINED}
 						icon={House}
 						iconSx={{ width: '30px', height: '30px' }}
 					/>
 				</Box>
-				<UploadAnimation />
 			</Box>
 		</>
 	);

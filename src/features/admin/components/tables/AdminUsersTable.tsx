@@ -9,7 +9,7 @@ import type { User } from '@/types/user.types';
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ArrowBigLeft } from 'lucide-react';
 import { ButtonIconPositions } from '@/types/common.types';
-import useHandleNavigate from '@/utils/useHandleNavigate';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 
 const AdminUsersPage = () => {
 	const [page, setPage] = useState(0);

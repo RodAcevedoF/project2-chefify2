@@ -4,16 +4,20 @@ import type {
 	ImportRecipesResult,
 	ImportUsersResult,
 } from '@/features/admin/services/admin.service';
-import FileUploadCard from './components/cards/FileUploadCard';
-import UsersTemplateButtons from './components/cards/UsersTemplateButtons';
+import CombinedUploadCard from './components/cards/CombinedUploadCard';
 import ReportPanel from './components/nav/ReportPanel';
 import {
 	useUploadRecipes,
 	useUploadUsers,
 } from '@/features/admin/hooks/useImports';
-import { FileUp } from 'lucide-react';
+import useUploadHandler from '@/features/admin/hooks/useUploadHandler';
+import { ArrowBigLeft, FileUp } from 'lucide-react';
+import { ButtonIconPositions } from '@/types/common.types';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
+import { ButtonUsage } from '../common/components/buttons/MainButton';
 
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB (match server)
+const MAX_SIZE_MB = Number(import.meta.env.VITE_MAX_UPLOAD_SIZE_MB ?? 5);
+const MAX_SIZE = MAX_SIZE_MB * 1024 * 1024;
 
 const UploadsPage = () => {
 	const [recipesFile, setRecipesFile] = useState<File | null>(null);
@@ -30,6 +34,8 @@ const UploadsPage = () => {
 		setError(null);
 		setReport(null);
 	};
+
+	const nav = useHandleNavigate('/admin');
 
 	const {
 		upload: uploadRecipesFn,
@@ -75,6 +81,22 @@ const UploadsPage = () => {
 		}
 	}, [usersError]);
 
+	const handleUploadRecipes = useUploadHandler({
+		file: recipesFile,
+		uploadFn: uploadRecipesFn,
+		maxSize: MAX_SIZE,
+		resetNotifications,
+		setError,
+	});
+
+	const handleUploadUsers = useUploadHandler({
+		file: usersFile,
+		uploadFn: uploadUsersFn,
+		maxSize: MAX_SIZE,
+		resetNotifications,
+		setError,
+	});
+
 	return (
 		<Box p={{ md: 5, xs: 2 }}>
 			<Box p={3}>
@@ -93,48 +115,26 @@ const UploadsPage = () => {
 				</Typography>
 			</Box>
 
-			<Box
-				display='grid'
-				gridTemplateColumns={{ lg: '1fr 1fr', xs: '1fr' }}
-				gap={2}>
-				<FileUploadCard
-					title='Recipes CSV'
-					accept='.csv, .xlsx, .xls'
-					file={recipesFile}
-					setFile={setRecipesFile}
-					uploadLabel='Upload Recipes'
-					onUpload={async () => {
-						resetNotifications();
-						const file = recipesFile;
-						if (!file) return setError('Please choose a file first.');
-						if (file.size > MAX_SIZE)
-							return setError('File too large (max 5MB).');
-						await uploadRecipesFn(file);
-					}}
-					loading={recipesLoading}
-					extraActions={<UsersTemplateButtons showRecipes />}
-				/>
-
-				<FileUploadCard
-					title='Users CSV / Excel'
-					accept='.csv,.xls,.xlsx'
-					file={usersFile}
-					setFile={setUsersFile}
-					uploadLabel='Upload Users'
-					onUpload={async () => {
-						resetNotifications();
-						const file = usersFile;
-						if (!file) return setError('Please choose a file first.');
-						if (file.size > MAX_SIZE)
-							return setError('File too large (max 5MB).');
-						await uploadUsersFn(file);
-					}}
-					loading={usersLoading}
-					extraActions={<UsersTemplateButtons showUsers />}
+			<Box display='flex'>
+				<CombinedUploadCard
+					recipesFile={recipesFile}
+					setRecipesFile={setRecipesFile}
+					recipesLoading={recipesLoading}
+					onUploadRecipes={handleUploadRecipes}
+					usersFile={usersFile}
+					setUsersFile={setUsersFile}
+					usersLoading={usersLoading}
+					onUploadUsers={handleUploadUsers}
 				/>
 			</Box>
-
 			<ReportPanel message={message} error={error} report={report} />
+			<ButtonUsage
+				label='Back'
+				icon={ArrowBigLeft}
+				parentMethod={nav}
+				extraSx={{ mt: 5 }}
+				iconPos={ButtonIconPositions.START}
+			/>
 		</Box>
 	);
 };

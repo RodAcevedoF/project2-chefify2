@@ -5,8 +5,8 @@ const UploadAnimation = () => {
 		<Box
 			sx={{
 				position: 'relative',
-				width: '160px',
-				height: '160px',
+				width: '180px',
+				height: '180px',
 				'& img': {
 					position: 'absolute',
 					top: 0,

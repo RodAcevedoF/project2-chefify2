@@ -1,6 +1,6 @@
 import {} from '@mui/material';
 import ConfirmLayout from '@/features/common/components/modals/ConfirmLayout';
-import type { AxiosError } from 'axios';
+import { getApiErrorMessage } from '@/lib/getApiErrorMessage';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useDeleteUser } from '@/features/admin/hooks/useAdmin';
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
@@ -38,13 +38,10 @@ export const DeleteUserModal = () => {
 				}
 				error={
 					deleteMutation.isError
-						? (
-								deleteMutation.error as unknown as AxiosError<{
-									message?: string;
-								}>
-						  )?.response?.data?.message ||
-						  (deleteMutation.error as unknown as Error)?.message ||
-						  'An error occurred while deleting the user.'
+						? getApiErrorMessage(
+								deleteMutation.error,
+								'An error occurred while deleting the user.',
+						  )
 						: undefined
 				}>
 				<>

@@ -16,6 +16,7 @@ import { useChangePassword } from '@/features/auth/hooks/useAuth';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { Eye, EyeClosed } from 'lucide-react';
 import { PasswordChangeSchema } from '@/types/auth.types';
+import { getApiErrorMessage } from '@/lib/getApiErrorMessage';
 
 export type PasswordChangeData = z.infer<typeof PasswordChangeSchema>;
 
@@ -155,11 +156,7 @@ export const SettingsForm = ({ onCancel }: { onCancel?: () => void } = {}) => {
 
 			{mutation.isError && (
 				<Typography color='error' variant='body2'>
-					{(
-						mutation.error as unknown as {
-							response?: { data?: { message?: string } };
-						}
-					)?.response?.data?.message || 'Unable to change password'}
+					{getApiErrorMessage(mutation.error, 'Unable to change password')}
 				</Typography>
 			)}
 

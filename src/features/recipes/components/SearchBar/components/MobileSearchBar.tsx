@@ -16,6 +16,7 @@ type MobileSearchBarProps = {
 	openModal: (modalType: string) => void;
 	theme: Theme;
 	mobileMenuId: string;
+	aiCounter: number;
 };
 
 const MobileSearchBar = ({
@@ -26,6 +27,7 @@ const MobileSearchBar = ({
 	openModal,
 	theme,
 	mobileMenuId,
+	aiCounter = 0,
 }: MobileSearchBarProps) => {
 	return (
 		<Menu
@@ -42,12 +44,16 @@ const MobileSearchBar = ({
 			}}
 			open={isMenuOpen}
 			onClose={handleMenuClose}>
-			<MenuItem>
+			<MenuItem
+				onClick={() => {
+					openModal('recipeSuggest');
+					handleMenuClose();
+				}}>
 				<IconButton
 					size='large'
 					aria-label='show ai recipes token left'
 					color='inherit'>
-					<Badge badgeContent={4} color='error'>
+					<Badge badgeContent={aiCounter} color='error'>
 						<Bot color={theme.palette.primary.main} />
 					</Badge>
 				</IconButton>

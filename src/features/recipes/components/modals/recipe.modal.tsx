@@ -1,4 +1,4 @@
-import useHandleNavigate from '@/utils/useHandleNavigate';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 import { Button, Box } from '@mui/material';
 import type { Recipe } from '@/types/recipe.types';
 import { useModalContext } from '@/contexts/modalContext/modal.context';

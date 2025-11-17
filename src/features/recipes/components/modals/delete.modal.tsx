@@ -1,5 +1,5 @@
 import ConfirmLayout from '@/features/common/components/modals/ConfirmLayout';
-import type { AxiosError } from 'axios';
+import { getApiErrorMessage } from '@/lib/getApiErrorMessage';
 import { useNavigate } from 'react-router-dom';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useDeleteRecipe } from '@/features/recipes/hooks';
@@ -38,13 +38,10 @@ export const DeleteModal = ({ id, title }: DeleteModalProps = {}) => {
 			}
 			error={
 				deleteMutation.isError
-					? (
-							deleteMutation.error as unknown as AxiosError<{
-								message?: string;
-							}>
-					  )?.response?.data?.message ||
-					  (deleteMutation.error as unknown as Error)?.message ||
-					  'An error occurred while deleting the recipe.'
+					? getApiErrorMessage(
+							deleteMutation.error,
+							'An error occurred while deleting the recipe.',
+					  )
 					: undefined
 			}>
 			<>

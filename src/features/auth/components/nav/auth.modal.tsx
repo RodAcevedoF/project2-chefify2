@@ -1,6 +1,6 @@
 import { useLoggedContext } from '@/contexts/loggedContext/logged.context';
 import { useState } from 'react';
-import useHandleNavigate from '@/utils/useHandleNavigate';
+import { useHandleNavigate } from '@/utils/useHandleNavigate';
 import { RegisterForm } from '@/features/home/components/forms/RegisterForm';
 import { LoginForm } from '@/features/home/components/forms/LoginForm';
 import { Button, useTheme } from '@mui/material';
@@ -10,13 +10,14 @@ export const AuthModal = () => {
 	const [showRegister, setShowRegister] = useState(false);
 	const { setLogged } = useLoggedContext();
 	const { closeModal } = useModalContext();
-	const nav = useHandleNavigate((p?: string) => (p ? p : '/'));
 	const theme = useTheme();
+
+	const goRecipes = useHandleNavigate('/recipes');
 
 	const handleLoginSuccess = () => {
 		setLogged(true);
 		closeModal();
-		nav('/recipes');
+		goRecipes();
 	};
 
 	const handleRegisterSuccess = () => {

@@ -3,8 +3,8 @@ import { useModalContext } from '@/contexts/modalContext/modal.context';
 import { useState } from 'react';
 import { IngredientService } from '@/features/ingredients/services/ingredient.service';
 import { useSuggestRecipe } from '@/features/recipes/hooks/useRecipes';
-import type { AxiosError } from 'axios';
 import { Bot, Brain } from 'lucide-react';
+import { getApiErrorMessage } from '@/lib/getApiErrorMessage';
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonVariants } from '@/types/common.types';
 
@@ -71,16 +71,7 @@ export const SuggestRecipeModal = () => {
 		}
 	};
 
-	const errorMessage = (() => {
-		const err = (error ?? null) as unknown;
-		const axiosErr = err as AxiosError<{ message?: string; error?: string }>;
-		return (
-			axiosErr?.response?.data?.message ??
-			axiosErr?.response?.data?.error ??
-			(err as Error)?.message ??
-			'Failed to generate recipe'
-		);
-	})();
+	const errorMessage = getApiErrorMessage(error, 'Failed to generate recipe');
 
 	return (
 		<Box

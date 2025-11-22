@@ -42,7 +42,10 @@ export const Navbar = memo(() => {
 		logoutMutation.mutate();
 	};
 	return (
-		<AppBar position='static' component='nav' sx={{ width: '100%', pr: 4 }}>
+		<AppBar
+			position='static'
+			component='nav'
+			sx={{ width: '100%', pr: 4, background: 'transparent', boxShadow: 5 }}>
 			<Toolbar>
 				<Box
 					sx={{ display: 'flex', alignItems: 'center', p: 0.5 }}

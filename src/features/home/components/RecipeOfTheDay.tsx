@@ -1,8 +1,12 @@
-import React from 'react';
+import { type FC } from 'react';
 import { Box, Paper, Typography, Button, CardMedia } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const RecipeOfTheDay: React.FC = () => {
+type RecipeOfTheDayProps = {
+	bg?: string;
+};
+
+const RecipeOfTheDay: FC<RecipeOfTheDayProps> = ({ bg }) => {
 	const navigate = useNavigate();
 
 	const recipe = {
@@ -15,7 +19,9 @@ const RecipeOfTheDay: React.FC = () => {
 	};
 
 	return (
-		<Paper sx={{ p: 0, borderRadius: 2, overflow: 'hidden' }} elevation={5}>
+		<Paper
+			sx={{ p: 0, borderRadius: 2, overflow: 'hidden', background: bg }}
+			elevation={5}>
 			<CardMedia
 				component='img'
 				height='140'

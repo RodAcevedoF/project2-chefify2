@@ -1,6 +1,6 @@
 import { createTheme, type ThemeOptions } from '@mui/material/styles';
 
-const CIRCLE_GRADIENT = 'radial-gradient(circle, #5ea85e 0%, #4c8a4cff 100%)';
+const CIRCLE_GRADIENT = 'radial-gradient(circle, #5ea85ec3 0%, #4c8a4cb7 100%)';
 const LIGHT_CIRCLE_GRADIENT =
 	'radial-gradient(circle, #ffffeb 0%, #e0e0cdff 100%)';
 
@@ -31,6 +31,14 @@ const themeOptions: ThemeOptions = {
 			chartLikes: '#c025b399',
 		},
 		divider: '#5ea85e75',
+		boxColors: {
+			main: '#f5bb64d3',
+			light: '#7fb77fb6',
+			dark: '#3b6f3b',
+			primary: '#ffffeb',
+			secondary: '#f500149d',
+			tertiary: '#8ac0e1bf',
+		},
 	},
 	typography: {
 		fontFamily: 'Dinot',

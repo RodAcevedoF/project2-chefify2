@@ -35,6 +35,13 @@ export const ScrollProvider = ({ children }: { children: ReactNode }) => {
 	return (
 		<ScrollContext.Provider value={{ scrolled, setScrolled, mode }}>
 			{location.pathname === '/' && <GradientBackground mode={mode} />}
+			{location.pathname === '/home' && <GradientBackground mode={'light'} />}
+			{location.pathname === '/profile' && (
+				<GradientBackground mode={'light'} />
+			)}
+			{location.pathname === '/recipes' && (
+				<GradientBackground mode={'default'} />
+			)}
 			{children}
 		</ScrollContext.Provider>
 	);

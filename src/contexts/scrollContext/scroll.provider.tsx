@@ -25,23 +25,13 @@ export const ScrollProvider = ({ children }: { children: ReactNode }) => {
 	}, []);
 
 	useEffect(() => {
-		if (location.pathname === '/') {
-			document.body.style.background = 'none';
-		} else {
-			document.body.style.background = '';
-		}
+		document.body.style.background = '';
 	}, [location.pathname]);
 
 	return (
 		<ScrollContext.Provider value={{ scrolled, setScrolled, mode }}>
 			{location.pathname === '/' && <GradientBackground mode={mode} />}
-			{location.pathname === '/home' && <GradientBackground mode={'light'} />}
-			{location.pathname === '/profile' && (
-				<GradientBackground mode={'light'} />
-			)}
-			{location.pathname === '/recipes' && (
-				<GradientBackground mode={'default'} />
-			)}
+			{<GradientBackground mode={'default'} />}
 			{children}
 		</ScrollContext.Provider>
 	);

@@ -10,12 +10,14 @@ declare module '@mui/material/styles' {
 
 	interface Success {
 		selected?: string;
+		brightBorder?: string;
 	}
 
 	interface PaletteOptions {
 		background?: Partial<TypeBackground>;
 		success?: Partial<Success>;
 		boxColors?: BoxColors;
+		borders?: Borders;
 	}
 	interface SimplePaletteColorOptions {
 		selected?: string;
@@ -27,10 +29,12 @@ declare module '@mui/material/styles' {
 
 	interface PaletteColor {
 		selected: string;
+		brightBorder: string;
 	}
 
 	interface PaletteColorOptions {
 		glass?: string;
+		brightBorder: string;
 	}
 
 	interface BoxColors {
@@ -41,10 +45,16 @@ declare module '@mui/material/styles' {
 		secondary?: string;
 		tertiary?: string;
 	}
+
+	interface Borders {
+		bright: string;
+		transparent: string;
+	}
 	interface Palette {
 		background: TypeBackground;
 		success: Success;
 		primary: PaletteColorOptions;
 		boxColors: BoxColors;
+		borders: Borders;
 	}
 }

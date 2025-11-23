@@ -1,6 +1,6 @@
 import { createTheme, type ThemeOptions } from '@mui/material/styles';
 
-const CIRCLE_GRADIENT = 'radial-gradient(circle, #5ea85ec3 0%, #4c8a4cb7 100%)';
+const CIRCLE_GRADIENT = 'radial-gradient(circle, #5ea87e86 0%, #4c8a6882 100%)';
 const LIGHT_CIRCLE_GRADIENT =
 	'radial-gradient(circle, #ffffeb 0%, #e0e0cdff 100%)';
 
@@ -13,31 +13,35 @@ const themeOptions: ThemeOptions = {
 			light: '#ffffeb7f',
 		},
 		success: {
-			main: '#4c4cafd7',
+			main: '#5555f7fd',
 			light: '#d6d326d5',
-			dark: '#033018',
-			selected: '#0e5830ff',
+			dark: '#03302eff',
+			selected: '#13827eff',
 		},
 		secondary: {
 			main: '#f500149d',
 			light: '#E7D2B0',
 		},
 		background: {
-			default: '#5ea85e',
+			default: '#5ea894c3',
 			gradient: CIRCLE_GRADIENT,
 			lightGradient: LIGHT_CIRCLE_GRADIENT,
 			paper: '#232524',
 			semitransparent: '#e7d2b0ba',
-			chartLikes: '#c025b399',
+			chartLikes: '#c025b1f7',
 		},
-		divider: '#5ea85e75',
+		divider: '#5ea89d75',
 		boxColors: {
-			main: '#f5bb64d3',
+			main: '#f5bb649f',
 			light: '#7fb77fb6',
 			dark: '#3b6f3b',
 			primary: '#ffffeb',
-			secondary: '#f500149d',
-			tertiary: '#8ac0e1bf',
+			secondary: '#c025b367',
+			tertiary: '#8ac0e1a2',
+		},
+		borders: {
+			bright: '#0ceabaff',
+			transparent: '#0ceabaaa',
 		},
 	},
 	typography: {

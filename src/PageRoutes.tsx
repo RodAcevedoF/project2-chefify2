@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import PageTransition from '@/features/common/components/PageTransition';
+import { AnimatePresence } from 'framer-motion';
 
 import { Home } from '@/features/home/Home';
 import PrivateHome from '@/features/home/PrivateHome';
@@ -23,120 +24,122 @@ export default function PageRoutes() {
 	const location = useLocation();
 
 	return (
-		<Routes location={location} key={location.pathname}>
-			{/* PUBLIC */}
-			<Route
-				path='/'
-				element={
-					<PageTransition>
-						<Home />
-					</PageTransition>
-				}
-			/>
-
-			<Route
-				path='/login'
-				element={
-					<PageTransition>
-						<Home />
-					</PageTransition>
-				}
-			/>
-
-			<Route
-				path='/reset-password'
-				element={
-					<PageTransition>
-						<ResetPasswordPage />
-					</PageTransition>
-				}
-			/>
-
-			{/* ADMIN */}
-			<Route element={<AdminRoute />}>
+		<AnimatePresence mode='wait' initial={false}>
+			<Routes location={location} key={location.pathname}>
+				{/* PUBLIC */}
 				<Route
-					path='/admin'
+					path='/'
 					element={
 						<PageTransition>
-							<AdminPage />
-						</PageTransition>
-					}
-				/>
-				<Route
-					path='/admin/users'
-					element={
-						<PageTransition>
-							<AdminUsersPage />
-						</PageTransition>
-					}
-				/>
-				<Route
-					path='/admin/recipes'
-					element={
-						<PageTransition>
-							<AdminRecipesPage />
-						</PageTransition>
-					}
-				/>
-				<Route
-					path='/admin/uploads'
-					element={
-						<PageTransition>
-							<UploadsPage />
-						</PageTransition>
-					}
-				/>
-			</Route>
-
-			{/* PROTECTED */}
-			<Route element={<ProtectedRoute />}>
-				<Route
-					path='/home'
-					element={
-						<PageTransition>
-							<PrivateHome />
+							<Home />
 						</PageTransition>
 					}
 				/>
 
-				<Route path='/recipes' element={<RecipeLayout />}>
+				<Route
+					path='/login'
+					element={
+						<PageTransition>
+							<Home />
+						</PageTransition>
+					}
+				/>
+
+				<Route
+					path='/reset-password'
+					element={
+						<PageTransition>
+							<ResetPasswordPage />
+						</PageTransition>
+					}
+				/>
+
+				{/* ADMIN */}
+				<Route element={<AdminRoute />}>
 					<Route
-						index
+						path='/admin'
 						element={
 							<PageTransition>
-								<EmptyRecipe />
+								<AdminPage />
 							</PageTransition>
 						}
 					/>
 					<Route
-						path=':id'
+						path='/admin/users'
 						element={
 							<PageTransition>
-								<RecipeDetail />
+								<AdminUsersPage />
+							</PageTransition>
+						}
+					/>
+					<Route
+						path='/admin/recipes'
+						element={
+							<PageTransition>
+								<AdminRecipesPage />
+							</PageTransition>
+						}
+					/>
+					<Route
+						path='/admin/uploads'
+						element={
+							<PageTransition>
+								<UploadsPage />
 							</PageTransition>
 						}
 					/>
 				</Route>
 
+				{/* PROTECTED */}
+				<Route element={<ProtectedRoute />}>
+					<Route
+						path='/home'
+						element={
+							<PageTransition>
+								<PrivateHome />
+							</PageTransition>
+						}
+					/>
+
+					<Route path='/recipes' element={<RecipeLayout />}>
+						<Route
+							index
+							element={
+								<PageTransition>
+									<EmptyRecipe />
+								</PageTransition>
+							}
+						/>
+						<Route
+							path=':id'
+							element={
+								<PageTransition>
+									<RecipeDetail />
+								</PageTransition>
+							}
+						/>
+					</Route>
+
+					<Route
+						path='/profile'
+						element={
+							<PageTransition>
+								<ProfileLayout />
+							</PageTransition>
+						}
+					/>
+				</Route>
+
+				{/* 404 */}
 				<Route
-					path='/profile'
+					path='*'
 					element={
 						<PageTransition>
-							<ProfileLayout />
+							<NotFound />
 						</PageTransition>
 					}
 				/>
-			</Route>
-
-			{/* 404 */}
-			<Route
-				path='*'
-				element={
-					<PageTransition>
-						<NotFound />
-					</PageTransition>
-				}
-			/>
-		</Routes>
+			</Routes>
+		</AnimatePresence>
 	);
 }

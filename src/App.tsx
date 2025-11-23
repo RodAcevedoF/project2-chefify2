@@ -1,7 +1,6 @@
 import './index.css';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Box } from '@mui/material';
-import { AnimatePresence } from 'framer-motion';
 
 import { Navbar } from '@/features/common/components/layout/Navbar';
 import { Footer } from '@/features/common/components/layout/Footer';
@@ -34,9 +33,7 @@ function App() {
 
 					{/* Animated Routes */}
 					<Box component='main' sx={{ flex: 1, overflow: 'visible' }}>
-						<AnimatePresence mode='wait' initial={false}>
-							<PageRoutes />
-						</AnimatePresence>
+						<PageRoutes />
 					</Box>
 
 					<Footer />

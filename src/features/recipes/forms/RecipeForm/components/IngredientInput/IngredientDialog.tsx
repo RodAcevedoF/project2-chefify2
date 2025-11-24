@@ -3,7 +3,6 @@ import {
 	DialogTitle,
 	DialogContent,
 	DialogActions,
-	Button,
 	Typography,
 	TextField,
 	FormControl,
@@ -11,10 +10,13 @@ import {
 	Select,
 	MenuItem,
 	Box,
+	useTheme,
 } from '@mui/material';
 import type { Ingredient } from '@/types/ingredient.type';
 import { Units } from '@/types/ingredient.type';
 import { theme } from '@/theme';
+import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
+import { ButtonVariants } from '@/types/common.types';
 
 interface Props {
 	open: boolean;
@@ -42,9 +44,25 @@ export default function AddIngredientDialog(props: Props) {
 		setQuantity,
 		onConfirm,
 	} = props;
+
+	const t = useTheme();
+
 	return (
-		<Dialog open={open} onClose={onClose} maxWidth='sm' fullWidth>
-			<DialogTitle>
+		<Dialog
+			open={open}
+			onClose={onClose}
+			maxWidth='sm'
+			fullWidth
+			slotProps={{
+				paper: {
+					sx: {
+						borderRadius: 8,
+						background: t.palette.success.selected,
+						padding: 2,
+					},
+				},
+			}}>
+			<DialogTitle sx={{ fontFamily: 'Alegreya', fontSize: 24 }}>
 				{isCreatingNew
 					? `Create new: "${newIngredientName}"`
 					: `Add: ${selectedIngredient?.name}`}
@@ -53,7 +71,7 @@ export default function AddIngredientDialog(props: Props) {
 				<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
 					{isCreatingNew && (
 						<>
-							<Typography variant='body2' color='primary'>
+							<Typography variant='body1' color='primary'>
 								Select unit for "{newIngredientName}":
 							</Typography>
 							<FormControl fullWidth>
@@ -115,13 +133,17 @@ export default function AddIngredientDialog(props: Props) {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onClose}>Cancel</Button>
-				<Button
-					onClick={onConfirm}
-					variant='contained'
-					disabled={!quantity || parseFloat(quantity) <= 0}>
-					{isCreatingNew ? 'Create and add' : 'Add'}
-				</Button>
+				<ButtonUsage
+					label='Cancel'
+					parentMethod={onClose}
+					variant={ButtonVariants.CANCEL}
+				/>
+				<ButtonUsage
+					label={isCreatingNew ? 'Create and add' : 'Add'}
+					parentMethod={onConfirm}
+					variant={ButtonVariants.DEFAULT}
+					disabled={!quantity || parseFloat(quantity) <= 0}
+				/>
 			</DialogActions>
 		</Dialog>
 	);

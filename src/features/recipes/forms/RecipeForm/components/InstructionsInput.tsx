@@ -5,7 +5,6 @@ import { Controller, type Control } from 'react-hook-form';
 export interface InstructionsInputProps {
 	control: Control;
 	color: string;
-	backgroundColor: string;
 	inputValue: string;
 	setInputValue: (value: string) => void;
 	name: string;
@@ -22,7 +21,7 @@ const InstructionsInput = (props: InstructionsInputProps) => {
 						sx={{
 							p: 0,
 							width: '100%',
-							backgroundColor: props.backgroundColor,
+							background: 'transparent',
 							boxShadow: 'none',
 							height: 'fit-content',
 							display: 'flex',

@@ -38,7 +38,6 @@ export const useCreateRecipe = (options?: UseCommonOptions<void>) => {
 		mutationFn: (data) => RecipeService.createRecipe(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: recipesKeys });
-			// refresh recent activity
 			queryClient.invalidateQueries({ queryKey: ['user', 'operations'] });
 			options?.onSuccess?.();
 		},
@@ -67,7 +66,6 @@ export const useUpdateRecipe = (options?: UseCommonOptions<void>) => {
 				});
 			}
 			queryClient.invalidateQueries({ queryKey: recipesKeys });
-			// refresh recent activity
 			queryClient.invalidateQueries({ queryKey: ['user', 'operations'] });
 			options?.onSuccess?.();
 		},
@@ -85,7 +83,6 @@ export const useDeleteRecipe = (options?: UseCommonOptions<void>) => {
 		mutationFn: ({ id }) => RecipeService.deleteRecipe(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: recipesKeys });
-			// refresh recent activity
 			queryClient.invalidateQueries({ queryKey: ['user', 'operations'] });
 			options?.onSuccess?.();
 		},

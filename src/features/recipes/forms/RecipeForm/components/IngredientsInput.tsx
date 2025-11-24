@@ -1,27 +1,21 @@
 import { Paper, Snackbar, Alert } from '@mui/material';
-import {
-	Controller,
-	type Control,
-	type ControllerRenderProps,
-} from 'react-hook-form';
-import { useState, useEffect, useRef } from 'react';
+import { Controller, type Control } from 'react-hook-form';
+import { useState, useEffect } from 'react';
 import {
 	useGetIngredients,
 	useCreateIngredient,
 } from '@/features/ingredients/hooks';
-import {
-	Units,
-	type Ingredient,
-	type IngredientRefDTO,
-} from '@/types/ingredient.type';
+import { Units, type Ingredient } from '@/types/ingredient.type';
 import IngredientAutocomplete from './IngredientInput/IngredientAutocomplete';
 import IngredientsChips from './IngredientInput/IngredientChip';
 import AddIngredientDialog from './IngredientInput/IngredientDialog';
+import { useIngredientModal } from '../hooks/useIngredientModal';
+import { useSnackbar } from '../hooks/useSnackbar';
+import { useIngredientOperations } from '../hooks/useIngredientOperations';
 
 export interface IngredientsInputProps {
 	control: Control;
 	color: string;
-	backgroundColor: string;
 	inputValue: string;
 	setInputValue: (value: string) => void;
 	name: string;
@@ -29,21 +23,10 @@ export interface IngredientsInputProps {
 
 const IngredientsInput = (props: IngredientsInputProps) => {
 	const [searchTerm, setSearchTerm] = useState('');
-	const fieldRef = useRef<ControllerRenderProps | null>(null);
-	const [modalOpen, setModalOpen] = useState(false);
-	const [selectedIngredient, setSelectedIngredient] =
-		useState<Ingredient | null>(null);
-	const [isCreatingNew, setIsCreatingNew] = useState(false);
-	const [newIngredientName, setNewIngredientName] = useState('');
-	const [selectedUnit, setSelectedUnit] = useState<string>(Units.options[0]);
-	const [quantity, setQuantity] = useState<string>('1');
-
-	const [snackbar, setSnackbar] = useState<{
-		open: boolean;
-		message: string;
-		severity: 'success' | 'info' | 'warning' | 'error';
-	}>({ open: false, message: '', severity: 'info' });
-	const closeSnackbar = () => setSnackbar((s) => ({ ...s, open: false }));
+	const modal = useIngredientModal();
+	const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
+	const { checkIfExists, addIngredient, removeIngredient } =
+		useIngredientOperations();
 
 	useEffect(() => {
 		const id = setTimeout(() => setSearchTerm(props.inputValue.trim()), 300);
@@ -64,117 +47,75 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 		},
 	});
 
-	const openModalForExisting = (
+	const handleOpenExisting = (
 		ingredient: Ingredient,
-		field: ControllerRenderProps,
+		field: typeof modal.fieldRef.current,
 	) => {
-		const current = Array.isArray(field.value) ? field.value : [];
-		const exists = current.some(
-			(item: IngredientRefDTO) =>
-				typeof item.ingredient === 'object' &&
-				item.ingredient?._id === ingredient._id,
-		);
+		if (!field) return;
 
-		if (exists) {
-			setSnackbar({
-				open: true,
-				message: 'Ingredient already add',
-				severity: 'info',
-			});
+		if (checkIfExists(field, ingredient._id ?? '')) {
+			showSnackbar('Ingredient already add', 'info');
 			return;
 		}
 
-		setSelectedIngredient(ingredient);
-		setIsCreatingNew(false);
-		setQuantity('1');
-		fieldRef.current = field;
-		setModalOpen(true);
+		modal.openForExisting(ingredient, field);
 	};
 
-	const openModalForNew = (name: string, field: ControllerRenderProps) => {
-		setNewIngredientName(name);
-		setIsCreatingNew(true);
-		setSelectedUnit(Units.options[0]);
-		setQuantity('1');
-		fieldRef.current = field;
-		setModalOpen(true);
+	const handleOpenNew = (
+		name: string,
+		field: typeof modal.fieldRef.current,
+	) => {
+		if (!field) return;
+		modal.openForNew(name, Units.options[0], field);
 	};
 
-	const closeModal = () => {
-		setModalOpen(false);
-		setSelectedIngredient(null);
-		setIsCreatingNew(false);
-		setNewIngredientName('');
-		setQuantity('1');
-		fieldRef.current = null;
-	};
+	const handleAdd = async (
+		value: string,
+		field: typeof modal.fieldRef.current,
+	) => {
+		if (!value.trim() || !field) return;
 
-	const handleAdd = async (value: string, field: ControllerRenderProps) => {
-		if (!value.trim()) return;
 		const ingredient = options.find(
 			(opt) => opt.name.toLowerCase() === value.toLowerCase(),
 		);
 
 		if (!ingredient) {
-			openModalForNew(value.trim(), field);
+			handleOpenNew(value.trim(), field);
 		} else {
-			openModalForExisting(ingredient, field);
+			handleOpenExisting(ingredient, field);
 		}
 	};
 
 	const addIngredientWithQuantity = (
 		ingredient: Ingredient,
-		field: ControllerRenderProps,
+		field: typeof modal.fieldRef.current,
 	) => {
-		const current = Array.isArray(field.value) ? field.value : [];
-		const exists = current.some(
-			(item: IngredientRefDTO) => item._id === ingredient._id,
+		if (!field) return;
+
+		const quantityNum = parseFloat(modal.quantity);
+
+		addIngredient(
+			field,
+			ingredient,
+			quantityNum,
+			() => {
+				props.setInputValue('');
+				modal.close();
+			},
+			(message) => {
+				showSnackbar(message, message.includes('valid') ? 'warning' : 'info');
+				modal.close();
+			},
 		);
-
-		if (exists) {
-			setSnackbar({
-				open: true,
-				message: 'Ingredient already add',
-				severity: 'info',
-			});
-			closeModal();
-			return;
-		}
-
-		const quantityNum = parseFloat(quantity);
-		if (isNaN(quantityNum) || quantityNum <= 0) {
-			setSnackbar({
-				open: true,
-				message: 'Enter a valid quantity',
-				severity: 'warning',
-			});
-			closeModal();
-			return;
-		}
-
-		const safeIngredient = {
-			_id: ingredient._id,
-			name: ingredient.name,
-			unit: ingredient.unit,
-		} as unknown as Ingredient;
-
-		const ingredientRef: IngredientRefDTO = {
-			ingredient: safeIngredient,
-			quantity: quantityNum,
-		};
-
-		field.onChange([...current, ingredientRef]);
-		props.setInputValue('');
-		closeModal();
 	};
 	const handleConfirmAdd = async () => {
-		if (!fieldRef.current) return;
+		if (!modal.fieldRef.current) return;
 
-		if (isCreatingNew) {
+		if (modal.isCreatingNew) {
 			try {
 				const payload = {
-					name: newIngredientName.trim(),
-					unit: selectedUnit as (typeof Units.options)[number],
+					name: modal.newIngredientName.trim(),
+					unit: modal.selectedUnit as (typeof Units.options)[number],
 				};
 
 				await createIngredientMutation.mutateAsync(payload);
@@ -184,37 +125,29 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 
 				const ingredient = updatedOptions.find(
 					(opt) =>
-						opt.name.toLowerCase() === newIngredientName.trim().toLowerCase(),
+						opt.name.toLowerCase() ===
+						modal.newIngredientName.trim().toLowerCase(),
 				);
 
 				if (ingredient) {
-					addIngredientWithQuantity(ingredient, fieldRef.current);
-					setSnackbar({
-						open: true,
-						message: 'Ingredient created and added',
-						severity: 'success',
-					});
+					addIngredientWithQuantity(ingredient, modal.fieldRef.current);
+					showSnackbar('Ingredient created and added', 'success');
 				} else {
-					setSnackbar({
-						open: true,
-						message:
-							'Ingredient created, but not found to add. Please add it manually.',
-						severity: 'info',
-					});
+					showSnackbar(
+						'Ingredient created, but not found to add. Please add it manually.',
+						'info',
+					);
+					modal.close();
 				}
-
-				closeModal();
 			} catch (error) {
 				console.error('Error creating ingredient:', error);
-				setSnackbar({
-					open: true,
-					message: 'Error creating ingredient. Please try again.',
-					severity: 'error',
-				});
+				showSnackbar('Error creating ingredient. Please try again.', 'error');
 			}
-		} else if (selectedIngredient) {
-			addIngredientWithQuantity(selectedIngredient, fieldRef.current);
-			closeModal();
+		} else if (modal.selectedIngredient) {
+			addIngredientWithQuantity(
+				modal.selectedIngredient,
+				modal.fieldRef.current,
+			);
 		}
 	};
 
@@ -228,7 +161,7 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 						sx={{
 							p: 0,
 							width: '100%',
-							backgroundColor: props.backgroundColor,
+							background: 'transparent',
 							boxShadow: 'none',
 							height: 'fit-content',
 							display: 'flex',
@@ -247,35 +180,28 @@ const IngredientsInput = (props: IngredientsInputProps) => {
 						/>
 						<IngredientsChips
 							value={Array.isArray(field.value) ? field.value : []}
-							onDelete={(idx) => {
-								const newValue = Array.isArray(field.value)
-									? field.value.filter((_, i) => i !== idx)
-									: [];
-								field.onChange(newValue);
-							}}
+							onDelete={(idx) => removeIngredient(field, idx)}
 						/>
 					</Paper>
 				)}
 			/>
 			<AddIngredientDialog
-				open={modalOpen}
-				isCreatingNew={isCreatingNew}
-				newIngredientName={newIngredientName}
-				selectedIngredient={selectedIngredient}
-				selectedUnit={selectedUnit}
-				quantity={quantity}
-				onClose={closeModal}
-				setSelectedUnit={setSelectedUnit}
-				setQuantity={setQuantity}
+				open={modal.modalOpen}
+				isCreatingNew={modal.isCreatingNew}
+				newIngredientName={modal.newIngredientName}
+				selectedIngredient={modal.selectedIngredient}
+				selectedUnit={modal.selectedUnit}
+				quantity={modal.quantity}
+				onClose={modal.close}
+				setSelectedUnit={modal.setSelectedUnit}
+				setQuantity={modal.setQuantity}
 				onConfirm={handleConfirmAdd}
 			/>
-			{/* Snackbar para notificaciones */}
 			<Snackbar
 				open={snackbar.open}
 				autoHideDuration={4000}
-				onClose={(event, reason) => {
+				onClose={(_, reason) => {
 					if (reason !== 'clickaway') closeSnackbar();
-					console.log(event);
 				}}
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
 				<Alert

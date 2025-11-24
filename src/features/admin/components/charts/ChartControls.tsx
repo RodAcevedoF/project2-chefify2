@@ -1,10 +1,10 @@
-import React from 'react';
 import { ToggleButtonGroup, ToggleButton, useTheme } from '@mui/material';
 import { alpha } from '@mui/material';
+import type { FC } from 'react';
 
 export type ResourceType = 'recipe' | 'like' | 'follow';
 
-interface Props {
+interface ControlsProps {
 	value: ResourceType[];
 	onChange: (
 		event: React.MouseEvent<HTMLElement>,
@@ -12,7 +12,7 @@ interface Props {
 	) => void;
 }
 
-const ChartControls: React.FC<Props> = ({ value, onChange }) => {
+const ChartControls: FC<ControlsProps> = ({ value, onChange }) => {
 	const t = useTheme();
 
 	return (

@@ -7,6 +7,7 @@ import { Bot, Brain } from 'lucide-react';
 import { getApiErrorMessage } from '@/lib/getApiErrorMessage';
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
 import { ButtonVariants } from '@/types/common.types';
+import logger from '@/lib/logger';
 
 export const SuggestRecipeModal = () => {
 	const { closeModal, openModal } = useModalContext();
@@ -66,8 +67,13 @@ export const SuggestRecipeModal = () => {
 			const initialData = { ...data, ingredients: transformedIngredients };
 			closeModal();
 			openModal('recipe', { initialData });
-		} catch {
-			/* ignore */
+		} catch (err: Error | unknown) {
+			logger.error(
+				'[SuggestRecipeModal] Error fetching suggested recipe:',
+				err instanceof Error
+					? { message: err.message, stack: err.stack }
+					: undefined,
+			);
 		}
 	};
 
@@ -77,7 +83,7 @@ export const SuggestRecipeModal = () => {
 		<Box
 			sx={{
 				p: 4,
-				width: 500,
+				width: { xs: '100%', sm: 500 },
 				background: theme.palette.background.gradient,
 				borderRadius: 3,
 			}}>

@@ -18,7 +18,7 @@ export const ImgModal = (props: ImgModalProps = {}) => {
 				}}>
 				<CardMedia
 					component='img'
-					image={imgUrl || '/default-recipe.png'}
+					image={imgUrl || '/default-recipe.webp'}
 					alt={imgUrl ?? 'default image'}
 					sx={{
 						borderRadius: 2,

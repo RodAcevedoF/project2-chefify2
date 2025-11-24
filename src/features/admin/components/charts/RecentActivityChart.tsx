@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState, type FC } from 'react';
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -38,7 +38,7 @@ ChartJS.register(
 	Legend,
 );
 
-const RecentActivityChart: React.FC<{ days?: number }> = () => {
+const RecentActivityChart: FC<{ days?: number }> = () => {
 	const theme = useTheme();
 	const { data } = useOperations();
 
@@ -96,7 +96,6 @@ const RecentActivityChart: React.FC<{ days?: number }> = () => {
 		layout: { padding: { top: 0, bottom: 0, left: 0, right: 0 } },
 	} as ChartOptions<'doughnut'>;
 
-	// Prepare data for external legend/summary
 	const labels = (chartData.labels ?? []) as string[];
 	const totals = ((chartData.datasets?.[0]?.data as number[]) ??
 		[]) as number[];
@@ -158,10 +157,13 @@ const RecentActivityChart: React.FC<{ days?: number }> = () => {
 									<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
 										<Box
 											sx={{
-												width: 14,
-												height: 14,
+												width: 25,
+												height: 25,
 												bgcolor: bgColors[i] || theme.palette.grey[400],
-												borderRadius: 0.5,
+												borderRadius: 1,
+												border: `4px solid ${
+													bgColors[i] || theme.palette.grey[400]
+												}`,
 											}}
 										/>
 										<Typography variant='body2'>{lbl}</Typography>

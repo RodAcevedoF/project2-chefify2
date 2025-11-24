@@ -19,7 +19,7 @@ export const buildLastNDays = (n: number): string[] =>
 export const buildColorMap = (theme: Theme) => ({
 	recipe: {
 		border: theme.palette.success.light,
-		bg: alpha(theme.palette.success.light, 0.2),
+		bg: alpha(theme.palette.success.light, 0.3),
 	},
 	like: {
 		border: theme.palette.background?.chartLikes ?? '#dc5786ff',

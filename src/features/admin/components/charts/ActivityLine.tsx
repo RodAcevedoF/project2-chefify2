@@ -1,14 +1,14 @@
-import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Box } from '@mui/material';
 import type { ChartOptions, ChartData } from 'chart.js';
+import type { FC } from 'react';
 
-interface Props {
+interface ChartProps {
 	data: ChartData<'doughnut'>;
 	options: ChartOptions<'doughnut'>;
 }
 
-const ActivityLine: React.FC<Props> = ({ data, options }) => {
+const ActivityLine: FC<ChartProps> = ({ data, options }) => {
 	return (
 		<Box
 			sx={{

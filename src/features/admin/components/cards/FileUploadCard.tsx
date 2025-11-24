@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef, type FC } from 'react';
 import {
 	Box,
 	Typography,
@@ -12,7 +12,7 @@ import { ButtonVariants } from '@/types/common.types';
 import { MonitorUp } from 'lucide-react';
 import UploadAnimation from './UploadAnimation';
 
-interface Props {
+interface FileUploadProps {
 	title: string;
 	accept?: string;
 	file: File | null;
@@ -24,7 +24,14 @@ interface Props {
 	extraActions?: React.ReactNode;
 }
 
-const FileUploadCard: React.FC<Props> = ({
+const IMAGES: string[] = [
+	'/anim/anim1.webp',
+	'/anim/anim2.webp',
+	'/anim/anim3.webp',
+	'/anim/anim4.webp',
+];
+
+const FileUploadCard: FC<FileUploadProps> = ({
 	title,
 	accept,
 	file,
@@ -71,7 +78,7 @@ const FileUploadCard: React.FC<Props> = ({
 						opacity: 0.8,
 					},
 				}}>
-				<UploadAnimation />
+				<UploadAnimation images={IMAGES} />
 			</Box>
 
 			<input

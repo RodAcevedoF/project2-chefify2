@@ -33,7 +33,7 @@ const ViewRecipeModal = () => {
 			<Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 1 }}>
 				<UserAvatar
 					name={r.title}
-					imgUrl={r.imgUrl || '/default-recipe.png'}
+					imgUrl={r.imgUrl || '/default-recipe.webp'}
 					size={64}
 				/>
 				<Box>
@@ -41,7 +41,7 @@ const ViewRecipeModal = () => {
 						{r.title}
 					</Typography>
 					<Typography
-						variant='body2'
+						variant='body1'
 						color='text.secondary'
 						sx={{ mt: 0.5, fontWeight: 'bolder' }}>
 						Author:{' '}
@@ -56,7 +56,17 @@ const ViewRecipeModal = () => {
 				<Typography variant='body1' component='div'>
 					<strong>Categories:</strong>{' '}
 					{(r.categories || []).map((c) => (
-						<Chip key={c} label={c} size='small' sx={{ mr: 0.5 }} />
+						<Chip
+							key={c}
+							label={c}
+							size='small'
+							sx={{
+								mr: 0.5,
+								color: 'primary.main',
+								border: 2,
+								borderColor: 'borders.transparent',
+							}}
+						/>
 					))}
 				</Typography>
 				<Typography variant='body1'>

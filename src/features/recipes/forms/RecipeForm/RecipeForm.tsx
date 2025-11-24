@@ -120,7 +120,6 @@ export const RecipeForm = ({
 					inputValue={inputValue}
 					setInputValue={setInputValue}
 					color={theme.palette.primary.main}
-					backgroundColor={theme.palette.background.default}
 				/>
 
 				<IngredientsInput
@@ -129,7 +128,6 @@ export const RecipeForm = ({
 					inputValue={IngredientInput}
 					setInputValue={setIngredientInput}
 					color={theme.palette.primary.main}
-					backgroundColor={theme.palette.background.default}
 				/>
 
 				<UploadIUmageInput

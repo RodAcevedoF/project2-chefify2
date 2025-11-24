@@ -25,8 +25,8 @@ export default function PrimarySearchAppBar() {
 		useState<null | HTMLElement>(null);
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 	const { setDrawerOpen } = useDrawerContext();
-	const theme = useTheme();
-	const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
+	const t = useTheme();
+	const isMdDown = useMediaQuery(t.breakpoints.down('md'));
 	const { openModal } = useModalContext();
 	const nav = useHandleNavigate((p?: string) => (p ? p : '/'));
 	const LIMIT = 5;
@@ -57,7 +57,7 @@ export default function PrimarySearchAppBar() {
 			handleMenuClose={handleMobileMenuClose}
 			handleNavClick={handleNavClick}
 			openModal={openModal}
-			theme={theme}
+			theme={t}
 			mobileMenuId={mobileMenuId}
 			aiCounter={aiCounter}
 		/>
@@ -65,7 +65,9 @@ export default function PrimarySearchAppBar() {
 
 	return (
 		<Box sx={{ flexGrow: 1, zIndex: 1300 }}>
-			<AppBar position='static' sx={{ display: 'flex' }}>
+			<AppBar
+				position='static'
+				sx={{ display: 'flex', background: t.palette.background.gradient }}>
 				<Toolbar
 					sx={{
 						width: '100%',

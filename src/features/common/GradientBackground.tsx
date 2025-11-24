@@ -28,7 +28,7 @@ export const GradientBackground: React.FC<Props> = ({ mode }) => {
 				aria-hidden
 				style={{
 					...baseStyle,
-					backgroundImage: defaultGradient,
+					background: defaultGradient,
 					opacity: mode === 'default' ? 1 : 0,
 				}}
 			/>
@@ -37,8 +37,9 @@ export const GradientBackground: React.FC<Props> = ({ mode }) => {
 				aria-hidden
 				style={{
 					...baseStyle,
-					backgroundImage: lightGradient,
+					background: lightGradient,
 					opacity: mode === 'light' ? 1 : 0,
+					zIndex: -9,
 				}}
 			/>
 		</>

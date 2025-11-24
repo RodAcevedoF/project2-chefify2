@@ -8,7 +8,7 @@ export const commonStyles = (
 	mainBtn: {
 		color: disabled ? '#9c9c94ff' : '#ffffeb',
 		padding: '8px 16px',
-		background: disabled ? '#2d2e2dff' : '#033018',
+		background: disabled ? '#2d2e2eff' : '#043635ff',
 		borderRadius: 5,
 		borderColor: theme.palette.primary.main,
 		display: 'flex',
@@ -17,7 +17,7 @@ export const commonStyles = (
 		gap: 1,
 		fontFamily: 'Alegreya',
 		'&:hover': {
-			borderColor: '#0cea74',
+			borderColor: theme.palette.borders.bright,
 			background: 'inherit',
 			fontWeight: 'bold',
 		},

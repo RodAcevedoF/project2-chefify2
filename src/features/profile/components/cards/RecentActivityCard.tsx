@@ -7,6 +7,7 @@ import {
 	ListItem,
 	ListItemText,
 	useTheme,
+	Box,
 } from '@mui/material';
 import { useGetRecentOperations } from '@/features/profile/hooks/useUser';
 import { BrushCleaning, ClipboardList } from 'lucide-react';
@@ -19,7 +20,7 @@ const RecentActivityCard: React.FC = () => {
 	const items = Array.isArray(ops) ? ops : [];
 
 	return (
-		<Card elevation={1}>
+		<Card elevation={1} sx={{ mb: 2, borderRadius: 3 }}>
 			<CardContent>
 				<Typography
 					variant='h6'
@@ -54,7 +55,15 @@ const RecentActivityCard: React.FC = () => {
 									fontSize: '16px',
 								}}
 							/>
-							<BrushCleaning color={theme.palette.primary.main} />
+							<Box
+								sx={{
+									width: 28,
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+								}}>
+								<BrushCleaning color={theme.palette.primary.main} size={20} />
+							</Box>
 						</ListItem>
 					)}
 					{!isLoading &&
@@ -70,7 +79,18 @@ const RecentActivityCard: React.FC = () => {
 								<ListItem
 									key={idx}
 									sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-									<ClipboardList color={theme.palette.primary.main} />
+									<Box
+										sx={{
+											width: 28,
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center',
+										}}>
+										<ClipboardList
+											color={theme.palette.primary.main}
+											size={20}
+										/>
+									</Box>
 									<ListItemText
 										primary={primary}
 										secondary={secondary}

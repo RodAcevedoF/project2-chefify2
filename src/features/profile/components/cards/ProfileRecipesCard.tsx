@@ -18,7 +18,7 @@ import { useGetSavedRecipes } from '@/features/profile/hooks/useUser';
 import NoSavedRecipesCard from './NoSavedRecipesCard';
 import { useHandleNavigate } from '@/utils/useHandleNavigate';
 
-const DEFAULT_THUMB = '/default-recipe.png';
+const DEFAULT_THUMB = '/default-recipe.webp';
 
 const ProfileRecipesCard = () => {
 	const theme = useTheme();
@@ -32,7 +32,7 @@ const ProfileRecipesCard = () => {
 	);
 
 	return (
-		<Card elevation={1} sx={{ mb: 2 }}>
+		<Card elevation={1} sx={{ mb: 2, borderRadius: 3 }}>
 			<CardMedia
 				src='/banner.png'
 				component='img'

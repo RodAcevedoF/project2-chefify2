@@ -41,7 +41,7 @@ const Statistics = () => {
 		{ label: 'Followers', value: me?.followersCount ?? 0 },
 	];
 	return (
-		<Paper sx={{ p: 2 }} elevation={2}>
+		<Paper sx={{ p: 2, borderRadius: 3 }} elevation={2}>
 			<Typography
 				variant='h6'
 				sx={{

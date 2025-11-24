@@ -28,6 +28,7 @@ const ProfileCard: React.FC = () => {
 				justifyContent: 'center',
 				alignItems: 'center',
 				width: '100',
+				borderRadius: 3,
 			}}
 			elevation={10}>
 			<CardActionArea

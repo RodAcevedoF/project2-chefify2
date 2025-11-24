@@ -81,6 +81,7 @@ export const recipeStyles = (theme: Theme) => ({
 			width: '100%',
 			maxWidth: '900px',
 			mb: 5,
+			mt: 5,
 		},
 		mainBox: {
 			display: 'flex',

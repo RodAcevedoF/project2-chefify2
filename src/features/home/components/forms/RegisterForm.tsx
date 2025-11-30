@@ -17,6 +17,7 @@ import {
 	InputAdornment,
 } from '@mui/material';
 import { ButtonUsage } from '@/features/common/components/buttons/MainButton';
+import Toast from '@/features/common/components/toasts/Toast';
 import { ArrowBigRight, Eye, EyeClosed } from 'lucide-react';
 import { ButtonTypes } from '@/types/common.types';
 
@@ -33,8 +34,13 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
 	const registerMutation = useRegister({
-		onSuccess: () => onSuccess?.(),
+		onSuccess: () => {
+			onSuccess?.();
+			setToastOpen(true);
+		},
 	});
+
+	const [toastOpen, setToastOpen] = useState(false);
 
 	const onSubmit = (data: RegisterFormData) => {
 		registerMutation.mutate(data);
@@ -179,6 +185,16 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 						Error al registrar
 					</Typography>
 				)}
+
+				<Toast
+					open={toastOpen}
+					message={
+						'Registration successful — check your email to verify your account.'
+					}
+					severity='success'
+					autoHideDuration={4000}
+					onClose={() => setToastOpen(false)}
+				/>
 			</Box>
 		</Box>
 	);

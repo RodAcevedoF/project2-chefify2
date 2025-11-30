@@ -38,7 +38,7 @@ const AdminPage = () => {
 					</Typography>
 					<CardMedia
 						component='img'
-						image='/server.png'
+						image='/profile/server.webp'
 						alt='Admin Dashboard'
 						sx={{
 							width: '120px',

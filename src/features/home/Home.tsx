@@ -144,7 +144,7 @@ export const Home = () => {
 						viewport={viewportOptions}>
 						<CardMedia
 							component='img'
-							image='/landingchef.png'
+							image='/landing-default/landingchef.webp'
 							alt='divider wave'
 							sx={{
 								height: '180px',

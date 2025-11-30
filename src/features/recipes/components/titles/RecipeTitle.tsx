@@ -46,7 +46,7 @@ const RecipeTitle = ({ recipe, params }: RecipeTitleProps) => {
 					aria-label={`Open ${recipe.title ?? 'recipe'} modal`}>
 					<CardMedia
 						component='img'
-						image={recipe.imgUrl || '/default-recipe.webp'}
+						image={recipe.imgUrl || '/landing-default/default-recipe.webp'}
 						alt={recipe.title ?? 'default recipe image'}
 						sx={{
 							borderRadius: 2,

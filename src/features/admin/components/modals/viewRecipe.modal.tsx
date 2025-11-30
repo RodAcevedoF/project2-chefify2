@@ -33,7 +33,7 @@ const ViewRecipeModal = () => {
 			<Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 1 }}>
 				<UserAvatar
 					name={r.title}
-					imgUrl={r.imgUrl || '/default-recipe.webp'}
+					imgUrl={r.imgUrl || '/landing-default/default-recipe.webp'}
 					size={64}
 				/>
 				<Box>

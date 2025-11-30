@@ -39,7 +39,7 @@ const RecipeRow = ({ recipe, cellSx, onDelete, onView }: RecipeRowProps) => {
 					}}>
 					<UserAvatar
 						name={recipe.title}
-						imgUrl={recipe.imgUrl ?? '/default-recipe.webp'}
+						imgUrl={recipe.imgUrl ?? '/landing-default/default-recipe.webp'}
 						size={40}
 						sx={{ mx: 0, mb: 0 }}
 					/>

@@ -37,7 +37,7 @@ const NoSavedRecipesCard = () => {
 				<Box sx={{ mt: 1, display: 'flex', justifyContent: 'center' }}>
 					<CardMedia
 						component='img'
-						src='/emptyrecipes.png'
+						src='/profile/emptyrecipes.webp'
 						alt='Browse Recipes'
 						sx={{ width: '70%', borderRadius: 2 }}
 					/>

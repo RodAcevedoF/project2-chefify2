@@ -2,7 +2,6 @@ import { Card, CardMedia, Container, Typography, Box } from '@mui/material';
 import { ButtonUsage } from '../buttons/MainButton';
 import { Send } from 'lucide-react';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
-import { m } from 'framer-motion';
 
 export const Footer = () => {
 	const { openModal } = useModalContext();

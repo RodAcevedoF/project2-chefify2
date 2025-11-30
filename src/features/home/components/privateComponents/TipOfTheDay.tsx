@@ -34,7 +34,7 @@ const TipOfTheDay: FC<TipProps> = ({ bg }) => {
 				<Typography fontSize={'18px'}>{tip}</Typography>
 				<CardMedia
 					component='img'
-					src={'/day_tip.png'}
+					src={'/priv-home/day_tip.webp'}
 					alt='Tip of the day illustration'
 					sx={{
 						mt: 2,

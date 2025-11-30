@@ -43,7 +43,7 @@ export const Footer = () => {
 					}}>
 					<CardMedia
 						component='img'
-						image='/footerlogo.png'
+						image='/footer/footerlogo.webp'
 						alt='Chef logo'
 						sx={{ width: { md: '400px', xs: '250px' } }}
 					/>
@@ -91,7 +91,7 @@ export const Footer = () => {
 				</Typography>
 				<CardMedia
 					component='img'
-					image='/footerheart.png'
+					image='/footer/footerheart.webp'
 					alt='heart icon'
 					sx={{ width: '60px', mx: 1, mb: 0, mt: -0.5 }}
 				/>

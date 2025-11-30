@@ -21,7 +21,7 @@ const RecipeOfTheDay: FC<RecipeOfTheDayProps> = ({ bg }) => {
 	}, [recipes]);
 
 	console.log('Recipe of the day selected:', recipe);
-	const placeholder = '/priv-recipe.png';
+	const placeholder = '/priv-home/priv-recipe.webp';
 	return (
 		<Paper
 			sx={{

@@ -32,7 +32,7 @@ export const PrivateHome: React.FC = () => {
 				}}>
 				<CardMedia
 					component='img'
-					src={'/priv-home.png'}
+					src={'/priv-home/priv-home.webp'}
 					alt='Welcome Image'
 					sx={{
 						...hs.privateMediaCard,

@@ -42,7 +42,7 @@ const PrivateHomeActions: React.FC<Props> = ({ onNavigate }) => {
 
 			<CardMedia
 				component='img'
-				src={'/home-tomato.png'}
+				src={'/priv-home/home-tomato.webp'}
 				alt='Welcome Image'
 				sx={{ width: '80px', borderRadius: 8 }}
 			/>

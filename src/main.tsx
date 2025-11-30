@@ -10,20 +10,21 @@ import { theme } from './theme';
 import { CssBaseline } from '@mui/material';
 import ErrorBoundary from '@/features/common/components/ErrorBoundary';
 
-createRoot(document.getElementById('root')!).render(
+const root = document.getElementById('root')!;
+
+createRoot(root).render(
 	<StrictMode>
-		<QueryClientWrapper>
-			<LoggedProvider>
-				<ThemeProvider theme={theme}>
-					<CssBaseline>
-						<ErrorBoundary>
-							<ModalProvider>
-								<App />
-							</ModalProvider>
-						</ErrorBoundary>
-					</CssBaseline>
-				</ThemeProvider>
-			</LoggedProvider>
-		</QueryClientWrapper>
+		<ThemeProvider theme={theme}>
+			<CssBaseline />
+			<QueryClientWrapper>
+				<LoggedProvider>
+					<ErrorBoundary>
+						<ModalProvider>
+							<App />
+						</ModalProvider>
+					</ErrorBoundary>
+				</LoggedProvider>
+			</QueryClientWrapper>
+		</ThemeProvider>
 	</StrictMode>,
 );

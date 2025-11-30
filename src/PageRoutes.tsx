@@ -46,17 +46,16 @@ const NotFound = lazy(() =>
 	import('@/features/notFound/NotFound').then((m) => ({ default: m.NotFound })),
 );
 
-// Loading fallback component
 const LoadingFallback = () => (
 	<Box
 		sx={{
 			display: 'flex',
 			justifyContent: 'center',
 			alignItems: 'center',
-			minHeight: '50vh',
+			minHeight: '100vh',
 			width: '100%',
 		}}>
-		<CircularProgress />
+		<CircularProgress sx={{ color: '#ffffeb' }} size={48} />
 	</Box>
 );
 

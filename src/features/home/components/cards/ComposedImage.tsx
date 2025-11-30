@@ -50,7 +50,7 @@ const ComposedImage = ({ maxWidth = 750, alt = 'Composed Image' }: Props) => {
 				}}>
 				<CardMedia
 					component='img'
-					image='/jolly/circle.png'
+					image='/jolly/circle.webp'
 					alt={alt}
 					sx={{
 						width: '100%',
@@ -65,7 +65,7 @@ const ComposedImage = ({ maxWidth = 750, alt = 'Composed Image' }: Props) => {
 
 				<CardMedia
 					component='img'
-					image='/jolly/fire_r.png'
+					image='/jolly/fire_r.webp'
 					alt='flame right'
 					sx={{
 						width: '18%',
@@ -83,7 +83,7 @@ const ComposedImage = ({ maxWidth = 750, alt = 'Composed Image' }: Props) => {
 
 				<CardMedia
 					component='img'
-					image='/jolly/fire_l.png'
+					image='/jolly/fire_l.webp'
 					alt='flame left'
 					sx={{
 						width: '18%',
@@ -100,7 +100,7 @@ const ComposedImage = ({ maxWidth = 750, alt = 'Composed Image' }: Props) => {
 				/>
 				<CardMedia
 					component='img'
-					image='/jolly/hat.png'
+					image='/jolly/hat.webp'
 					alt='chef hat'
 					sx={{
 						width: '70%',
@@ -116,7 +116,7 @@ const ComposedImage = ({ maxWidth = 750, alt = 'Composed Image' }: Props) => {
 				/>
 				<CardMedia
 					component='img'
-					image='/jolly/rollingpin.png'
+					image='/jolly/rollingpin.webp'
 					alt='rolling pin'
 					sx={{
 						width: '50%',
@@ -131,7 +131,7 @@ const ComposedImage = ({ maxWidth = 750, alt = 'Composed Image' }: Props) => {
 				/>
 				<CardMedia
 					component='img'
-					image='/jolly/spatula.png'
+					image='/jolly/spatula.webp'
 					alt='spatula'
 					sx={{
 						width: '50%',

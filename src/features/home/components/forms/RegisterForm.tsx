@@ -191,9 +191,7 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 
 			<Toast
 				open={toastOpen}
-				message={
-					'Registration successful — check your email to verify your account.'
-				}
+				message={'Check your email to verify your account.'}
 				severity='success'
 				autoHideDuration={4000}
 				onClose={() => setToastOpen(false)}

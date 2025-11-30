@@ -1,6 +1,8 @@
 import React from 'react';
-import { Button, Box, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import logger from '@/lib/logger';
+import { ButtonUsage } from './buttons/MainButton';
+import { ButtonVariants } from '@/types/common.types';
 
 type Props = {
 	children: React.ReactNode;
@@ -92,18 +94,16 @@ export class ErrorBoundary extends React.Component<Props, State> {
 							</Typography>
 						</Box>
 						<Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
-							<Button
-								variant='contained'
-								color='primary'
-								onClick={this.handleReload}>
-								Reload
-							</Button>
-							<Button
-								variant='outlined'
-								color='primary'
-								onClick={this.handleCopyReport}>
-								{this.state.copied ? 'Copy' : 'Copied report'}
-							</Button>
+							<ButtonUsage
+								label='Reload'
+								variant={ButtonVariants.DEFAULT}
+								parentMethod={this.handleReload}
+							/>
+							<ButtonUsage
+								label={this.state.copied ? 'Copy' : 'Copied report'}
+								variant={ButtonVariants.OUTLINED}
+								parentMethod={this.handleCopyReport}
+							/>
 						</Box>
 					</Box>
 				</Box>

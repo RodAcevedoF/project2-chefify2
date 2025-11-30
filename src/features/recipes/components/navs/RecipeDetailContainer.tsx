@@ -17,7 +17,7 @@ const RecipeDetailContainer = () => {
 				width: '100%',
 				p: 2,
 			}}>
-			<AnimatePresence mode='wait' initial={false}>
+			<AnimatePresence mode='wait'>
 				<PageTransition key={location.pathname}>
 					<Outlet />
 				</PageTransition>

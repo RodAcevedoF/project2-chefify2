@@ -33,14 +33,14 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 	const theme = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
+	const [toastOpen, setToastOpen] = useState(false);
+
 	const registerMutation = useRegister({
 		onSuccess: () => {
 			onSuccess?.();
 			setToastOpen(true);
 		},
 	});
-
-	const [toastOpen, setToastOpen] = useState(false);
 
 	const onSubmit = (data: RegisterFormData) => {
 		registerMutation.mutate(data);

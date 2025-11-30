@@ -59,6 +59,7 @@ export const Navbar = memo(() => {
 							height: 'auto',
 							cursor: 'pointer',
 						}}
+						id='main-logo'
 					/>
 					<Typography
 						variant='h6'
@@ -102,6 +103,7 @@ export const Navbar = memo(() => {
 								parentMethod={handleLogout}
 								disabled={logoutMutation.isPending}
 								icon={DoorOpen}
+								cyData='logout-btn'
 							/>
 						</>
 					) : (
@@ -109,6 +111,7 @@ export const Navbar = memo(() => {
 							label={'Sign In'}
 							parentMethod={() => openModal('auth')}
 							icon={KeyRound}
+							cyData='login-btn'
 						/>
 					)}
 				</Box>

@@ -98,6 +98,7 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					{...register('email')}
 					error={!!errors.email}
 					helperText={errors.email?.message}
+					id='email-input'
 				/>
 				<TextField
 					label='Password'
@@ -110,6 +111,7 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 					{...register('password')}
 					error={!!errors.password}
 					helperText={errors.password ? 'Invalid password' : ''}
+					id='password-input'
 					slotProps={{
 						input: {
 							endAdornment: (
@@ -141,6 +143,7 @@ export const LoginForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 						disabled={loginMutation.isPending}
 						type={ButtonTypes.SUBMIT}
 						icon={ArrowBigRight}
+						cyData='submit-login'
 					/>
 					<ButtonUsage
 						label={'Forgot?'}

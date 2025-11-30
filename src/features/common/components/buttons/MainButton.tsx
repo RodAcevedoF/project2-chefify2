@@ -21,6 +21,7 @@ interface MainButtonProps {
 	loader?: boolean;
 	variant?: ButtonVariants;
 	iconPos?: ButtonIconPositions;
+	cyData?: string;
 }
 
 export const ButtonUsage = (props: MainButtonProps) => {
@@ -34,6 +35,7 @@ export const ButtonUsage = (props: MainButtonProps) => {
 		loader = true,
 		variant = ButtonVariants.DEFAULT,
 		iconPos = ButtonIconPositions.END,
+		cyData = 'main-button',
 	} = props;
 	const cs = commonStyles(useTheme(), extraSx, disabled);
 
@@ -53,6 +55,7 @@ export const ButtonUsage = (props: MainButtonProps) => {
 
 	return (
 		<Button
+			datatest-id={cyData}
 			variant='outlined'
 			{...(parentMethod ? { onClick: parentMethod } : {})}
 			disabled={disabled}

@@ -8,6 +8,8 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
+			// Allow tests to import using the `test/...` alias
+			test: path.resolve(__dirname, './__tests__'),
 		},
 	},
 });

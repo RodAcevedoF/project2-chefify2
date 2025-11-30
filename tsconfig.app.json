@@ -8,7 +8,8 @@
 		"skipLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"test/*": ["./__tests__/*"]
 		},
 
 		/* Bundler mode */
@@ -27,5 +28,5 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true
 	},
-	"include": ["src"]
+	"include": ["src", "__tests__"]
 }

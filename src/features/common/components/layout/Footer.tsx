@@ -2,6 +2,7 @@ import { Card, CardMedia, Container, Typography, Box } from '@mui/material';
 import { ButtonUsage } from '../buttons/MainButton';
 import { Send } from 'lucide-react';
 import { useModalContext } from '@/contexts/modalContext/modal.context';
+import { m } from 'framer-motion';
 
 export const Footer = () => {
 	const { openModal } = useModalContext();
@@ -18,12 +19,13 @@ export const Footer = () => {
 				bgcolor: 'background.paper',
 				py: 5,
 				gap: 5,
+				px: 2,
 			}}>
 			<Card
 				sx={{
 					display: 'flex',
 					width: '100%',
-					px: 5,
+					p: 5,
 					boxShadow: 'none',
 					justifyContent: { md: 'space-between', xs: 'center' },
 					alignItems: 'center',
@@ -44,7 +46,7 @@ export const Footer = () => {
 						component='img'
 						image='/footerlogo.png'
 						alt='Chef logo'
-						sx={{ width: { md: '400px', xs: '300px' } }}
+						sx={{ width: { md: '400px', xs: '250px' } }}
 					/>
 					<Typography
 						sx={{
@@ -59,8 +61,8 @@ export const Footer = () => {
 				<ButtonUsage
 					label='contact'
 					extraSx={{
-						width: '250px',
-						fontSize: '25px',
+						width: { xs: '180px', md: '250px' },
+						fontSize: { xs: '20px', md: '25px' },
 						justifyContent: 'center',
 					}}
 					icon={Send}
@@ -81,7 +83,7 @@ export const Footer = () => {
 				}}>
 				<Typography
 					sx={{
-						fontSize: '1rem',
+						fontSize: { xs: '0.8rem', md: '1rem' },
 						fontWeight: 'bold',
 						textAlign: 'center',
 						width: 'fit-content',
@@ -96,7 +98,7 @@ export const Footer = () => {
 				/>
 				<Typography
 					sx={{
-						fontSize: '1rem',
+						fontSize: { xs: '0.8rem', md: '1rem' },
 						fontWeight: 'bold',
 						textAlign: 'center',
 						width: 'fit-content',

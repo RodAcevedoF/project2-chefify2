@@ -26,7 +26,7 @@ const themeOptions: ThemeOptions = {
 			default: '#5ea894c3',
 			gradient: CIRCLE_GRADIENT,
 			lightGradient: LIGHT_CIRCLE_GRADIENT,
-			paper: '#212825e3',
+			paper: '#1f2321e3',
 			semitransparent: '#e7d2b0ba',
 			chartLikes: '#c025b1f7',
 		},

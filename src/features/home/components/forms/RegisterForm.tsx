@@ -185,17 +185,17 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 						Error al registrar
 					</Typography>
 				)}
-
-				<Toast
-					open={toastOpen}
-					message={
-						'Registration successful — check your email to verify your account.'
-					}
-					severity='success'
-					autoHideDuration={4000}
-					onClose={() => setToastOpen(false)}
-				/>
 			</Box>
+
+			<Toast
+				open={toastOpen}
+				message={
+					'Registration successful — check your email to verify your account.'
+				}
+				severity='success'
+				autoHideDuration={4000}
+				onClose={() => setToastOpen(false)}
+			/>
 		</Box>
 	);
 };

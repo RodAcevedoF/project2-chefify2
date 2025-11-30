@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 
 export const Carousel = () => {
 	const images = [
-		'/carousel1.png',
-		'/carousel2.png',
-		'/carousel3.png',
-		'/carousel4.png',
+		'/carousel/carousel1.webp',
+		'/carousel/carousel2.webp',
+		'/carousel/carousel3.webp',
+		'/carousel/carousel4.webp',
 	];
 	const [selectedIndex, setSelectedIndex] = useState<number>(0);
 	const [visible, setVisible] = useState<boolean>(true);

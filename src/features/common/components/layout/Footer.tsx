@@ -30,6 +30,7 @@ export const Footer = () => {
 					alignItems: 'center',
 					flexWrap: 'wrap',
 					gap: { xs: 5, md: 0 },
+					backgroundColor: 'transparent',
 				}}>
 				<Box
 					sx={{

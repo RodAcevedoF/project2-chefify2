@@ -37,8 +37,10 @@ export const RegisterForm = ({ onSuccess, className = '' }: AuthFormProps) => {
 
 	const registerMutation = useRegister({
 		onSuccess: () => {
-			onSuccess?.();
 			setToastOpen(true);
+			setTimeout(() => {
+				onSuccess?.();
+			}, 1000);
 		},
 	});
 

@@ -15,21 +15,41 @@ export default function ToastFromLocation() {
 
 	const toast = location.state?.toast;
 
-	useEffect(() => {
-		if (toast) setOpen(true);
-	}, [toast]);
+	const searchParams = new URLSearchParams(location.search);
+	const verified = searchParams.get('verified');
 
-	if (!toast) return null;
+	const verifiedToast =
+		verified === 'true'
+			? {
+					message: '✓ Email verified successfully! You can now log in.',
+					severity: 'success' as const,
+			  }
+			: null;
+
+	const activeToast = verifiedToast || toast;
+
+	useEffect(() => {
+		if (activeToast) setOpen(true);
+	}, [activeToast]);
+
+	const handleClose = () => {
+		setOpen(false);
+		if (verified) {
+			// Remove the verified query param
+			cleanNavigate();
+		} else if (toast) {
+			cleanNavigate();
+		}
+	};
+
+	if (!activeToast) return null;
 
 	return (
 		<Toast
 			open={open}
-			message={toast.message}
-			severity={toast.severity}
-			onClose={() => {
-				setOpen(false);
-				cleanNavigate();
-			}}
+			message={activeToast.message}
+			severity={activeToast.severity}
+			onClose={handleClose}
 		/>
 	);
 }
